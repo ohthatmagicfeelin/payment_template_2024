@@ -5,6 +5,7 @@ import config from './config/env.js';
 //  Routes
 import apiRoutes from './routes/apiRoutes.js';
 import deployRoutes from './routes/deployRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 });
 
 app.use(`${basePath}/api`, apiRoutes);
+app.use('/api', paymentRoutes)
 app.use(`/api/health`, deployRoutes);
 
 

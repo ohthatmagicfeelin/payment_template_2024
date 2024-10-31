@@ -5,6 +5,7 @@ const config = {
   LASTFM_API_KEY: import.meta.env.VITE_LASTFM_API_KEY,
 
   BASENAME: import.meta.env.VITE_APP_ROUTE,
+  STRIPE_PUBLISHABLE_KEY: import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY,
 
 };
 

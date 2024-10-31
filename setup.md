@@ -30,6 +30,25 @@ CREATE TABLE items (
   text TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    stripe_customer_id VARCHAR(255) UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE subscriptions (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  stripe_customer_id VARCHAR(255),
+  stripe_subscription_id VARCHAR(255),
+  status VARCHAR(50),
+  current_period_end TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO oh;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO oh;
 
@@ -90,10 +109,6 @@ run the sync script:
 ./sync.sh
 ```
 
-???
-sudo chown -R www-data:www-data /var/www/payment_template
-sudo chmod -R 755 /var/www/payment_template
-???
 
 ## On the VPS
 enter psql:
@@ -118,6 +133,24 @@ CREATE TABLE items (
   id SERIAL PRIMARY KEY,
   text TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    stripe_customer_id VARCHAR(255) UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE subscriptions (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  stripe_customer_id VARCHAR(255),
+  stripe_subscription_id VARCHAR(255),
+  status VARCHAR(50),
+  current_period_end TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
