@@ -34,19 +34,14 @@ while getopts "ik" opt; do
     esac
 done
 
+
 # Deploy app package.json
 message "Deploying app package.json..."
 rsync -avz "$ROOT_DIR/package.json" "$VPS_ALIAS:$VPS_PATH/"
 
-# Deploy server
-message "Deploying server..."
-rsync -az --delete --exclude 'node_modules' --exclude '.env' --exclude 'package-lock.json' \
-    "$ROOT_DIR/server/" "$VPS_ALIAS:$VPS_PATH/server/"
-
-# Deploy client
-message "Deploying client..."
-rsync -az --delete --exclude 'node_modules' --exclude '.env' --exclude 'package-lock.json' \
-    "$ROOT_DIR/client/" "$VPS_ALIAS:$VPS_PATH/client/"
+# Deploy server and client
+deploy_directory "$ROOT_DIR/server" "$VPS_PATH/server" "server" "$VPS_ALIAS"
+deploy_directory "$ROOT_DIR/client" "$VPS_PATH/client" "client" "$VPS_ALIAS"
 
 # Create and execute the remote deployment script
 message "Starting remote deployment..."

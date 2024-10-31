@@ -25,15 +25,43 @@ set_pm2_env_vars() {
         return 1
     fi
 
-    # Read .env file and set variables
+    echo "Setting environment variables from $env_file"
+
+    # Read all variables first
+    declare -A env_vars
     while IFS='=' read -r key value; do
         # Skip empty lines and comments
         if [[ ! -z "$key" && ! "$key" =~ ^# ]]; then
-            # Remove any quotes from the value
-            value=$(echo "$value" | tr -d '"' | tr -d "'")
-            # Set the environment variable in PM2
-            echo "Setting $key"
-            pm2 set "$app_name:$key" "$value"
+            # Remove any quotes and trailing whitespace from the value
+            value=$(echo "$value" | tr -d '"' | tr -d "'" | xargs)
+            env_vars["$key"]="$value"
         fi
     done < "$env_file"
+
+    # Set all variables at once
+    for key in "${!env_vars[@]}"; do
+        echo "Setting $key"
+        pm2 set "$app_name:$key" "${env_vars[$key]}" >/dev/null 2>&1
+    done
+}
+
+
+
+deploy_directory() {
+    local src="$1"
+    local dest="$2"
+    local name="$3"  # For messages (e.g., "server" or "client")
+    local vps_alias="$4"
+
+    message "Deploying ${name}..."
+    if [ "$INSTALL_DEPS" = true ]; then
+        # If -i flag is used, remove node_modules and do a clean sync
+        ssh "$vps_alias" "rm -rf $dest/node_modules"
+        rsync -avz --delete --exclude 'node_modules' --exclude '.env' --exclude 'package-lock.json' \
+            "$src/" "$vps_alias:$dest/"
+    else
+        # If no -i flag, sync while preserving existing node_modules
+        rsync -avz --exclude 'node_modules' --exclude '.env' --exclude 'package-lock.json' \
+            "$src/" "$vps_alias:$dest/"
+    fi
 }

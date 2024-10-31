@@ -2,7 +2,7 @@
 
 create_backup() {
     local vps_path="$1"
-
+    
     rm -rf "${vps_path}.backup"
     cp -r "$vps_path" "${vps_path}.backup"
 }
@@ -33,19 +33,18 @@ manage_pm2_process() {
     local vps_path="$1"
     local pm2_service_name="$2"
     local env_file="$3"
+    echo "env_file: ${env_file}"
 
-    if pm2 describe "$pm2_service_name" > /dev/null; then
-        # App exists - set envs and restart
-        set_pm2_env_vars "$pm2_service_name" "$env_file"
-        pm2 restart "$pm2_service_name"
-        echo 'Server restarted.'
-    else
-        # App doesn't exist - start first, then set envs
+    if ! pm2 describe "$pm2_service_name" > /dev/null; then
+        # Only start if app doesn't exist
         pm2 start "$vps_path/server/src/index.js" --name "$pm2_service_name"
-        set_pm2_env_vars "$pm2_service_name" "$env_file"
-        pm2 restart "$pm2_service_name"  # Restart to ensure envs are applied
-        echo 'Server started for the first time with environment variables.'
+        echo 'Server started for the first time.'
     fi
+
+    set_pm2_env_vars "$pm2_service_name" "$env_file"
+    pm2 restart "$pm2_service_name"  # Restart to ensure envs are applied
+    echo 'Server restarted.'
+    pm2 save 
 }
 
 cleanup_env_files() {
