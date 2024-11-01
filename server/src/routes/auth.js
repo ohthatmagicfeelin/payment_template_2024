@@ -89,7 +89,7 @@ router.post('/password-reset-request', async (req, res) => {
 
 router.post('/password-reset', async (req, res) => {
   const { token, newPassword } = req.body;
-  
+  console.log('Password reset request received:', req.body);
   try {
     const decoded = jwt.verify(token, config.JWT_SECRET);
     if (decoded.type !== 'password-reset') {
@@ -99,6 +99,7 @@ router.post('/password-reset', async (req, res) => {
     await updateUserPassword(decoded.userId, newPassword);
     res.json({ message: 'Password updated successfully' });
   } catch (error) {
+    console.error('Password reset error:', error);
     res.status(400).json({ error: 'Invalid or expired token' });
   }
 });

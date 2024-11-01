@@ -6,7 +6,7 @@ import config from '../config/env.js';
 // server/src/utils/emailService.js
 export class EmailService {
     async sendVerificationEmail(email, userId) {
-      // Create a simple test token
+
       const token = jwt.sign(
         { userId, type: 'email-verification' },
         config.JWT_SECRET,
@@ -30,15 +30,17 @@ export class EmailService {
     }
   
     async sendPasswordResetEmail(email, userId) {
-      // Create a simple test token
-      const token = `reset-${userId}-${Date.now()}`;
-      const resetUrl = `${config.BACKEND_URL}/reset-password?token=${token}`;
+      const token = jwt.sign(
+        { userId, type: 'password-reset' },
+        config.JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+      const resetUrl = `${config.FRONTEND_URL}/reset-password?token=${token}`;
   
       // Log the details to console
       console.log('\n=== Password Reset Email ===');
       console.log('To:', email);
       console.log('Reset URL:', resetUrl);
-      console.log('Token:', token);
       console.log('========================\n');
   
       // Store token in memory for verification
