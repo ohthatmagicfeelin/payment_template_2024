@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 // Signup endpoint
-router.post('/signup', paymentController.createUser);
+// router.post('/signup', paymentController.createUser);
 router.post('/create-payment-intent', paymentController.createPaymentIntent);
 
 

@@ -2,10 +2,7 @@
 import express from "express";
 import cors from "cors";
 import config from './config/env.js';
-//  Routes
-import apiRoutes from './routes/apiRoutes.js';
-import deployRoutes from './routes/deployRoutes.js';
-import paymentRoutes from './routes/paymentRoutes.js';
+import routes from './routes/routes.js';
 
 const app = express();
 
@@ -17,9 +14,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// Determine whether to use base path based on environment
-const isProduction = config.NODE_ENV === 'production';
-const basePath = isProduction ? config.APP_ROUTE : '';
 
 // Routes
 app.use((req, res, next) => {
@@ -27,9 +21,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(`${basePath}/api`, apiRoutes);
-app.use(`${basePath}/api`, paymentRoutes)
-app.use(`/api/health`, deployRoutes);
+
+
+app.use('/', routes);
 
 
 app.listen(config.PORT, '0.0.0.0', () => {

@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '@/api/auth';
-import { setUserId } from '@/utils/localStorage';
 
 const SignupForm = () => {
   const [email, setEmail] = useState('');
@@ -13,10 +12,11 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { success, userId } = await signup(email, password);
+      const { success } = await signup(email, password);
       if (success) {
-        setUserId(userId);
-        navigate('/payment');
+        navigate('/verification-pending', { 
+          state: { email } 
+        });
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Signup failed');

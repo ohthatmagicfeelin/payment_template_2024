@@ -27,4 +27,10 @@ export default {
 
     // Stripe
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+
+    // Session
+    SESSION_SECRET: process.env.SESSION_SECRET,
+
+    // JWT
+    JWT_SECRET: process.env.JWT_SECRET,
 };
