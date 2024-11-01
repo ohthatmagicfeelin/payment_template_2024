@@ -85,6 +85,10 @@ class AuthService {
   async verifyEmail(token) {
     await this.api.post('/api/verify-email', { token });
   }
+
+  async resendVerificationEmail(email) {
+    await this.api.post('/api/resend-verification', { email });
+  }
 }
 
 export const authService = new AuthService();

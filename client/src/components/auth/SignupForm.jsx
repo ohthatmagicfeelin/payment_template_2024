@@ -11,14 +11,18 @@ const SignupForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    
     try {
-      const { success } = await signup(email, password);
-      if (success) {
-        navigate('/verification-pending', { 
-          state: { email } 
-        });
-      }
+      const response = await signup(email, password);
+      console.log('Signup response:', response); // Debug log
+      
+      navigate('/verification-pending', { 
+        replace: true,
+        state: { email } 
+      });
     } catch (err) {
+      console.error('Signup error:', err); // Debug log
       setError(err.response?.data?.error || 'Signup failed');
     }
   };

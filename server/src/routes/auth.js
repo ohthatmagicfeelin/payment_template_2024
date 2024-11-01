@@ -120,4 +120,22 @@ router.post('/verify-email', async (req, res) => {
   }
 });
 
+router.post('/resend-verification', async (req, res) => {
+  const { email } = req.body;
+  
+  try {
+    const user = await getUserByEmail(email);
+    if (user && !user.email_verified) {
+      await emailService.sendVerificationEmail(email, user.id);
+      res.json({ message: 'Verification email sent' });
+    } else {
+      // Always return success to prevent email enumeration
+      res.json({ message: 'If an account exists, a verification email will be sent.' });
+    }
+  } catch (error) {
+    console.error('Error sending verification email:', error);
+    res.status(500).json({ error: 'Could not process request' });
+  }
+});
+
 export default router;
