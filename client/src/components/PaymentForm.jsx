@@ -1,4 +1,4 @@
-// src/components/PaymentForm.jsx
+// client/src/components/PaymentForm.jsx
 import { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -58,7 +58,6 @@ const PaymentForm = () => {
           amount: 1000, // Amount in cents
           userId: localStorage.getItem('userId')
         });
-        console.log("response",response.data);
         setClientSecret(response.data.clientSecret);
       } catch (err) {
         console.error('Error creating payment intent:', err);

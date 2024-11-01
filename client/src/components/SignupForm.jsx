@@ -1,4 +1,4 @@
-// src/components/SignupForm.jsx
+// client/src/components/SignupForm.jsx
 import { useState } from 'react';
 import axios from 'axios';
 import config from '@/config/env';
