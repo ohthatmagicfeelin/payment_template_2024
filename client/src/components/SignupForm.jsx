@@ -2,11 +2,13 @@
 import { useState } from 'react';
 import axios from 'axios';
 import config from '@/config/env';
+import { useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ const SignupForm = () => {
         // Store user ID or handle successful signup
         localStorage.setItem('userId', response.data.userId);
         // Redirect to payment page or dashboard
-        window.location.href = '/payment';
+        navigate('/payment');
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Signup failed');

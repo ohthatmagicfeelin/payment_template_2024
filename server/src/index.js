@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 });
 
 app.use(`${basePath}/api`, apiRoutes);
-app.use('/api', paymentRoutes)
+app.use(`${basePath}/api`, paymentRoutes)
 app.use(`/api/health`, deployRoutes);
 
 
