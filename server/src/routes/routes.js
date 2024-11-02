@@ -5,6 +5,7 @@ import apiRoutes from './apiRoutes.js';
 import paymentRoutes from './paymentRoutes.js';
 import authRoutes from './authRoutes.js';
 import { sessionMiddleware } from '../middleware/auth.js';
+import { apiLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ const isProduction = config.NODE_ENV === 'production';
 const basePath = isProduction ? config.APP_ROUTE : '';
 
 router.use(sessionMiddleware);
+router.use(`${basePath}/api`, apiLimiter);
 router.use(`${basePath}/api`, apiRoutes);
 router.use(`${basePath}/api`, paymentRoutes)
 router.use(`${basePath}/api`, authRoutes)
