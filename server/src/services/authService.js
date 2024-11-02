@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import config from '../config/env.js';
 import { AppError } from '../utils/AppError.js';
-import * as userRepository from '../db/userRepository.js';
+import { userRepository } from '../db/repositories/userRepository.js';
 import { emailService } from '../utils/emailService.js';
+import bcrypt from 'bcrypt';
 
 export const signup = async (email, password) => {
     const existingUser = await userRepository.getUserByEmail(email);
@@ -20,11 +21,17 @@ export const signup = async (email, password) => {
 };
 
 export const login = async (email, password) => {
-    try {
-        return await userRepository.verifyCredentials(email, password);
-    } catch (error) {
+    const user = await userRepository.getUserByEmail(email);
+    if (!user) {
         throw new AppError('Invalid credentials', 401);
     }
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+        throw new AppError('Invalid credentials', 401);
+    }
+
+    return user;
 };
 
 export const getUserById = async (userId) => {

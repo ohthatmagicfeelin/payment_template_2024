@@ -14,9 +14,10 @@ source "$DEPLOY_DIR/scripts/remote-deploy.sh"
 # Default values for flags
 INSTALL_DEPS=false
 KEEP_ENV=false
+RUN_MIGRATIONS=false
 
 # Parse command line arguments
-while getopts "ik" opt; do
+while getopts "ikm" opt; do
     case $opt in
         i)
             INSTALL_DEPS=true
@@ -24,11 +25,15 @@ while getopts "ik" opt; do
         k)
             KEEP_ENV=true
             ;;
+        m)
+            RUN_MIGRATIONS=true
+            ;;
         \?)
             echo "Invalid option: -$OPTARG" >&2
-            echo "Usage: $0 [-i] [-k]" >&2
+            echo "Usage: $0 [-i] [-k] [-m]" >&2
             echo "  -i    Install dependencies" >&2
             echo "  -k    Keep .env files" >&2
+            echo "  -m    Run database migrations" >&2
             exit 1
             ;;
     esac
@@ -58,6 +63,7 @@ ssh "$VPS_ALIAS" "
                   manage_pm2_process \
                   cleanup_env_files \
                   set_pm2_env_vars \
+                  perform_db_migration \
                   )
 
     # Part 2: Actual Command Execution
@@ -69,7 +75,8 @@ ssh "$VPS_ALIAS" "
         '$HEALTH_CHECK_URL' \
         $MAX_RETRIES \
         $RETRY_INTERVAL \
-        '$ENV_PATH'
+        '$ENV_PATH' \
+        $RUN_MIGRATIONS
 "
 
 echo "Deployment completed successfully!"

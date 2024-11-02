@@ -25,6 +25,9 @@ export default {
     PG_PORT: process.env.PG_PORT,
     PG_DATABASE: process.env.PG_DATABASE,
 
+    // Prisma
+    DATABASE_URL: `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}`,
+
     // Stripe
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
 
