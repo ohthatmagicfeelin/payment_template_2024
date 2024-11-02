@@ -21,6 +21,7 @@ model User {
   stripeCustomerId String?        @unique @map("stripe_customer_id") @db.VarChar(255)
   createdAt        DateTime       @default(now()) @map("created_at") @db.Timestamptz
   subscriptions    Subscription[]
+  auditLogs        AuditLog[]
 
   @@map("users")
 }
@@ -37,4 +38,20 @@ model Subscription {
   @@index([status], name: "idx_subscriptions_status")
   @@index([userId], name: "idx_subscriptions_user_id")
   @@map("subscriptions")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?     @map("user_id")
+  action    String   @db.VarChar(255)
+  entity    String   @db.VarChar(255)
+  entityId  String   @map("entity_id") @db.VarChar(255)
+  details   Json?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+  @@index([entity, entityId])
+  @@index([userId])
+  @@index([createdAt])
 }
