@@ -30,23 +30,40 @@ const SignupForm = () => {
     }
     
     try {
-      const response = await signup(email, password);
-      console.log('Signup response:', response);
-      
+      await signup(email, password);
       navigate('/verification-pending', { 
         replace: true,
         state: { email } 
       });
     } catch (err) {
-      console.error('Signup error:', err);
-      setError(err.response?.data?.error || 'Signup failed');
+      console.log(err);
+      if (err.response?.status === 400 && err.response?.data?.message?.includes('already registered')) {
+        setError('This email is already registered. Please try logging in instead.');
+      } else {
+        setError(err.response?.data?.error || 'An error occurred during signup');
+      }
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
       <h2 className="text-2xl font-bold mb-6">Sign Up</h2>
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+      
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">
+          {error}
+          {error.includes('already registered') && (
+            <div className="mt-2">
+              <button
+                onClick={() => navigate('/login')}
+                className="text-blue-600 hover:text-blue-800 underline"
+              >
+                Go to login
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

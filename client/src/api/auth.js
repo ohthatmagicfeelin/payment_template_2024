@@ -8,8 +8,11 @@ export const signup = async (email, password) => {
       email,
       password
     });
-    return { success: true, data: response.data };
+    return response.data;
   } catch (error) {
-    throw error;
+    if (error.response?.status === 400) {
+      throw error;
+    }
+    throw new Error('An error occurred during signup. Please try again later.');
   }
 };
