@@ -78,7 +78,8 @@ export function AuthProvider({ children }) {
       dispatch({ type: 'LOGIN_SUCCESS', payload: user });
       return user;
     } catch (error) {
-      dispatch({ type: 'LOGIN_ERROR', payload: error.message });
+      const errorMessage = error.response?.data?.message || error.message;
+      dispatch({ type: 'LOGIN_ERROR', payload: errorMessage });
       throw error;
     }
   };

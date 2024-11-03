@@ -16,12 +16,23 @@ export function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
       await login({ email, password, rememberMe });
       const from = location.state?.from?.pathname || '/dashboard';
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message);
+      let errorMessage;
+      if (err.response?.status === 401) {
+        errorMessage = 'Invalid email or password';
+      } else if (err.response?.status === 429) {
+        errorMessage = 'Too many login attempts. Please try again later.';
+      } else if (!err.response) {
+        errorMessage = 'Unable to connect to the server. Please check your internet connection.';
+      } else {
+        errorMessage = 'An unexpected error occurred. Please try again.';
+      }
+      setError(errorMessage);
     }
   };
 
@@ -34,7 +45,10 @@ export function LoginForm() {
       )}
       
       {error && (
-        <div className="p-4 rounded-lg text-sm bg-green-50 text-green-700 border border-green-200">
+        <div className="p-4 rounded-lg text-sm bg-red-50 border border-red-200 text-red-700 flex items-center">
+          <svg className="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
           {error}
         </div>
       )}
