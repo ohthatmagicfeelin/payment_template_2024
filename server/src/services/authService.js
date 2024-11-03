@@ -5,6 +5,7 @@ import { userRepository } from '../db/repositories/userRepository.js';
 import { emailService } from '../utils/emailService.js';
 import { auditService } from './auditService.js';
 import bcrypt from 'bcrypt';
+import { passwordResetRepository } from '../db/repositories/passwordResetRepository.js';
 
 export const signup = async (email, password) => {
     const existingUser = await userRepository.getUserByEmail(email);
@@ -103,9 +104,16 @@ export const requestPasswordReset = async (email) => {
 
 export const resetPassword = async (token, newPassword) => {
     try {
+        // First verify JWT
         const decoded = jwt.verify(token, config.JWT_SECRET);
-        const user = await userRepository.getUserById(decoded.userId);
         
+        // Then check if token exists and is valid in database
+        const resetToken = await passwordResetRepository.getValidToken(token);
+        if (!resetToken) {
+            throw new AppError('Invalid or expired reset token', 400);
+        }
+
+        const user = await userRepository.getUserById(decoded.userId);
         if (!user) {
             await auditService.log({
                 action: 'PASSWORD_RESET_FAILED',
@@ -116,6 +124,10 @@ export const resetPassword = async (token, newPassword) => {
             throw new AppError('Invalid reset token', 400);
         }
 
+        // Mark token as used before updating password
+        await passwordResetRepository.markTokenAsUsed(token);
+
+        // Update password
         await userRepository.updateUserPassword(user.id, newPassword);
         
         await auditService.log({
@@ -189,5 +201,33 @@ export const logout = async (userId) => {
             entityId: userId.toString(),
             details: { timestamp: new Date().toISOString() }
         });
+    }
+};
+
+export const verifyResetToken = async (token) => {
+    try {
+        // First verify JWT
+        const decoded = jwt.verify(token, config.JWT_SECRET);
+        
+        // Then check if token exists and is valid in database
+        const resetToken = await passwordResetRepository.getValidToken(token);
+        if (!resetToken) {
+            throw new AppError('Invalid or expired reset token', 400);
+        }
+
+        const user = await userRepository.getUserById(decoded.userId);
+        if (!user) {
+            throw new AppError('Invalid reset token', 400);
+        }
+
+        return true;
+    } catch (error) {
+        await auditService.log({
+            action: 'PASSWORD_RESET_TOKEN_VERIFICATION_FAILED',
+            entity: 'user',
+            entityId: token,
+            details: { error: error.message }
+        });
+        throw new AppError('Invalid or expired reset token', 400);
     }
 }; 

@@ -67,4 +67,10 @@ export const resendVerification = catchAsync(async (req, res) => {
     const { email } = req.body;
     await authService.resendVerification(email);
     res.json({ message: 'If an account exists, a verification email will be sent.' });
+});
+
+export const verifyResetToken = catchAsync(async (req, res) => {
+    const { token } = req.body;
+    await authService.verifyResetToken(token);
+    res.json({ valid: true });
 }); 

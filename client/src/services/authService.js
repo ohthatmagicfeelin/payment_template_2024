@@ -89,6 +89,11 @@ class AuthService {
   async resendVerificationEmail(email) {
     await this.api.post('/api/resend-verification', { email });
   }
+
+  async verifyResetToken(token) {
+    if (!token) throw new Error('No token provided');
+    await this.api.post('/api/verify-reset-token', { token });
+  }
 }
 
 export const authService = new AuthService();

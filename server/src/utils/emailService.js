@@ -2,6 +2,7 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import config from '../config/env.js';
+import { passwordResetRepository } from '../db/repositories/passwordResetRepository.js'
 
 // server/src/utils/emailService.js
 export class EmailService {
@@ -33,8 +34,17 @@ export class EmailService {
       const token = jwt.sign(
         { userId, type: 'password-reset' },
         config.JWT_SECRET,
-        { expiresIn: '24h' }
+        { expiresIn: '1h' }
       );
+
+      // Store token in database
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+      await passwordResetRepository.createToken({
+        token,
+        userId,
+        expiresAt
+      });
+
       const resetUrl = `${config.FRONTEND_URL}/reset-password?token=${token}`;
   
       // Log the details to console

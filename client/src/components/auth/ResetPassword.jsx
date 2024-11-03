@@ -1,5 +1,5 @@
 // client/src/components/auth/ResetPassword.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { authService } from '@/services/authService';
 
@@ -7,9 +7,31 @@ export function ResetPassword() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [isValidToken, setIsValidToken] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get('token');
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        await authService.verifyResetToken(token);
+        setIsValidToken(true);
+      } catch (err) {
+        setError('This password reset link has expired or is invalid. Please request a new one.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (token) {
+      verifyToken();
+    } else {
+      setError('No reset token provided');
+      setIsLoading(false);
+    }
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +50,33 @@ export function ResetPassword() {
       setError(err.message);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-sm">
+        <div className="text-center">
+          <p className="text-gray-600">Verifying reset link...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isValidToken) {
+    return (
+      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-sm">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Invalid Reset Link</h2>
+          <p className="text-red-500 mb-4">{error}</p>
+          <a 
+            href="/forgot-password"
+            className="text-blue-600 hover:text-blue-500"
+          >
+            Request a new reset link
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 space-y-6 px-4">
