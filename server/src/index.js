@@ -4,6 +4,7 @@ import cors from "cors";
 import config from './config/env.js';
 import routes from './routes/routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { sanitizeInputs } from './middleware/sanitizeInput.js';
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.use(cors({
 
 app.use(express.json());
 
+// Apply global sanitization middleware
+app.use(sanitizeInputs);
 
 // Routes
 app.use((req, res, next) => {
