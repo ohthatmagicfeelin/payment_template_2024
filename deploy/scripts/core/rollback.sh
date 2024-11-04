@@ -1,16 +1,15 @@
 #!/bin/bash
 
 perform_rollback() {
-    local vps_path="$1"
-    local pm2_service_name="$2"
     
     echo 'Performing rollback...'
-    
-    if [ -d "${vps_path}.backup" ]; then
-        rm -rf "$vps_path"/*
-        cp -r "${vps_path}.backup"/* "$vps_path"/
+    BACKUP_PATH="${BACKUP_ROOT}/${APP_NAME}.backup"
+
+    if [ -d "$BACKUP_PATH" ]; then
+        rm -rf "$REMOTE_ROOT"/*
+        cp -r "${BACKUP_PATH}"/* "$REMOTE_ROOT"/
         
-        pm2 restart "$pm2_service_name"
+        pm2 restart "$PM2_SERVICE_NAME"
         
         echo 'Rollback completed'
         return 0

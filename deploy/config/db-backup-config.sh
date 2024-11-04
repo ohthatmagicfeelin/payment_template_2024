@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Import VPS configuration
-PROJECT_ROOT=$(pwd)
-source "$PROJECT_ROOT/deploy/config/deploy-config.sh"
-
 # Database Configuration
 DB_NAME="${PG_DATABASE}"
 DB_USER="${PG_USER}"
@@ -12,7 +8,8 @@ DB_PORT="${PG_PORT}"
 DB_PASSWORD="${PG_PASSWORD}"
 
 # Backup Configuration
-BACKUP_DIR="${VPS_PATH}/backups/postgresql"
+APP_NAME=$(basename "$REMOTE_ROOT")
+BACKUP_DIR="${BACKUP_ROOT}/postgresql"   # Database-specific backups
 BACKUP_LOG_DIR="$BACKUP_DIR/logs"
 
 # Retention Configuration

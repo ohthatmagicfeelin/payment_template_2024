@@ -1,71 +1,51 @@
 #!/bin/bash
-# echo this location with dirname
 
-PROJECT_ROOT=$(pwd)
-DEPLOY_DIR="$PROJECT_ROOT/deploy"
-source "$DEPLOY_DIR/config/deploy-config.sh"
-source "$DEPLOY_DIR/setup/init-backup.sh"
-source "$DEPLOY_DIR/scripts/core/deploy-steps.sh"
-source "$DEPLOY_DIR/scripts/core/rollback.sh"
-source "$DEPLOY_DIR/scripts/core/health-check.sh"
-source "$DEPLOY_DIR/scripts/utils/utils.sh"
-source "$DEPLOY_DIR/scripts/db/migrate.sh"
-source "$DEPLOY_DIR/scripts/db/backup/utils.sh"   
-
-execute_deployment() {
+perform_deployment() {
     local install_deps="$1"
     local keep_env="$2"
     local run_migrations="$3"
 
+    # Source configurations
+    source "$(pwd)/deploy/config/deploy-config.sh"
+    source "$DEPLOY_DIR/config/db-backup-config.sh"
 
-    echo "Starting deployment process..."
-    echo "VPS Path: $PROJECT_ROOT"
-    echo "PM2 Service: $PM2_SERVICE_NAME"
-    echo "Run Migrations: $run_migrations"
-    
-    # Setup backup system if not already setup
-    if [ ! -d "$PROJECT_ROOT/backups" ]; then
-        setup_backup_system "$PROJECT_ROOT"
-    fi
+    # Source utility scripts
+    source "$DEPLOY_DIR/scripts/utils/utils.sh"
 
-    # Create backup
-    create_backup "$PROJECT_ROOT"
-    
-    # Setup environment files
-    setup_env_files "$PROJECT_ROOT"
-    
-    if [ "$install_deps" = true ]; then
-        install_dependencies "$PROJECT_ROOT"
-    fi
-    
-    # Run migrations if flag is set
-    if [ "$run_migrations" = true ]; then
-        echo "Running database migrations..."
-        if ! perform_db_migration "$ENV_PATH"; then
-            echo "Migration failed, rolling back..."
-            perform_rollback "$PROJECT_ROOT" "$PM2_SERVICE_NAME"
-            exit 1
-        fi
-    fi
-    
-    # Build client
-    build_client "$PROJECT_ROOT"
-    
-    # Manage PM2 process
-    manage_pm2_process "$PROJECT_ROOT" "$PM2_SERVICE_NAME" "$ENV_PATH"
-    
-    # Health check
-    if ! check_health "$HEALTH_CHECK_URL" "$MAX_RETRIES" "$RETRY_INTERVAL"; then
-        echo "Health check failed, rolling back..."
-        perform_rollback "$PROJECT_ROOT" "$PM2_SERVICE_NAME"
-        exit 1
-    fi
-    
-    # Clean up if not keeping env files
-    if [ "$keep_env" = false ]; then
-        rm -f "$PROJECT_ROOT/server/.env" "$PROJECT_ROOT/client/.env"
-    fi
-    
+    # Source core deployment scripts
+    source "$DEPLOY_DIR/scripts/core/rollback.sh"
+    source "$DEPLOY_DIR/scripts/core/deployment-steps.sh"
+    source "$DEPLOY_DIR/scripts/core/deployment.sh"
 
-    echo "Deployment completed successfully!"
+    # execute deployment
+    execute_deployment "$install_deps" "$keep_env" "$run_migrations"
 }
+
+# Show usage information
+show_usage() {
+    echo "Usage: $0 <install_deps> <keep_env> <run_migrations>"
+    echo "Parameters:"
+    echo "  install_deps    : true/false - Whether to install dependencies"
+    echo "  keep_env       : true/false - Whether to keep .env files after deployment"
+    echo "  run_migrations : true/false - Whether to run database migrations"
+    exit 1
+}
+
+# Run only if executed directly
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    # Check if all parameters are provided
+    if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+        echo "Error: Missing required parameters"
+        show_usage
+    fi
+
+    # Validate parameter values
+    for param in "$1" "$2" "$3"; do
+        if [ "$param" != "true" ] && [ "$param" != "false" ]; then
+            echo "Error: Parameters must be 'true' or 'false'"
+            show_usage
+        fi
+    done
+
+    perform_deployment "$1" "$2" "$3"
+fi

@@ -1,16 +1,21 @@
 #!/bin/bash
 
 # Get the root directory of the project
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+LOCAL_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Source required files
-source "$ROOT_DIR/deploy/config/deploy-config.sh"
-source "$ROOT_DIR/deploy/scripts/utils/parse-args.sh"
-source "$ROOT_DIR/deploy/scripts/utils/utils.sh"
-
+source "$LOCAL_ROOT/deploy/config/deploy-config.sh"
+source "$LOCAL_ROOT/deploy/scripts/utils/parse-args.sh"
+source "$LOCAL_ROOT/deploy/scripts/utils/utils.sh"
+source "$LOCAL_ROOT/deploy/local/backup.sh"
 
 # Parse command line arguments
 parse_arguments "$@"
+
+# create a backup of the current app on the vps
+echo "=== Starting Remote Backup ==="
+echo "Backup Directory: $BACKUP_ROOT"
+create_backup "$LOCAL_ROOT"
 
 # Deploy the project with exclusions
 message "Deploying project files..."
@@ -20,25 +25,16 @@ rsync -avz --delete \
            --exclude '**/package-lock.json' \
            --exclude '.git' \
            --exclude '.git*' \
-           --exclude '.env' \
-           --exclude '.env.*' \
            --exclude '**/dist' \
            --exclude '**/build' \
-           "$ROOT_DIR/" \
-           "$VPS_ALIAS:$VPS_PATH/"
+           "$LOCAL_ROOT/" \
+           "$VPS_ALIAS:$REMOTE_ROOT/"
 
 
 # Create and execute the remote deployment script
 message "Starting remote deployment..."
-
-#make sure the deploy-config.sh file is executable
-# ssh "$VPS_ALIAS" "chmod +x $VPS_PATH/deploy/deploy-config.sh"
-
 ssh "$VPS_ALIAS" \
-    "cd $VPS_PATH && \
-    npm run remote-deploy \
-        $INSTALL_DEPS \
-        $KEEP_ENV \
-        $RUN_MIGRATIONS"
+    "cd $REMOTE_ROOT && \
+    ./deploy/remote-deploy.sh $INSTALL_DEPS $KEEP_ENV $RUN_MIGRATIONS"
 
-echo "Deployment completed successfully!"
+echo "✓ Deployment completed successfully!"

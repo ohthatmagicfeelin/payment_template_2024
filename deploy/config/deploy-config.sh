@@ -1,11 +1,16 @@
 #!/bin/bash
 
 # Configuration
-VPS_ALIAS="vps"
-VPS_PATH="/var/www/payment_template"
-PM2_SERVICE_NAME="payment_template"
+APP_NAME="payment_template"
 PORT=5010
-ENV_PATH="$VPS_PATH/server/.env"
+VPS_ALIAS="vps"
+
+
+PM2_SERVICE_NAME="$APP_NAME"
+REMOTE_ROOT="/var/www/$APP_NAME"
+BACKUP_ROOT="/var/backups/$APP_NAME"
+SERVER_ENV_PATH="$REMOTE_ROOT/server/.env"
+DEPLOY_DIR="$REMOTE_ROOT/deploy"
 
 # Health check configuration
 HEALTH_CHECK_URL="http://localhost:$PORT/api/health"

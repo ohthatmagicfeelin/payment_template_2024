@@ -1,19 +1,24 @@
 #!/bin/bash
 
-PROJECT_ROOT=$(pwd)
 
 perform_db_migration() {
-    local env_file="$1"
+
+    # Validate environment variables
+    [ -z "$REMOTE_ROOT" ] && { echo "Error: REMOTE_ROOT is not set"; return 1; }
+    [ -z "$SERVER_ENV_PATH" ] && { echo "Error: SERVER_ENV_PATH is not set"; return 1; }
+    [ ! -f "$SERVER_ENV_PATH" ] && { echo "Error: Environment file not found at $SERVER_ENV_PATH"; return 1; }
+    [ ! -d "$REMOTE_ROOT/server" ] && { echo "Error: Server directory not found at $REMOTE_ROOT/server"; return 1; }
+    [ ! -f "$REMOTE_ROOT/server/prisma/schema.prisma" ] && { echo "Error: Prisma schema not found at $REMOTE_ROOT/server/prisma/schema.prisma"; return 1; }
     
     echo "Starting database migration..."
-    echo "Env file: $env_file"
+    echo "Env file: $SERVER_ENV_PATH"
     
     # Change to server directory
-    cd "$PROJECT_ROOT/server" || exit
+    cd "$REMOTE_ROOT/server" || exit
     echo "Current directory: $(pwd)"
     
     # Load environment variables
-    source "$env_file"
+    source "$SERVER_ENV_PATH"
     export DATABASE_URL="postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/${PG_DATABASE}"
     echo "DATABASE_URL constructed: $DATABASE_URL"
     
