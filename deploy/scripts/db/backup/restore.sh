@@ -1,9 +1,5 @@
 #!/bin/bash
 
-PROJECT_ROOT=$(pwd)
-source "$PROJECT_ROOT/deploy/config/backup-config.sh"
-source "$PROJECT_ROOT/deploy/scripts/db/backup/utils.sh"
-
 restore_backup() {
     local backup_file="$1"
     

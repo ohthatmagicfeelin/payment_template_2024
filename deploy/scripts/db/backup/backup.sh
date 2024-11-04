@@ -1,7 +1,6 @@
 #!/bin/bash
-PROJECT_ROOT=$(pwd)
-source "$PROJECT_ROOT/deploy/config/backup-config.sh"
-source "$PROJECT_ROOT/deploy/scripts/db/backup/utils.sh"
+
+source "$DEPLOY_DIR/scripts/db/backup/utils.sh"
 
 perform_backup() {
     local type="$1"  # daily, weekly, or monthly

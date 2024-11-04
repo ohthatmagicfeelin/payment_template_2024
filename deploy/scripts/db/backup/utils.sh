@@ -1,8 +1,5 @@
 #!/bin/bash
 
-PROJECT_ROOT=$(pwd)
-source "$PROJECT_ROOT/deploy/config/backup-config.sh"
-
 
 # Logging function
 log_message() {
