@@ -1,15 +1,15 @@
 #!/bin/bash
 
+PROJECT_ROOT=$(pwd)
+
 perform_db_migration() {
-    local vps_path="$1"
-    local env_file="$2"
+    local env_file="$1"
     
     echo "Starting database migration..."
-    echo "VPS Path: $vps_path"
     echo "Env file: $env_file"
     
     # Change to server directory
-    cd "$vps_path/server" || exit
+    cd "$PROJECT_ROOT/server" || exit
     echo "Current directory: $(pwd)"
     
     # Load environment variables

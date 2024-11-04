@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PROJECT_ROOT=$(pwd)
+
 create_backup() {
     local vps_path="$1"
     

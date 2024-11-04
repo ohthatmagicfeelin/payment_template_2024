@@ -9,6 +9,9 @@
     "start": "node src/index.js",
     "migrate:deploy": "prisma migrate deploy",
     "generate": "prisma generate"
+    
+
+
   },
   "keywords": [],
   "author": "",
