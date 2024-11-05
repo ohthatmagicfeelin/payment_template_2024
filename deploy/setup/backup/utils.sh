@@ -21,12 +21,5 @@ create_cron_job() {
     local script_path="$3"
     local log_file="${BACKUP_DIR}/logs/cron_${backup_type}.log"
     
-    echo "${schedule} ( \
-        date +'[%Y-%m-%d %H:%M:%S]' && \
-        if [ -f ${script_path} ]; then \
-            cd ${REMOTE_ROOT} && ${script_path} ${backup_type}; \
-        else \
-            echo \"Backup script not found at ${script_path}\"; \
-        fi \
-    ) >> ${log_file} 2>&1"
+    echo "${schedule} if [ -f ${script_path} ]; then cd ${REMOTE_ROOT} && ${script_path} ${backup_type}; else echo \"Backup script not found at ${script_path}\"; fi >> ${log_file} 2>&1"
 } 

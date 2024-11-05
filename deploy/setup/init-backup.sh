@@ -7,7 +7,7 @@ DB_BACKUP_SCRIPTS="${BACKUP_SCRIPTS_DIR}/${APP_NAME}"
 source "$REMOTE_ROOT/deploy/setup/backup/utils.sh"
 source "$REMOTE_ROOT/deploy/setup/backup/directory-setup.sh"
 source "$REMOTE_ROOT/deploy/setup/backup/cron-setup.sh"
-
+source "$REMOTE_ROOT/deploy/setup/backup/debug-cron.sh"
 setup_database_backup_system() {
     # Validate environment first
     ! validate_environment && { echo "Environment validation failed. Aborting setup."; return 1; }

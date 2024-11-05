@@ -3,9 +3,7 @@
 setup_cron_jobs() {
     local script_path="$1"
 
-    # validate DEBUG_BACKUP is set
-    [ -z "$DEBUG_BACKUP" ] && { echo "Error: DEBUG_BACKUP is not set"; return 1; }
-    
+
     # Create temporary file for crontab
     local temp_cron
     temp_cron=$(mktemp) || {
@@ -26,22 +24,9 @@ setup_cron_jobs() {
     local weekly_job=$(create_cron_job "$weekly_schedule" "weekly" "$script_path")
     local monthly_job=$(create_cron_job "$monthly_schedule" "monthly" "$script_path")
     
-    # Handle debug job based on DEBUG_BACKUP environment variable
-    if [ "$DEBUG_BACKUP" != "false" ]; then
-        local debug_schedule="*/1 * * * *"  # Every 1 minute
-        local debug_job=$(create_cron_job "$debug_schedule" "debug" "$script_path")
-        
-        # Add debug job if it doesn't exist
-        if ! grep -Fq "$script_path debug" "$temp_cron"; then
-            echo "$debug_job" >> "$temp_cron"
-            echo "✓ Added debug backup cron job"
-        fi
-    else
-        # Remove debug job if it exists
-        sed -i "/$script_path debug/d" "$temp_cron"
-        echo "✓ Removed debug backup cron job (DEBUG_BACKUP not set)"
-    fi
-    
+    # Handle debug cron job
+    handle_debug_cron "$temp_cron" "$script_path"
+
     # Add standard cron jobs if they don't exist
     if ! grep -Fq "$script_path daily" "$temp_cron"; then
         echo "$daily_job" >> "$temp_cron"
@@ -57,7 +42,8 @@ setup_cron_jobs() {
         echo "$monthly_job" >> "$temp_cron"
         echo "✓ Added monthly backup cron job"
     fi
-    
+
+
     # Install new crontab
     if ! crontab "$temp_cron"; then
         echo "Error: Failed to install new crontab"
