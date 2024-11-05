@@ -7,16 +7,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "install-all": "npm install && cd client && npm install && cd ../server && npm install",
     "deploy": "bash deploy.sh",
-    "remote-deploy": "bash deploy/remote-deploy.sh",
-    "db:backup:setup": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/setup/init-backup.sh'",
-    "db:backup": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/scripts/backup/backup.sh daily'",
-    "db:backup:weekly": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/scripts/backup/backup.sh weekly'",
-    "db:backup:monthly": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/scripts/backup/backup.sh monthly'",
-    "db:restore": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/scripts/backup/restore.sh'",
-    "db:list": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/scripts/backup/backup.sh list'",
-    "db:list:daily": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/scripts/backup/backup.sh list daily'",
-    "db:list:weekly": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/scripts/backup/backup.sh list weekly'",
-    "db:list:monthly": "ssh $VPS_ALIAS 'cd $VPS_PATH && bash deploy/scripts/backup/backup.sh list monthly'"
+    "db:backup": "bash deploy/local/manual-db-backup.sh create",
+    "db:list": "bash deploy/local/manual-db-backup.sh list"
+
   },
   "keywords": [],
   "author": "",

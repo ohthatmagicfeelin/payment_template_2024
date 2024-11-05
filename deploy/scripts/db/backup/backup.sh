@@ -12,13 +12,12 @@ source "$SCRIPT_DIR/core/backup-core.sh"
 source "$SCRIPT_DIR/core/cleanup-core.sh"
 
 main() {
-    log_message "Backup started at $(date)"
     case "$1" in
-        "daily"|"weekly"|"monthly"|"debug")
+        "daily"|"weekly"|"monthly"|"debug"|"manual")
             perform_backup "$1"
             ;;
         *)
-            echo "Usage: $0 {daily|weekly|monthly|debug}"
+            echo "Usage: $0 {daily|weekly|monthly|debug|manual}"
             exit 1
             ;;
     esac

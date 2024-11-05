@@ -8,6 +8,8 @@ perform_backup() {
 
     local type="$1"
     local backup_path="$BACKUP_DIR/$type"
+
+    log_message "-------- Type: $type --------"
     
     mkdir -p "$backup_path"
     if [ ! -d "$backup_path" ] || [ ! -w "$backup_path" ]; then
@@ -32,7 +34,7 @@ perform_backup() {
     # Get the retention value from the variable name
     local retention="${type^^}_RETENTION"
     cleanup_old_backups "$type" "${!retention}"
-    log_message ""
+    log_message "------------------------------"
 }
 
 create_backup() {

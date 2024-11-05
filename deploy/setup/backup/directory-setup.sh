@@ -4,7 +4,7 @@ setup_backup_directories() {
     local user="$1"
     
     echo "Creating backup directories..."
-    if ! mkdir -p "$BACKUP_DIR"/{daily,weekly,monthly,logs,debug}; then
+    if ! mkdir -p "$BACKUP_DIR"/{daily,weekly,monthly,logs,debug,manual}; then
         echo "Error: Failed to create backup directories"
         return 1
     fi
