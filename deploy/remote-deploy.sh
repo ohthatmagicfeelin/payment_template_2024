@@ -7,7 +7,7 @@ perform_deployment() {
 
     # Source configurations
     source "$(pwd)/deploy/config/deploy-config.sh"
-    source "$DEPLOY_DIR/config/db-backup-config.sh"
+    source "$DEPLOY_DIR/config/backup-credentials.conf"
 
     # Source utility scripts
     source "$DEPLOY_DIR/scripts/utils/utils.sh"

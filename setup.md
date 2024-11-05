@@ -170,6 +170,8 @@ Grant all privileges to user oh:
 ```
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO oh;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO oh;
+ALTER USER oh WITH CREATEDB;
 ```
+
 
 - on local machine run `./deploy.sh`

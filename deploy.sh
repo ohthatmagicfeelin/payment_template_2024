@@ -8,6 +8,7 @@ source "$LOCAL_ROOT/deploy/config/deploy-config.sh"
 source "$LOCAL_ROOT/deploy/scripts/utils/parse-args.sh"
 source "$LOCAL_ROOT/deploy/scripts/utils/utils.sh"
 source "$LOCAL_ROOT/deploy/local/backup.sh"
+source "$LOCAL_ROOT/deploy/local/rsync.sh"
 
 # Parse command line arguments
 parse_arguments "$@"
@@ -19,17 +20,10 @@ create_backup "$LOCAL_ROOT"
 
 # Deploy the project with exclusions
 message "Deploying project files..."
-rsync -avz --delete \
-           --exclude '**/node_modules' \
-           --exclude '**/node_modules/**' \
-           --exclude '**/package-lock.json' \
-           --exclude '.git' \
-           --exclude '.git*' \
-           --exclude '**/dist' \
-           --exclude '**/build' \
-           "$LOCAL_ROOT/" \
-           "$VPS_ALIAS:$REMOTE_ROOT/"
+deploy_project_files "$LOCAL_ROOT"
 
+echo "Deploying database backup scripts..."
+deploy_backup_scripts "$LOCAL_ROOT"
 
 # Create and execute the remote deployment script
 message "Starting remote deployment..."
