@@ -55,7 +55,6 @@ perform_backup() {
     
     # Add debug logging
     log_message "Attempting backup to: $backup_file"
-    log_message "Using DB_HOST: $DB_HOST, DB_PORT: $DB_PORT, DB_NAME: $DB_NAME"
     
     log_message "Starting $type backup of database: $DB_NAME"
     
