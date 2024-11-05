@@ -44,10 +44,31 @@ list_backups() {
     fi
 }
 
+restore_backup() {
+    local filename="$1"
+    
+    # Confirm locally before executing remote commands
+    echo ""
+    echo "⚠️  WARNING: This will DESTROY the current database and replace it with the backup."
+    echo "⚠️  All current data will be lost!"
+    echo "Backup file: $filename"
+    echo ""
+    read -p "Are you sure you want to continue? (type 'yes' to confirm): " response
+    
+    if [ "$response" != "yes" ]; then
+        echo "Restore cancelled by user"
+        return 1
+    fi
+
+    # Execute remote restore after confirmation
+    ssh ${VPS_ALIAS} "cd ${BACKUP_SCRIPTS_DIR}/${APP_NAME} && ./restore.sh $filename"
+}
+
 usage() {
-    echo "Usage: $0 [create|list]"
-    echo "  create    Create a new manual backup"
-    echo "  list      List existing manual backups"
+    echo "Usage: $0 [create|list|restore]"
+    echo "  create              Create a new manual backup"
+    echo "  list                List existing backups"
+    echo "  restore <filename>  Restore from backup file"
     exit 1
 }
 
@@ -59,7 +80,19 @@ case "$1" in
     "list")
         list_backups
         ;;
+    "restore")
+        if [ -z "$2" ]; then
+            echo "Usage: $0 restore <backup_filename>"
+            echo "Example: $0 restore payment_db_manual_20241105_042226.sql.gz"
+            exit 1
+        fi
+        restore_backup "$2"
+        ;;
     *)
-        usage
+        echo "Usage: $0 [create|list|restore]"
+        echo "  create              Create a new manual backup"
+        echo "  list                List existing backups"
+        echo "  restore <filename>  Restore from backup file"
+        exit 1
         ;;
 esac
