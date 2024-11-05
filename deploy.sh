@@ -1,4 +1,5 @@
 #!/bin/bash
+START_TIME=$(date +%s)
 
 # Get the root directory of the project
 LOCAL_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -32,3 +33,5 @@ ssh "$VPS_ALIAS" \
     ./deploy/remote-deploy.sh $INSTALL_DEPS $KEEP_ENV $RUN_MIGRATIONS"
 
 echo "✓ Deployment completed successfully!"
+echo "Deployment completed at $(date)"
+echo "Deployment took $(($(date +%s) - $START_TIME)) seconds"
