@@ -23,7 +23,12 @@ create_backup "$LOCAL_ROOT"
 message "Deploying project files..."
 deploy_project_files "$LOCAL_ROOT"
 
-echo "Deploying database backup scripts..."
+# Deploy the deploy directory
+message "Deploying deploy directory..."
+deploy_deploy_files "$LOCAL_ROOT"
+
+# Deploy the database backup scripts
+message "Deploying database backup scripts..."
 deploy_backup_scripts "$LOCAL_ROOT"
 
 # Create and execute the remote deployment script
