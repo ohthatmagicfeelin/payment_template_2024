@@ -16,6 +16,7 @@ check_health() {
     local retry_count=0
 
     while [ $retry_count -lt "$MAX_RETRIES" ]; do
+        sleep 1
         echo "=== Health Check: Attempt $((retry_count + 1))/$MAX_RETRIES ==="
         echo "Health check attempt $((retry_count + 1)) of $MAX_RETRIES..."
         
