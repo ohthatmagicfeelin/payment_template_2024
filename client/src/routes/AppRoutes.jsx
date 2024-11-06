@@ -23,10 +23,10 @@ const NotFound = lazy(() => import('@/components/error/NotFound'));
 function AppRoutes() {
   return (
     <AuthProvider>
-      <DarkModeProvider>
-        <SettingsProvider>
-        <Header />
-        <Suspense fallback={<Loading/>}>
+      <SettingsProvider>
+        <DarkModeProvider>
+          <Header />
+          <Suspense fallback={<Loading/>}>
           <main className="container mx-auto px-4 py-8">
             <Routes>
               {/* Public routes */}
@@ -70,8 +70,8 @@ function AppRoutes() {
           </main>
         </Suspense>
           <FeedbackWidget />
-        </SettingsProvider>
-      </DarkModeProvider>
+        </DarkModeProvider>
+      </SettingsProvider>
     </AuthProvider>
   );
 }

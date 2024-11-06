@@ -1,60 +1,48 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useSettings } from './SettingsContext';
 
 const DarkModeContext = createContext(null);
 
 export function DarkModeProvider({ children }) {
-  // Initialize state based on localStorage or system preference
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // First check localStorage
-    const savedMode = localStorage.getItem('darkMode');
-    if (savedMode !== null) {
-      return JSON.parse(savedMode);
-    }
-    // If no localStorage value, check system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { settings } = useSettings();
 
   useEffect(() => {
-    // Save to localStorage whenever mode changes
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-    // Toggle dark class on html element
-    document.documentElement.classList.toggle('dark', isDarkMode);
-  }, [isDarkMode]);
-
-  // Listen for system preference changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    const handleChange = (e) => {
-      // Only update if user hasn't manually set a preference (no localStorage value)
-      if (!localStorage.getItem('darkMode')) {
-        setIsDarkMode(e.matches);
+    const updateTheme = (theme) => {
+      if (theme === 'system') {
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setIsDarkMode(systemPrefersDark);
+        document.documentElement.classList.toggle('dark', systemPrefersDark);
+      } else {
+        const shouldBeDark = theme === 'dark';
+        setIsDarkMode(shouldBeDark);
+        document.documentElement.classList.toggle('dark', shouldBeDark);
       }
     };
 
-    // Add listener
-    mediaQuery.addEventListener('change', handleChange);
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = (e) => {
+      if (settings?.theme === 'system') {
+        setIsDarkMode(e.matches);
+        document.documentElement.classList.toggle('dark', e.matches);
+      }
+    };
 
-    // Cleanup
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+    // Initialize theme based on settings
+    if (settings?.theme) {
+      updateTheme(settings.theme);
+    }
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(prev => !prev);
-  };
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
 
-  // Optional: Add method to reset to system preference
-  const resetToSystemPreference = () => {
-    localStorage.removeItem('darkMode');
-    setIsDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
-  };
+    return () => {
+      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    };
+  }, [settings?.theme]);
 
   return (
-    <DarkModeContext.Provider value={{ 
-      isDarkMode, 
-      toggleDarkMode,
-      resetToSystemPreference 
-    }}>
+    <DarkModeContext.Provider value={{ isDarkMode }}>
       {children}
     </DarkModeContext.Provider>
   );
