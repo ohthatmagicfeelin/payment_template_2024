@@ -109,7 +109,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
             <>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email (optional)
+                  Email {!user && <span className="text-red-500">*</span>}
                 </label>
                 <input
                   type="email"
@@ -117,6 +117,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required={!user}
                 />
               </div>
 
@@ -137,7 +138,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
 
           <button
             type="submit"
-            disabled={isSubmitting || !message || !rating}
+            disabled={isSubmitting || !message || !rating || (!user && !email)}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Submitting...' : 'Submit Feedback'}

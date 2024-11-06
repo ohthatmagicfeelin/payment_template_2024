@@ -143,8 +143,18 @@ export const validateFeedback = (req, res, next) => {
     
     validateFeedbackContent(message);
     validateFeedbackRating(Number(rating));
-    validateEmail(email);
-    validateFeedbackName(name);
+    
+    // Only validate email if user is not authenticated
+    if (!req.user) {
+      if (!email) {
+        throw new AppError('Email is required for anonymous feedback', 400);
+      }
+      validateEmail(email);
+    }
+    
+    if (name) {
+      validateFeedbackName(name);
+    }
     
     next();
   } catch (error) {
