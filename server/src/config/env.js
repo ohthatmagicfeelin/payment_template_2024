@@ -36,4 +36,12 @@ export default {
 
     // JWT
     JWT_SECRET: process.env.JWT_SECRET,
+
+    // Email configuration
+    MAILERSEND_API_KEY: process.env.MAILERSEND_API_KEY,
+    EMAIL_FROM: process.env.EMAIL_FROM,
+    EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
+
+    TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+    TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID
 };

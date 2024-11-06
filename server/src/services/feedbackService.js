@@ -1,5 +1,6 @@
 import { AppError } from '../utils/AppError.js';
 import { FeedbackRepository } from '../db/repositories/feedbackRepository.js';
+import { TelegramApi } from '../api/telegramApi.js';
 
 export const FeedbackService = {
   createFeedback: async (feedbackData, user = null) => {
@@ -21,6 +22,20 @@ export const FeedbackService = {
       }
 
       const feedback = await FeedbackRepository.create(data);
+      
+      // Send Telegram notification
+      const notificationMessage = `
+<b>New Feedback Received!</b>
+Rating: ${'⭐'.repeat(feedback.rating)}
+${user 
+? `From: ${user.email}` 
+: feedback.userEmail 
+    ? `From: ${feedback.userName || 'Anonymous'} (${feedback.userEmail})` 
+    : 'Anonymous feedback'}
+Message: ${feedback.message}`;
+      
+      await TelegramApi.sendMessage(notificationMessage);
+      
       return feedback;
     } catch (error) {
       if (error instanceof AppError) throw error;
