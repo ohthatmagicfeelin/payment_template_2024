@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { feedbackApi } from '@/api/feedback';
+import { useDarkMode } from '@/contexts/DarkModeContext';
 
 const FeedbackModal = ({ isOpen, onClose }) => {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
+  const { isDarkMode } = useDarkMode();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +49,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -58,7 +60,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
           </svg>
         </button>
 
-        <h2 className="text-xl font-bold mb-4 text-gray-900">Share Your Feedback</h2>
+        <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Share Your Feedback</h2>
         
         {status.message && (
           <div className={`mb-4 p-3 rounded ${
@@ -72,8 +74,8 @@ const FeedbackModal = ({ isOpen, onClose }) => {
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Rating <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Rating
             </label>
             <div className="flex gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
@@ -92,14 +94,14 @@ const FeedbackModal = ({ isOpen, onClose }) => {
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-              Message <span className="text-red-500">*</span>
+            <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Message
             </label>
             <textarea
               id="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows="4"
               required
             />
@@ -108,21 +110,21 @@ const FeedbackModal = ({ isOpen, onClose }) => {
           {!user && (
             <>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email <span className="text-red-500">*</span>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Email
                 </label>
                 <input
                   type="email"
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Name (optional)
                 </label>
                 <input
@@ -130,7 +132,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </>

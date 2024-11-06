@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useDarkMode } from '@/contexts/DarkModeContext';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ export function LoginForm() {
   const location = useLocation();
   const message = location.state?.message;
   const messageType = location.state?.type || 'error';
+  const { isDarkMode } = useDarkMode();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,23 +40,22 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 space-y-6 px-4">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center">Log In</h2>
+      
       {message && (
-        <div className="p-4 rounded-lg text-sm bg-green-50 text-green-700 border border-green-200">
+        <div className="p-4 rounded-lg text-sm bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 text-green-700 dark:text-green-200">
           {message}
         </div>
       )}
       
       {error && (
-        <div className="p-4 rounded-lg text-sm bg-red-50 border border-red-200 text-red-700 flex items-center">
-          <svg className="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
+        <div className="p-4 rounded-lg text-sm bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-200">
           {error}
         </div>
       )}
       
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           Email
         </label>
         <input
@@ -63,12 +64,12 @@ export function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           Password
         </label>
         <input
@@ -77,7 +78,7 @@ export function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
 
@@ -89,7 +90,7 @@ export function LoginForm() {
           onChange={(e) => setRememberMe(e.target.checked)}
           className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
         />
-        <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+        <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
           Remember me
         </label>
       </div>
@@ -103,22 +104,22 @@ export function LoginForm() {
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-300"></div>
+          <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">Or</span>
+          <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Or</span>
         </div>
       </div>
 
       <a
         href="/signup"
-        className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       >
         Sign up
       </a>
       
       <div className="text-sm text-center">
-        <a href="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
+        <a href="/forgot-password" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
           Forgot password?
         </a>
       </div>

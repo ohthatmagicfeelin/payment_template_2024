@@ -7,7 +7,11 @@ export function ProtectedRoute({ children }) {
   const location = useLocation();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-gray-700 dark:text-gray-300">Loading...</div>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {

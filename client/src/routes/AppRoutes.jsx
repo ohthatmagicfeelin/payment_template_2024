@@ -13,6 +13,7 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import EmailVerificationPending from '@/components/auth/EmailVerificationPending';
 import { Header } from '@/components/layout/Header';
 import FeedbackWidget from '@/components/feedback/FeedbackWidget';
+import { DarkModeProvider } from '@/contexts/DarkModeContext';
 
 const Home = lazy(() => import('@/components/Home'));
 const NotFound = lazy(() => import('@/components/error/NotFound'));
@@ -20,6 +21,7 @@ const NotFound = lazy(() => import('@/components/error/NotFound'));
 function AppRoutes() {
   return (
     <AuthProvider>
+      <DarkModeProvider>
       <Header />
       <Suspense fallback={<Loading/>}>
         <main className="container mx-auto px-4 py-8">
@@ -57,6 +59,7 @@ function AppRoutes() {
         </main>
       </Suspense>
       <FeedbackWidget />
+      </DarkModeProvider>
     </AuthProvider>
   );
 }

@@ -66,10 +66,10 @@ export function ResetPassword() {
 
   if (isLoading) {
     return (
-      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-sm">
+      <div className="max-w-md mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Verifying reset link...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-blue-400 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Verifying reset link...</p>
         </div>
       </div>
     );
@@ -77,15 +77,15 @@ export function ResetPassword() {
 
   if (!isValidToken) {
     return (
-      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-sm">
+      <div className="max-w-md mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
         <div className="text-center">
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-            <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900 mb-4">
+            <svg className="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Invalid Reset Link</h2>
-          <p className="text-gray-600 mb-6">{error}</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Invalid Reset Link</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">{error}</p>
           <a 
             href="/forgot-password"
             className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -99,16 +99,16 @@ export function ResetPassword() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 space-y-6 px-4">
-      <h2 className="text-2xl font-bold text-gray-900 text-center">Reset Password</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center">Reset Password</h2>
       
       {error && (
-        <div className="bg-red-50 text-red-500 p-4 rounded-lg text-sm">
+        <div className="bg-red-50 dark:bg-red-900 text-red-500 dark:text-red-200 p-4 rounded-lg text-sm">
           {error}
         </div>
       )}
       
       <div className="space-y-2">
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           New Password
         </label>
         <input
@@ -117,12 +117,12 @@ export function ResetPassword() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
         />
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           Confirm Password
         </label>
         <input
@@ -131,7 +131,7 @@ export function ResetPassword() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
-          className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
         />
       </div>
 
@@ -143,7 +143,7 @@ export function ResetPassword() {
       </button>
 
       <div className="text-sm text-center">
-        <a href="/login" className="font-medium text-blue-600 hover:text-blue-500">
+        <a href="/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
           Back to login
         </a>
       </div>
