@@ -12,6 +12,7 @@ import { VerifyEmail } from '@/components/auth/VerifyEmail';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import EmailVerificationPending from '@/components/auth/EmailVerificationPending';
 import { Header } from '@/components/layout/Header';
+import FeedbackWidget from '@/components/feedback/FeedbackWidget';
 
 const Home = lazy(() => import('@/components/Home'));
 const NotFound = lazy(() => import('@/components/error/NotFound'));
@@ -55,6 +56,7 @@ function AppRoutes() {
           </Routes>
         </main>
       </Suspense>
+      <FeedbackWidget />
     </AuthProvider>
   );
 }

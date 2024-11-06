@@ -1,5 +1,6 @@
 import validator from 'validator';
 import xss from 'xss';
+import { AppError } from '../utils/AppError.js';
 
 const sanitizeString = (str) => {
   if (!str) return str;
@@ -61,4 +62,35 @@ export const sanitizeProfile = (req, res, next) => {
     req.body.bio = validator.escape(validator.trim(req.body.bio));
   }
   next();
+};
+
+export const sanitizeFeedback = (req, res, next) => {
+  try {
+    if (req.body.message) {
+      req.body.message = sanitizeString(req.body.message).substring(0, 1000);
+    }
+    
+    if (req.body.rating) {
+      const rating = Number(req.body.rating);
+      if (isNaN(rating)) {
+        throw new AppError('Rating must be a valid number', 400);
+      }
+      req.body.rating = rating;
+    }
+
+    if (req.body.email) {
+      req.body.email = validator.normalizeEmail(req.body.email, {
+        gmail_remove_dots: false,
+        gmail_remove_subaddress: false
+      });
+    }
+
+    if (req.body.name) {
+      req.body.name = sanitizeString(req.body.name).substring(0, 50);
+    }
+    
+    next();
+  } catch (error) {
+    next(error);
+  }
 }; 

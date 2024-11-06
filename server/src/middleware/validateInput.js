@@ -102,4 +102,52 @@ export const validateEmailVerification = (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+const validateFeedbackContent = (message) => {
+  if (!message || typeof message !== 'string') {
+    throw new AppError('Feedback message is required and must be a string', 400);
+  }
+  if (message.trim().length < 10) {
+    throw new AppError('Feedback message must be at least 10 characters long', 400);
+  }
+  if (message.length > 1000) {
+    throw new AppError('Feedback message cannot exceed 1000 characters', 400);
+  }
+};
+
+const validateFeedbackRating = (rating) => {
+  if (!rating || typeof rating !== 'number') {
+    throw new AppError('Rating is required and must be a number', 400);
+  }
+  if (rating < 1 || rating > 5) {
+    throw new AppError('Rating must be between 1 and 5', 400);
+  }
+};
+
+const validateFeedbackName = (name) => {
+  if (!name || typeof name !== 'string') {
+    throw new AppError('Name is required and must be a string', 400);
+  }
+  if (name.trim().length < 2) {
+    throw new AppError('Name must be at least 2 characters long', 400);
+  }
+  if (name.length > 50) {
+    throw new AppError('Name cannot exceed 50 characters', 400);
+  }
+};
+
+export const validateFeedback = (req, res, next) => {
+  try {
+    const { message, rating, email, name } = req.body;
+    
+    validateFeedbackContent(message);
+    validateFeedbackRating(Number(rating));
+    validateEmail(email);
+    validateFeedbackName(name);
+    
+    next();
+  } catch (error) {
+    next(error);
+  }
 }; 

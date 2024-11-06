@@ -23,6 +23,7 @@ model User {
   subscriptions    Subscription[]
   auditLogs        AuditLog[]
   passwordResetTokens PasswordResetToken[]
+  feedback         Feedback[]
 
   @@map("users")
 }
@@ -67,4 +68,21 @@ model PasswordResetToken {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("password_reset_tokens")
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  message   String
+  rating    Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  // Optional relation to User
+  userId    Int?     @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id])
+  
+  // For anonymous feedback
+  userEmail String?  @map("user_email") @db.VarChar(255)
+  userName  String?  @map("user_name") @db.VarChar(255)
+
+  @@map("feedback")
 }

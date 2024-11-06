@@ -4,6 +4,7 @@ import deployRoutes from './deployRoutes.js';
 import apiRoutes from './apiRoutes.js';
 import paymentRoutes from './paymentRoutes.js';
 import authRoutes from './authRoutes.js';
+import feedbackRoutes from './feedbackRoutes.js';
 import { sessionMiddleware } from '../middleware/auth.js';
 import { apiLimiter } from '../middleware/rateLimiter.js';
 
@@ -19,6 +20,7 @@ router.use(`${basePath}/api`, apiRoutes);
 router.use(`${basePath}/api`, paymentRoutes)
 router.use(`${basePath}/api`, authRoutes)
 router.use(`/api/health`, deployRoutes);
+router.use('/api/feedback', feedbackRoutes);
 
 
 
