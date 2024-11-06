@@ -7,6 +7,7 @@ import authRoutes from './authRoutes.js';
 import feedbackRoutes from './feedbackRoutes.js';
 import { sessionMiddleware } from '../middleware/auth.js';
 import { apiLimiter } from '../middleware/rateLimiter.js';
+import settingsRoutes from './settingsRoutes.js';
 
 const router = express.Router();
 
@@ -20,8 +21,8 @@ router.use(`${basePath}/api`, apiRoutes);
 router.use(`${basePath}/api`, paymentRoutes)
 router.use(`${basePath}/api`, authRoutes)
 router.use(`/api/health`, deployRoutes);
-router.use('/api/feedback', feedbackRoutes);
-
+router.use(`/api/feedback`, feedbackRoutes);
+router.use(`${basePath}/api/settings`, settingsRoutes);
 
 
 export default router;

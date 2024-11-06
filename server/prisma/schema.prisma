@@ -24,6 +24,7 @@ model User {
   auditLogs        AuditLog[]
   passwordResetTokens PasswordResetToken[]
   feedback         Feedback[]
+  settings         UserSettings?
 
   @@map("users")
 }
@@ -85,4 +86,23 @@ model Feedback {
   userName  String?  @map("user_name") @db.VarChar(255)
 
   @@map("feedback")
+}
+
+model UserSettings {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Explicit schema settings
+  theme           String    @default("system") // system, light, dark
+  emailNotifications Boolean @default(true) @map("email_notifications")
+  pushNotifications Boolean @default(true) @map("push_notifications")
+  
+  // Dynamic key-value settings
+  customSettings Json?
+  
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("user_settings")
 }
