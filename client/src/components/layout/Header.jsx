@@ -1,10 +1,10 @@
 import { useAuth } from '@/contexts/AuthContext';
-import { useDarkMode } from '@/contexts/DarkModeContext';
+import { useTheme } from '@/hooks/useTheme';
 import { useNavigate, Link } from 'react-router-dom';
 
 export function Header() {
   const { user, logout } = useAuth();
-  const { isDarkMode, toggleDarkMode, resetToSystemPreference } = useDarkMode();
+  const { isDarkMode } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
