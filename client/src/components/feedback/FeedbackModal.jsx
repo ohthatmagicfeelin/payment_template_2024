@@ -9,12 +9,12 @@ const FeedbackModal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const [status, setStatus] = useState({ type: '', message: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitStatus(null);
+    setStatus({ type: '', message: '' });
 
     try {
       await feedbackApi.create({
@@ -24,18 +24,20 @@ const FeedbackModal = ({ isOpen, onClose }) => {
         ...((!user && name) && { name })
       }, user?.token);
       
-      setSubmitStatus('success');
+      setStatus({ type: 'success', message: 'Thank you for your feedback!' });
       setTimeout(() => {
         setRating(0);
         setMessage('');
         setEmail('');
         setName('');
         onClose();
-        setSubmitStatus(null);
+        setStatus({ type: '', message: '' });
       }, 2000);
     } catch (error) {
-      setSubmitStatus('error');
-      console.error('Error submitting feedback:', error);
+      setStatus({ 
+        type: 'error', 
+        message: error.response?.data?.message || 'Failed to submit feedback. Please try again.'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -58,22 +60,20 @@ const FeedbackModal = ({ isOpen, onClose }) => {
 
         <h2 className="text-xl font-bold mb-4 text-gray-900">Share Your Feedback</h2>
         
-        {submitStatus === 'success' && (
-          <div className="mb-4 p-3 bg-green-50 text-green-700 rounded">
-            Thank you for your feedback!
-          </div>
-        )}
-
-        {submitStatus === 'error' && (
-          <div className="mb-4 p-3 bg-red-50 text-red-700 rounded">
-            Failed to submit feedback. Please try again.
+        {status.message && (
+          <div className={`mb-4 p-3 rounded ${
+            status.type === 'success' 
+              ? 'bg-green-50 text-green-700 border border-green-200'
+              : 'bg-red-50 text-red-700 border border-red-200'
+          }`}>
+            {status.message}
           </div>
         )}
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Rating
+              Rating <span className="text-red-500">*</span>
             </label>
             <div className="flex gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
@@ -93,7 +93,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
 
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-              Message
+              Message <span className="text-red-500">*</span>
             </label>
             <textarea
               id="message"
@@ -109,7 +109,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
             <>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email {!user && <span className="text-red-500">*</span>}
+                  Email <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
@@ -117,7 +117,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required={!user}
+                  required
                 />
               </div>
 
