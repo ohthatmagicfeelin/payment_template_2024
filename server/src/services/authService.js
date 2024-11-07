@@ -6,6 +6,7 @@ import { emailService } from '../utils/emailService.js';
 import { auditService } from './auditService.js';
 import bcrypt from 'bcrypt';
 import { passwordResetRepository } from '../db/repositories/passwordResetRepository.js';
+import { emailVerificationRepository } from '../db/repositories/emailVerificationRepository.js';
 
 export const signup = async (email, password) => {
     const existingUser = await userRepository.getUserByEmail(email);
@@ -152,8 +153,14 @@ export const resetPassword = async (token, newPassword) => {
 export const verifyEmail = async (token) => {
     try {
         const decoded = jwt.verify(token, config.JWT_SECRET);
-        const user = await userRepository.getUserById(decoded.userId);
         
+        // Check if token exists and is valid in database
+        const verificationToken = await emailVerificationRepository.getValidToken(token);
+        if (!verificationToken) {
+            throw new AppError('Invalid or expired verification token', 400);
+        }
+
+        const user = await userRepository.getUserById(decoded.userId);
         if (!user) {
             await auditService.log({
                 action: 'EMAIL_VERIFICATION_FAILED',
@@ -164,6 +171,10 @@ export const verifyEmail = async (token) => {
             throw new AppError('Invalid verification token', 400);
         }
 
+        // Mark token as used before verifying email
+        await emailVerificationRepository.markTokenAsUsed(token);
+        
+        // Mark email as verified
         await userRepository.markEmailAsVerified(user.id);
         
         await auditService.log({
@@ -175,7 +186,6 @@ export const verifyEmail = async (token) => {
         });
 
         return user;
-
     } catch (error) {
         await auditService.log({
             action: 'EMAIL_VERIFICATION_FAILED',

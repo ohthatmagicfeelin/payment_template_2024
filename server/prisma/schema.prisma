@@ -25,6 +25,7 @@ model User {
   passwordResetTokens PasswordResetToken[]
   feedback         Feedback[]
   settings         UserSettings?
+  emailVerificationTokens EmailVerificationToken[]
 
   @@map("users")
 }
@@ -105,4 +106,18 @@ model UserSettings {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("user_settings")
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  userId    Int       @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  used      Boolean   @default(false)
+  expiresAt DateTime  @map("expires_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@map("email_verification_tokens")
+  @@index([token])
+  @@index([userId])
 }

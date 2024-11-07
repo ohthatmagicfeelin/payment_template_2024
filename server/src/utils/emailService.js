@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import config from '../config/env.js';
 import { passwordResetRepository } from '../db/repositories/passwordResetRepository.js';
 import { AppError } from './AppError.js';
+import { emailVerificationRepository } from '../db/repositories/emailVerificationRepository.js';
 
 export class EmailService {
   constructor() {
@@ -62,6 +63,15 @@ export class EmailService {
         config.JWT_SECRET,
         { expiresIn: '24h' }
       );
+
+      // Store token in database
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+      await emailVerificationRepository.createToken({
+        token,
+        userId,
+        expiresAt
+      });
+
       const verificationUrl = `${config.FRONTEND_URL}/verify-email?token=${token}`;
 
       if (config.NODE_ENV === 'production') {
@@ -91,15 +101,10 @@ export class EmailService {
           throw new AppError('Failed to send verification email', 500);
         }
       } else {
-        // Development environment - log to console
         console.log('\n=== Verification Email ===');
         console.log('To:', email);
         console.log('Verification URL:', verificationUrl);
         console.log('========================\n');
-
-        // Store token in memory for verification in development
-        global.verificationTokens = global.verificationTokens || new Map();
-        global.verificationTokens.set(token, userId);
       }
 
       return { success: true };
