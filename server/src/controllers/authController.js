@@ -1,6 +1,6 @@
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/AppError.js';
-import * as authService from '../services/authService.js';
+import * as authService from '../services/auth/index.js';
 
 export const signup = catchAsync(async (req, res) => {
     const { email, password } = req.body;

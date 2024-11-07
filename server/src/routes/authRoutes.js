@@ -17,11 +17,11 @@ const router = express.Router();
 router.post('/signup', sanitizeAuth, validateSignup, authController.signup);
 router.post('/login', sanitizeAuth, validateLogin, loginLimiter, authController.login);
 router.post('/logout', authController.logout);
-router.get('/validate', requireAuth, authController.validateSession);
 router.post('/password-reset-request', sanitizeAuth, validatePasswordResetRequest, authController.requestPasswordReset);
 router.post('/password-reset', sanitizeAuth, validatePasswordReset, authController.resetPassword);
 router.post('/verify-email', sanitizeAuth, validateEmailVerification, authController.verifyEmail);
 router.post('/resend-verification', sanitizeAuth, validatePasswordResetRequest, authController.resendVerification);
 router.post('/verify-reset-token', authController.verifyResetToken);
+router.get('/validate', requireAuth, authController.validateSession);
 
 export default router;
