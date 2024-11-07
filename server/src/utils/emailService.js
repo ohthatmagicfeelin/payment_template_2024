@@ -7,12 +7,6 @@ import { AppError } from './AppError.js';
 
 export class EmailService {
   constructor() {
-    console.log('Initializing EmailService...');
-    console.log('Environment:', {
-      NODE_ENV: config.NODE_ENV,
-      EMAIL_DEBUG: config.EMAIL_DEBUG
-    });
-
     if (config.NODE_ENV === 'production') {
       try {
         console.log('SMTP Configuration:', {
@@ -34,14 +28,12 @@ export class EmailService {
           logger: true
         });
 
-        console.log('Attempting SMTP verification...');
         this.verifyConnection();
       } catch (error) {
         console.error('Failed to initialize email transporter:', error);
         throw new AppError('Email service initialization failed', 500);
       }
     } else {
-      console.log('Running in console-only mode');
     }
   }
 

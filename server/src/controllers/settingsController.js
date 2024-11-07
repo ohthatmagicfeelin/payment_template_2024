@@ -3,7 +3,6 @@ import { settingsService } from '../services/settingsService.js';
 
 export const settingsController = {
   getSettings: catchAsync(async (req, res) => {
-    console.log('getSettings', req.session.userId);
     const settings = await settingsService.getSettings(req.session.userId);
     res.json(settings);
   }),
