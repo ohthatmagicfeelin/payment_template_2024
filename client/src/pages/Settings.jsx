@@ -3,8 +3,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { NotificationSettings } from '@/components/settings/NotificationSettings';
 import { ThemeSettings } from '@/components/settings/ThemeSettings';
 import { CustomSettingsManager } from '@/components/settings/CustomSettingsManager';
+import { PasswordChangeSettings } from '@/components/settings/PasswordChangeSettings';
+
 import { Navigate } from 'react-router-dom';
-import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
 export function Settings() {
   const { settings, loading, error } = useSettings();
@@ -15,11 +16,7 @@ export function Settings() {
   }
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <LoadingSpinner size="large" />
-      </div>
-    );
+    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   }
 
   if (error) {
@@ -34,10 +31,11 @@ export function Settings() {
         <div className="space-y-8">
           <ThemeSettings />
           <NotificationSettings />
+          <PasswordChangeSettings />
         </div>
-        <div>
+        {/* <div>
           <CustomSettingsManager />
-        </div>
+        </div> */}
       </div>
     </div>
   );
