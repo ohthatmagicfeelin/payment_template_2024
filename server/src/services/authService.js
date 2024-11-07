@@ -174,6 +174,8 @@ export const verifyEmail = async (token) => {
             details: { email: user.email }
         });
 
+        return user;
+
     } catch (error) {
         await auditService.log({
             action: 'EMAIL_VERIFICATION_FAILED',

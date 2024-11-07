@@ -33,7 +33,7 @@ export function useSignup() {
 
     try {
       await authService.signup({ email, password, name });
-      navigate('/verify-email', { 
+      navigate('/verification-pending', { 
         state: { email },
         replace: true 
       });

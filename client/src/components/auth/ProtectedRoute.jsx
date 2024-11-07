@@ -1,10 +1,21 @@
 // client/src/components/auth/ProtectedRoute.jsx
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useEffect } from 'react';
 
 export function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      navigate('/verification-pending', { 
+        state: { from: location },
+        replace: true 
+      });
+    }
+  }, [isAuthenticated, loading, navigate, location]);
 
   if (loading) {
     return (
@@ -15,7 +26,7 @@ export function ProtectedRoute({ children }) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return null;
   }
 
   return children;

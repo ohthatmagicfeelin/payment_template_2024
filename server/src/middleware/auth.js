@@ -1,6 +1,7 @@
 // server/src/middleware/auth.js
 import session from 'express-session';
 import config from '../config/env.js';
+import { userRepository } from '../db/repositories/userRepository.js';
 
 export const sessionMiddleware = session({
   secret: config.SESSION_SECRET,
@@ -15,9 +16,22 @@ export const sessionMiddleware = session({
   saveUninitialized: false
 });
 
-export const requireAuth = (req, res, next) => {
+export const requireAuth = async (req, res, next) => {
   if (!req.session.userId) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  next();
+
+  try {
+    const user = await userRepository.getUserById(req.session.userId);
+    if (!user || !user.email_verified) {
+      req.session.destroy();
+      return res.status(401).json({ 
+        error: 'Email verification required',
+        requiresVerification: true 
+      });
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
 };

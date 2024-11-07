@@ -6,9 +6,6 @@ export const signup = catchAsync(async (req, res) => {
     const { email, password } = req.body;
     const { user, message } = await authService.signup(email, password);
     
-    // Set session
-    req.session.userId = user.id;
-    
     res.status(201).json({ 
         user: { id: user.id, email: user.email },
         message
@@ -59,7 +56,11 @@ export const resetPassword = catchAsync(async (req, res) => {
 
 export const verifyEmail = catchAsync(async (req, res) => {
     const { token } = req.body;
-    await authService.verifyEmail(token);
+    const user = await authService.verifyEmail(token);
+    
+    // Set session after successful verification
+    req.session.userId = user.id;
+    
     res.json({ message: 'Email verified successfully' });
 });
 
