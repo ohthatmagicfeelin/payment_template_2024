@@ -1,22 +1,11 @@
-// client/src/components/auth/ForgotPassword.jsx
-import { useState } from 'react';
-import { authService } from '@/services/authService';
 
-export function ForgotPassword() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await authService.requestPasswordReset(email);
-      setSubmitted(true);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
+export function ForgotPasswordDisplay({ 
+  email,
+  onEmailChange,
+  error,
+  submitted,
+  onSubmit
+}) {
   if (submitted) {
     return (
       <div className="max-w-md mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
@@ -29,7 +18,7 @@ export function ForgotPassword() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 space-y-6 px-4">
+    <form onSubmit={onSubmit} className="max-w-md mx-auto mt-8 space-y-6 px-4">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center">Reset Password</h2>
       
       {error && (
@@ -46,7 +35,7 @@ export function ForgotPassword() {
           id="email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => onEmailChange(e.target.value)}
           required
           className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
         />
