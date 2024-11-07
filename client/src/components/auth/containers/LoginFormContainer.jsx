@@ -1,5 +1,5 @@
 import { useLogin } from '@/hooks/useLogin';
-import { LoginFormDisplay } from './LoginFormDisplay';
+import { LoginFormDisplay } from '../forms';
 
 export function LoginFormContainer() {
   const {

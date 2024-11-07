@@ -1,5 +1,5 @@
 import { useForgotPassword } from '@/hooks/useForgotPassword';
-import { ForgotPasswordDisplay } from './ForgotPasswordDisplay';
+import { ForgotPasswordDisplay } from '../password/ForgotPasswordDisplay';
 
 export function ForgotPasswordContainer() {
   const {

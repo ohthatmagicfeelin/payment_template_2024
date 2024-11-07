@@ -1,5 +1,5 @@
+import { SignupFormDisplay } from '../forms';
 import { useSignup } from '@/hooks/useSignup';
-import { SignupFormDisplay } from './SignupFormDisplay';
 
 export function SignupFormContainer() {
   const {

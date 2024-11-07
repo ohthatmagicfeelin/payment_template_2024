@@ -1,7 +1,11 @@
-export { LoginFormContainer as LoginForm } from './LoginFormContainer';
-export { SignupFormContainer as SignupForm } from './SignupFormContainer';
-export { EmailVerificationPendingContainer as EmailVerificationPending } from './EmailVerificationPendingContainer';
-export { ForgotPasswordContainer as ForgotPassword } from './ForgotPasswordContainer';
-export { ResetPasswordContainer as ResetPassword } from './ResetPasswordContainer';
-export { VerifyEmailContainer as VerifyEmail } from './VerifyEmailContainer';
-// ... other exports 
+export { ProtectedRoute } from './ProtectedRoute';
+export { RootRedirect } from './RootRedirect';
+
+export {
+  LoginFormContainer as LoginForm,
+  SignupFormContainer as SignupForm,
+  EmailVerificationPendingContainer as EmailVerificationPending,
+  ForgotPasswordContainer as ForgotPassword,
+  ResetPasswordContainer as ResetPassword,
+  VerifyEmailContainer as VerifyEmail
+} from './containers';

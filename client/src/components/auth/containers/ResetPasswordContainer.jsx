@@ -1,5 +1,5 @@
 import { useResetPassword } from '@/hooks/useResetPassword';
-import { ResetPasswordDisplay } from './ResetPasswordDisplay';
+import { ResetPasswordDisplay } from '../password/ResetPasswordDisplay';
 
 export function ResetPasswordContainer() {
   const {

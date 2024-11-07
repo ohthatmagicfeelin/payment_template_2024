@@ -1,5 +1,5 @@
 import { useVerifyEmail } from '@/hooks/useVerifyEmail';
-import { VerifyEmailDisplay } from './VerifyEmailDisplay';
+import { VerifyEmailDisplay } from '../verification/VerifyEmailDisplay';
 
 export function VerifyEmailContainer() {
   const { status, handleBackToLogin } = useVerifyEmail();
