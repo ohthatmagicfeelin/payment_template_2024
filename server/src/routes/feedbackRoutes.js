@@ -5,6 +5,8 @@ import { sanitizeFeedback } from '../middleware/sanitizeInput.js';
 
 const router = Router();
 
-router.post('/', sanitizeFeedback, validateFeedback, FeedbackController.create);
+router.post('/', sanitizeFeedback, validateFeedback , FeedbackController.create);
 
 export default router; 
+
+// (req, res) => { console.log('req.body', req.body);} ,

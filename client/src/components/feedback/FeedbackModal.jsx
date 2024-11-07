@@ -22,7 +22,7 @@ const FeedbackModal = ({ isOpen, onClose }) => {
       await feedbackApi.create({
         rating,
         message,
-        ...((!user && email) && { email }),
+        email: user ? user.user.email : email,
         ...((!user && name) && { name })
       }, user?.token);
       

@@ -21,7 +21,7 @@ router.use(`${basePath}/api`, apiRoutes);
 router.use(`${basePath}/api`, paymentRoutes)
 router.use(`${basePath}/api`, authRoutes)
 router.use(`/api/health`, deployRoutes);
-router.use(`/api/feedback`, feedbackRoutes);
+router.use(`${basePath}/api/feedback`, feedbackRoutes);
 router.use(`${basePath}/api/settings`, settingsRoutes);
 
 
