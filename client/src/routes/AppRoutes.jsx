@@ -7,7 +7,6 @@ import { LoginForm, SignupForm, EmailVerificationPending, ForgotPassword, ResetP
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Settings } from '@/pages/Settings';
 import { AppProviders } from '@/providers/AppProviders';
-import { RootRedirect } from '@/components/auth/RootRedirect';
 import { MainLayout } from '@/layouts/MainLayout';
 
 const Home = lazy(() => import('@/components/Home'));
@@ -29,18 +28,18 @@ function AppRoutes() {
 
             {/* Protected routes */}
             <Route
-              path="/payment"
+              path="/"
               element={
                 <ProtectedRoute>
-                  <PaymentForm />
+                  <Home />
                 </ProtectedRoute>
               }
             />
             <Route
-              path="/dashboard"
+              path="/payment"
               element={
                 <ProtectedRoute>
-                  <Home />
+                  <PaymentForm />
                 </ProtectedRoute>
               }
             />
@@ -53,8 +52,7 @@ function AppRoutes() {
               }
             />
 
-            {/* Redirect root to signup */}
-            <Route path="/" element={<RootRedirect />} />
+            {/* Catch all route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </MainLayout>

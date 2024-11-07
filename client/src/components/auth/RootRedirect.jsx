@@ -5,8 +5,8 @@ export function RootRedirect() {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return null; // or return a loading spinner if you prefer
+    return null;
   }
 
-  return <Navigate to={isAuthenticated ? '/dashboard' : '/signup'} replace />;
+  return <Navigate to={isAuthenticated ? '/' : '/signup'} replace />;
 } 

@@ -19,7 +19,7 @@ export function useLogin() {
     setError('');
     try {
       await login({ email, password, rememberMe });
-      const from = location.state?.from?.pathname || '/dashboard';
+      const from = location.state?.from?.pathname || '/';
       navigate(from, { replace: true });
     } catch (err) {
       let errorMessage;

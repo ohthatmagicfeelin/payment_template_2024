@@ -22,9 +22,12 @@ export function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div>
-            <a href="/" className="text-xl font-bold">
-              Your App
-            </a>
+            <Link 
+              to={user ? "/" : "/signup"} 
+              className="text-xl font-bold text-gray-800 dark:text-white"
+            >
+              Your Logo
+            </Link>
           </div>
 
           {/* User-specific content */}
