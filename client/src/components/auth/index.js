@@ -3,4 +3,5 @@ export { SignupFormContainer as SignupForm } from './SignupFormContainer';
 export { EmailVerificationPendingContainer as EmailVerificationPending } from './EmailVerificationPendingContainer';
 export { ForgotPasswordContainer as ForgotPassword } from './ForgotPasswordContainer';
 export { ResetPasswordContainer as ResetPassword } from './ResetPasswordContainer';
+export { VerifyEmailContainer as VerifyEmail } from './VerifyEmailContainer';
 // ... other exports 

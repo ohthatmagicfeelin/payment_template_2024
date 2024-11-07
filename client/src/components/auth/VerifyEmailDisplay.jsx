@@ -1,40 +1,4 @@
-// client/src/components/auth/VerifyEmail.jsx
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { authService } from '@/services/authService';
-
-export function VerifyEmail() {
-  const [status, setStatus] = useState('verifying');
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const token = searchParams.get('token');
-
-  useEffect(() => {
-    const verifyEmail = async () => {
-      try {
-        await authService.verifyEmail(token);
-        setStatus('success');
-        setTimeout(() => {
-          navigate('/login', {
-            state: { 
-              message: 'Email verified successfully! You can now log in.',
-              type: 'success'
-            }
-          });
-        }, 3000);
-      } catch (err) {
-        setStatus('error');
-        console.error('VerifyEmail error', err);
-      }
-    };
-
-    if (token) {
-      verifyEmail();
-    } else {
-      setStatus('error');
-    }
-  }, [token, navigate]);
-
+export function VerifyEmailDisplay({ status, onBackToLogin }) {
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
       <div className="text-center">
@@ -77,7 +41,7 @@ export function VerifyEmail() {
               The verification link is invalid or has expired.
             </p>
             <button
-              onClick={() => navigate('/login')}
+              onClick={onBackToLogin}
               className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
             >
               Back to login
@@ -87,4 +51,4 @@ export function VerifyEmail() {
       </div>
     </div>
   );
-}
+} 
