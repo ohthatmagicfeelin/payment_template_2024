@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Loading from '@/components/loading/Loading';
 import SignupForm from '@/components/auth/SignupForm';
 import PaymentForm from '@/components/payments/PaymentForm';
-import { LoginForm } from '@/components/auth/LoginForm';
+import { LoginForm } from '@/components/auth/index.js';
 import { ForgotPassword } from '@/components/auth/ForgotPassword';
 import { ResetPassword } from '@/components/auth/ResetPassword';
 import { VerifyEmail } from '@/components/auth/VerifyEmail';

@@ -1,0 +1,32 @@
+import { useLogin } from '@/hooks/useLogin';
+import { LoginFormDisplay } from './LoginFormDisplay';
+
+export function LoginFormContainer() {
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    rememberMe,
+    setRememberMe,
+    error,
+    message,
+    messageType,
+    handleSubmit
+  } = useLogin();
+
+  return (
+    <LoginFormDisplay
+      email={email}
+      onEmailChange={setEmail}
+      password={password}
+      onPasswordChange={setPassword}
+      rememberMe={rememberMe}
+      onRememberMeChange={setRememberMe}
+      error={error}
+      message={message}
+      messageType={messageType}
+      onSubmit={handleSubmit}
+    />
+  );
+} 
