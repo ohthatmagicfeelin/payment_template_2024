@@ -1,5 +1,5 @@
 import { Header } from '@/layouts/MainLayout/components/Header';
-import FeedbackWidget from '@/components/feedback/FeedbackWidget';
+import { FeedbackWidget } from '@/components/feedback/index.js';
 import { ThemeWrapper } from '@/layouts/MainLayout/components/ThemeWrapper';
 
 export function MainLayout({ children }) {

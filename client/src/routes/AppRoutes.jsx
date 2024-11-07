@@ -1,6 +1,6 @@
 // src/routes/AppRoutes.jsx
 import React, { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Loading from '@/components/loading/Loading';
 import SignupForm from '@/components/auth/SignupForm';
 import PaymentForm from '@/components/payments/PaymentForm';
@@ -10,11 +10,10 @@ import { ResetPassword } from '@/components/auth/ResetPassword';
 import { VerifyEmail } from '@/components/auth/VerifyEmail';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import EmailVerificationPending from '@/components/auth/EmailVerificationPending';
-import { Header } from '@/layouts/MainLayout/components/Header.jsx';
-import FeedbackWidget from '@/components/feedback/FeedbackWidget';
 import { Settings } from '@/pages/Settings';
 import { AppProviders } from '@/providers/AppProviders';
 import { RootRedirect } from '@/components/auth/RootRedirect';
+import { MainLayout } from '@/layouts/MainLayout';
 
 const Home = lazy(() => import('@/components/Home'));
 const NotFound = lazy(() => import('@/components/error/NotFound'));
@@ -22,9 +21,8 @@ const NotFound = lazy(() => import('@/components/error/NotFound'));
 function AppRoutes() {
   return (
     <AppProviders>
-      <Header />
       <Suspense fallback={<Loading />}>
-        <main className="container mx-auto px-4 py-8">
+        <MainLayout>
           <Routes>
             {/* Public routes */}
             <Route path="/signup" element={<SignupForm />} />
@@ -64,9 +62,8 @@ function AppRoutes() {
             <Route path="/" element={<RootRedirect />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </main>
+        </MainLayout>
       </Suspense>
-      <FeedbackWidget />
     </AppProviders>
   );
 }

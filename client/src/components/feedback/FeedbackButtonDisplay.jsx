@@ -1,7 +1,4 @@
-import { useState } from 'react';
-import FeedbackModal from './FeedbackModal';
-
-const FeedbackButton = ({ onClick }) => {
+export function FeedbackButtonDisplay({ onClick }) {
   return (
     <button
       onClick={onClick}
@@ -24,6 +21,4 @@ const FeedbackButton = ({ onClick }) => {
       </svg>
     </button>
   );
-};
-
-export default FeedbackButton; 
+} 
