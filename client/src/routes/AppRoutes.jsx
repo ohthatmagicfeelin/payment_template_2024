@@ -14,6 +14,7 @@ import { Header } from '@/layouts/MainLayout/components/Header.jsx';
 import FeedbackWidget from '@/components/feedback/FeedbackWidget';
 import { Settings } from '@/pages/Settings';
 import { AppProviders } from '@/providers/AppProviders';
+import { RootRedirect } from '@/components/auth/RootRedirect';
 
 const Home = lazy(() => import('@/components/Home'));
 const NotFound = lazy(() => import('@/components/error/NotFound'));
@@ -60,7 +61,7 @@ function AppRoutes() {
             />
 
             {/* Redirect root to signup */}
-            <Route path="/" element={<Navigate to="/signup" replace />} />
+            <Route path="/" element={<RootRedirect />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
