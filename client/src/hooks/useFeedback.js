@@ -31,10 +31,14 @@ export function useFeedback() {
         setIsOpen(false);
       }, 2000);
     } catch (error) {
-      setStatus({ 
-        type: 'error', 
-        message: error.response?.data?.message || 'Failed to submit feedback. Please try again.'
-      });
+      let errorMessage = error.response?.data?.message || 'Failed to submit feedback. Please try again.';
+      
+      // Handle rate limit error specifically
+      if (error.response?.status === 429) {
+        errorMessage = 'You have submitted too many feedbacks recently. Please try again later.';
+      }
+      
+      setStatus({ type: 'error', message: errorMessage });
     } finally {
       setIsSubmitting(false);
     }

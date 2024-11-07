@@ -22,4 +22,15 @@ export const apiLimiter = rateLimit({
   handler: (req, res, next) => {
     next(new AppError('Too many requests from this IP, please try again after 15 minutes', 429));
   }
+});
+
+export const feedbackLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour window
+  max: 3, // limit each IP to 3  feedback submissions per hour
+  message: 'Too many feedback submissions, please try again later',
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res, next) => {
+    next(new AppError('Too many feedback submissions from this IP, please try again after an hour', 429));
+  }
 }); 
