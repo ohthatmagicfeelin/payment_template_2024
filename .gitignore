@@ -24,7 +24,6 @@ backup-credentials.conf
 /client/build
 
 # PostgreSQL
-*.sql
 *.dump
 
 # Logs
