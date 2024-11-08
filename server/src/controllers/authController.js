@@ -1,6 +1,8 @@
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/AppError.js';
 import * as authService from '../services/auth/index.js';
+import { deleteSession } from '../services/sessionService.js';
+
 
 export const signup = catchAsync(async (req, res) => {
     const { email, password } = req.body;
@@ -16,25 +18,67 @@ export const login = catchAsync(async (req, res) => {
     const { email, password, rememberMe } = req.body;
     const user = await authService.login(email, password);
     
-    // Set session
+    // Set session data
     req.session.userId = user.id;
+    req.session.email = user.email;
+    
     if (rememberMe) {
         req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
     }
-    
-    res.json({ user: { id: user.id, email: user.email } });
-});
 
-export const logout = catchAsync(async (req, res) => {
     await new Promise((resolve, reject) => {
-        req.session.destroy((err) => {
-            if (err) reject(new AppError('Could not logout', 500));
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                reject(new AppError('Failed to create session', 500));
+            }
             resolve();
         });
     });
-    
-    res.clearCookie('sessionId');
-    res.json({ message: 'Logged out' });
+
+    res.json({ 
+        user: { 
+            id: user.id, 
+            email: user.email 
+        }
+    });
+});
+
+export const logout = catchAsync(async (req, res) => {
+    const sessionId = req.session.id;
+    const userId = req.session.userId;
+
+    console.log('Logout attempt:', { 
+        sessionId, 
+        userId,
+        session: req.session 
+    });
+
+    try {
+        // Delete from database first
+        await deleteSession(sessionId);
+        console.log('Session deleted from database');
+
+        // Then destroy the session
+        await new Promise((resolve, reject) => {
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error('Session destruction error:', err);
+                    reject(new AppError('Could not logout', 500));
+                }
+                console.log('Session destroyed in memory');
+                resolve();
+            });
+        });
+
+        console.log('Logout successful:', { sessionId, userId });
+        
+        res.clearCookie('sessionId');
+        res.json({ message: 'Logged out successfully' });
+    } catch (error) {
+        console.error('Logout error:', error);
+        throw new AppError('Logout failed', 500);
+    }
 });
 
 export const validateSession = catchAsync(async (req, res) => {

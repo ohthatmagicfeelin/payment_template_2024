@@ -26,6 +26,7 @@ model User {
   feedback         Feedback[]
   settings         UserSettings?
   emailVerificationTokens EmailVerificationToken[]
+  sessions         Session[]
 
   @@map("users")
 }
@@ -120,4 +121,16 @@ model EmailVerificationToken {
   @@map("email_verification_tokens")
   @@index([token])
   @@index([userId])
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime @map("expires_at") @db.Timestamp(3)
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    Int?     @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
 }
