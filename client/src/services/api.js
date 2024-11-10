@@ -2,11 +2,29 @@
 import axios from 'axios';
 import config from '@/config/env';
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: config.BACKEND_URL,
   withCredentials: true,
-  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
+
+// Add CSRF token to requests
+api.interceptors.request.use(config => {
+  const token = getCookie('XSRF-TOKEN');
+  if (token) {
+    config.headers['X-CSRF-Token'] = token;
+  }
+  return config;
+});
+
+// Helper to get cookie value
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 api.interceptors.response.use(
   (response) => response,
@@ -17,3 +35,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default api;

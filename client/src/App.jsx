@@ -7,7 +7,7 @@ import './App.css';
 import AppRoutes from '@/routes/AppRoutes';
 import { getBasename } from '@/utils/getBasename';
 import config from '@/config/env';
-import SessionTest from './components/SessionTest';
+import TestPage from './pages/TestPage';
 
 function App() {
   const basename = getBasename(config.NODE_ENV, config.BASENAME);
@@ -16,7 +16,7 @@ function App() {
   return (
     <Router basename={basename}>
       <AppRoutes />
-      <SessionTest />
+      <TestPage />
     </Router>
   );
 }

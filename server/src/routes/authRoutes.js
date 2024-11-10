@@ -11,18 +11,19 @@ import {
   validateEmailVerification
 } from '../middleware/validateInput.js';
 import { sanitizeAuth } from '../middleware/sanitizeInput.js';
+import { csrfProtection, attachCsrfToken } from '../middleware/csrf.js';
 
 
 const router = express.Router();
 
 
-router.post('/signup', sanitizeAuth, validateSignup, authController.signup);
-router.post('/login', sanitizeAuth, validateLogin, loginLimiter, authController.login);
-router.post('/logout', authController.logout);
-router.post('/password-reset-request', sanitizeAuth, validatePasswordResetRequest, authController.requestPasswordReset);
-router.post('/password-reset', sanitizeAuth, validatePasswordReset, authController.resetPassword);
-router.post('/verify-email', sanitizeAuth, validateEmailVerification, authController.verifyEmail);
-router.post('/resend-verification', sanitizeAuth, validatePasswordResetRequest, authController.resendVerification);
+router.post('/signup', csrfProtection, validateSignup, authController.signup);
+router.post('/login', csrfProtection, sanitizeAuth, validateLogin, loginLimiter, authController.login);
+router.post('/logout', csrfProtection, authController.logout);
+router.post('/password-reset-request', csrfProtection, sanitizeAuth, validatePasswordResetRequest, authController.requestPasswordReset);
+router.post('/password-reset', csrfProtection, sanitizeAuth, validatePasswordReset, authController.resetPassword);
+router.post('/verify-email', csrfProtection, sanitizeAuth, validateEmailVerification, authController.verifyEmail);
+router.post('/resend-verification', csrfProtection, sanitizeAuth, validatePasswordResetRequest, authController.resendVerification);
 router.post('/verify-reset-token', authController.verifyResetToken);
 router.get('/validate', requireAuth, authController.validateSession);
 router.get('/test-session', async (req, res) => {
@@ -51,6 +52,11 @@ router.get('/test-session', async (req, res) => {
   });
   
   res.json(sessionData);
+});
+
+// Get CSRF token
+router.get('/csrf-token', csrfProtection, attachCsrfToken, (req, res) => {
+    res.json({ message: 'CSRF token set in cookie' });
 });
 
 export default router;
