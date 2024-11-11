@@ -1,13 +1,13 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { AppProviders } from '@/providers/AppProviders';
 
 import './App.css';
 
 import AppRoutes from '@/routes/AppRoutes';
 import { getBasename } from '@/utils/getBasename';
 import config from '@/config/env';
-import TestPage from './pages/TestPage';
 
 function App() {
   const basename = getBasename(config.NODE_ENV, config.BASENAME);
@@ -15,8 +15,9 @@ function App() {
   
   return (
     <Router basename={basename}>
-      <AppRoutes />
-      <TestPage />
+      <AppProviders>
+        <AppRoutes />
+      </AppProviders>
     </Router>
   );
 }

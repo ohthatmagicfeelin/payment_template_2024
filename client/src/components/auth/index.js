@@ -1,5 +1,4 @@
 export { ProtectedRoute } from './ProtectedRoute';
-export { RootRedirect } from './RootRedirect';
 
 export {
   LoginFormContainer as LoginForm,

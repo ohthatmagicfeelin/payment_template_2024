@@ -19,8 +19,10 @@ export function useLogin() {
     setError('');
     try {
       await login({ email, password, rememberMe });
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
+      setTimeout(() => {
+        const from = location.state?.from?.pathname || '/home';
+        navigate(from, { replace: true });
+      }, 0);
     } catch (err) {
       let errorMessage;
       if (err.response?.status === 401) {

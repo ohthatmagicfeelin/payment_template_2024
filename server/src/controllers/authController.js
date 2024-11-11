@@ -83,8 +83,10 @@ export const logout = catchAsync(async (req, res) => {
 });
 
 export const validateSession = catchAsync(async (req, res) => {
+
     const user = await userService.getUserById(req.session.userId);
-    res.json({ user: { id: user.id, email: user.email } });
+    
+    res.json({ user: user ? { id: user.id, email: user.email } : null });
 });
 
 export const requestPasswordReset = catchAsync(async (req, res) => {
