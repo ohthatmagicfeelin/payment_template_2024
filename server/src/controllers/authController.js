@@ -1,7 +1,8 @@
 import { catchAsync } from '../utils/catchAsync.js';
 import { AppError } from '../utils/AppError.js';
 import * as authService from '../services/auth/index.js';
-import { deleteSession } from '../services/sessionService.js';
+import * as userService from '../services/userServices.js';
+import { sessionService } from '../services/sessionService.js';
 
 
 export const signup = catchAsync(async (req, res) => {
@@ -56,7 +57,7 @@ export const logout = catchAsync(async (req, res) => {
 
     try {
         // Delete from database first
-        await deleteSession(sessionId);
+        await sessionService.deleteSession(sessionId);
         console.log('Session deleted from database');
 
         // Then destroy the session
@@ -82,7 +83,7 @@ export const logout = catchAsync(async (req, res) => {
 });
 
 export const validateSession = catchAsync(async (req, res) => {
-    const user = await authService.getUserById(req.session.userId);
+    const user = await userService.getUserById(req.session.userId);
     res.json({ user: { id: user.id, email: user.email } });
 });
 

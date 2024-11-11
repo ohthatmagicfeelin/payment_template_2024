@@ -1,11 +1,11 @@
-import { cleanupExpiredSessions } from '../services/sessionService.js';
+import { sessionService } from '../services/sessionService.js';
 
 export const startSessionCleanup = () => {
     const CLEANUP_INTERVAL = 30 * 60 * 1000; // 30 minutes
 
     setInterval(async () => {
         try {
-            await cleanupExpiredSessions();
+            await sessionService.cleanupExpiredSessions();
         } catch (error) {
             console.error('Scheduled session cleanup failed:', error);
         }

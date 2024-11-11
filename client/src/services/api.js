@@ -10,21 +10,27 @@ const api = axios.create({
   }
 });
 
-// Add CSRF token to requests
-api.interceptors.request.use(config => {
-  const token = getCookie('XSRF-TOKEN');
-  if (token) {
-    config.headers['X-CSRF-Token'] = token;
-  }
-  return config;
-});
+let csrfToken = null;
 
-// Helper to get cookie value
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
+const fetchCsrfToken = async () => {
+    if (!csrfToken) {
+        const response = await api.get('/api/csrf-token');
+        csrfToken = response.data.csrfToken;
+    }
+    return csrfToken;
+};
+
+api.interceptors.request.use(async config => {
+    if (['post', 'put', 'delete', 'patch'].includes(config.method?.toLowerCase())) {
+        try {
+            const token = await fetchCsrfToken();
+            config.headers['X-CSRF-Token'] = token;
+        } catch (error) {
+            console.error('Failed to fetch CSRF token:', error);
+        }
+    }
+    return config;
+});
 
 api.interceptors.response.use(
   (response) => response,
