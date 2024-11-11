@@ -1,5 +1,6 @@
 import { useResetPassword } from '@/hooks/useResetPassword';
 import { ResetPasswordDisplay } from '../password/ResetPasswordDisplay';
+import { Link } from 'react-router-dom';
 
 export function ResetPasswordContainer() {
   const {
@@ -35,12 +36,12 @@ export function ResetPasswordContainer() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Invalid Reset Link</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">{error}</p>
-          <a 
-            href="/forgot-password"
+          <Link 
+            to="/forgot-password"
             className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Request a new reset link
-          </a>
+          </Link>
         </div>
       </div>
     );

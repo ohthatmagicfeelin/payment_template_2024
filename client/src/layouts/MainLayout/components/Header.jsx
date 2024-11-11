@@ -70,18 +70,18 @@ export function Header() {
             </div>
           ) : (
             <div className="space-x-4">
-              <a
-                href="/login"
+              <Link
+                to="/login"
                 className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               >
                 Login
-              </a>
-              <a
-                href="/signup"
+              </Link>
+              <Link
+                to="/signup"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
               >
                 Sign Up
-              </a>
+              </Link>
             </div>
           )}
         </div>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 
 export function ForgotPasswordDisplay({ 
   email,
@@ -49,9 +50,9 @@ export function ForgotPasswordDisplay({
       </button>
 
       <div className="text-sm text-center">
-        <a href="/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
+      <Link to="/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
           Back to login
-        </a>
+        </Link>
       </div>
     </form>
   );

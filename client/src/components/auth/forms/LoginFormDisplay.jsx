@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export function LoginFormDisplay({
   email,
   onEmailChange,
@@ -83,17 +85,14 @@ export function LoginFormDisplay({
         </div>
       </div>
 
-      <a
-        href="/signup"
-        className="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
+      <Link to="/signup" className="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
         Sign up
-      </a>
+      </Link>
       
       <div className="text-sm text-center">
-        <a href="/forgot-password" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
+        <Link to="/forgot-password" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
           Forgot password?
-        </a>
+        </Link>
       </div>
     </form>
   );
