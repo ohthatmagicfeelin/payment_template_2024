@@ -10,7 +10,7 @@ import { sessionMiddleware } from './config/session.js';
 import { startJobs } from './jobs/index.js';
 import { handleCsrfError } from './middleware/csrf.js';
 import { debugMiddleware } from './middleware/debug.js';
-
+import corsOptions from './config/cors.js';
 const app = express();
 
 
@@ -22,16 +22,7 @@ app.use(cookieParser(config.SESSION_SECRET)); // Add this before session
 
 
 // Security Middleware
-app.use(cors({
-    origin: config.FRONTEND_URL,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'X-CSRF-Token', 'Cookie'],
-    exposedHeaders: ['X-CSRF-Token', 'Set-Cookie'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-}));
-
+app.use(cors(corsOptions));
 app.use(sanitizeInputs); // Apply global sanitization middleware
 
 

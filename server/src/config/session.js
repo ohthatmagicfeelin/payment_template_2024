@@ -16,6 +16,14 @@ const store = new PrismaSessionStore(prisma, {
 // Verify store is ready
 await store.connect?.();
 
+const cookieSettings = {
+    httpOnly: true,
+    secure: config.NODE_ENV === 'production',
+    sameSite: config.NODE_ENV === 'production' ? 'lax' : 'none',
+    maxAge: 24 * 60 * 60 * 1000,
+    path: config.APP_ROUTE
+};
+
 export const sessionConfig = {
     store,
     secret: config.SESSION_SECRET,
@@ -23,13 +31,7 @@ export const sessionConfig = {
     resave: false,
     saveUninitialized: false,
     rolling: true,
-    cookie: {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-        maxAge: 24 * 60 * 60 * 1000,
-        path: config.APP_ROUTE
-    },
+    cookie: cookieSettings,
     proxy: true
 };
 
