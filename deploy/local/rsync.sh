@@ -19,7 +19,7 @@ deploy_project_files() {
            "$VPS_ALIAS:$REMOTE_ROOT/"
     echo "✓ Project files deployed successfully"
 }
-rsync -av --dry-run  --exclude '**/node_modules' --exclude '**/node_modules/**' --exclude '.DS_Store' --exclude '**/package-lock.json' --exclude '.git' "./templates/payment_template_2024" "./planets/"
+
 deploy_deploy_files() {
     [ -z "$1" ] && { echo "Error: LOCAL_ROOT is not set"; return 1; }
     [ -z "$VPS_ALIAS" ] && { echo "Error: VPS_ALIAS is not set"; exit 1; }

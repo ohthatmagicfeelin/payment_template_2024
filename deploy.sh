@@ -35,7 +35,7 @@ deploy_backup_scripts "$LOCAL_ROOT"
 message "Starting remote deployment..."
 ssh "$VPS_ALIAS" \
     "cd $REMOTE_ROOT && \
-    ./deploy/remote-deploy.sh $INSTALL_DEPS $KEEP_ENV $RUN_MIGRATIONS"
+    ./deploy/remote-deploy.sh $INSTALL_DEPS $KEEP_ENV $RUN_MIGRATIONS $RELOAD_ENV $BUILD_CLIENT"
 
 echo "✓ Deployment completed successfully!"
 echo "Deployment completed at $(date)"

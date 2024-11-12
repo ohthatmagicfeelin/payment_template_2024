@@ -5,8 +5,11 @@ source "$DEPLOY_DIR/scripts/utils/utils.sh"
 manage_pm2_process() {
     echo
     echo "=== Configuring PM2 ==="
-
+    [ -z "$1" ] && { echo "Error: reload_env parameter is required"; return 1; }
     [ -z "$PM2_SERVICE_NAME" ] || [ -z "$REMOTE_ROOT" ] && { echo "Error: PM2_SERVICE_NAME is required"; exit 1; }
+
+    local reload_env="$1"
+
 
     if ! pm2 describe "$PM2_SERVICE_NAME" > /dev/null; then
         # Only start if app doesn't exist
@@ -14,7 +17,10 @@ manage_pm2_process() {
         echo 'Server started for the first time.'
     fi
 
-    set_pm2_env_vars 
+    if [ "$reload_env" = true ]; then
+        set_pm2_env_vars 
+    fi
+
     echo
     echo "=== Restarting PM2 Service ==="
     pm2 restart "$PM2_SERVICE_NAME"  # Restart to ensure envs are applied

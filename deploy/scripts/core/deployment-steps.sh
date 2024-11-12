@@ -27,15 +27,17 @@ perform_pre_deployment_steps() {
 }
 
 perform_deployment_steps() {
-    if [ -z "$1" ] || [ -z "$2" ]; then
+    if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ]; then
         echo "Error: Missing required parameters in perform_deployment_steps"
-        echo "Usage: perform_deployment_steps <install_deps> <run_migrations>"
+        echo "Usage: perform_deployment_steps <install_deps> <run_migrations> <reload_env> <build_client>"
         return 1
     fi
     
     local install_deps="$1"
     local run_migrations="$2"
-    
+    local reload_env="$3"
+    local build_client="$4"
+
     if [ "$install_deps" = true ]; then
         install_dependencies
     fi
@@ -46,9 +48,12 @@ perform_deployment_steps() {
             return 1
         fi
     fi
-    
-    build_client
-    manage_pm2_process
+
+    if [ "$build_client" = true ]; then
+        build_client
+    fi
+
+    manage_pm2_process "$reload_env"
     
     return 0
 }
