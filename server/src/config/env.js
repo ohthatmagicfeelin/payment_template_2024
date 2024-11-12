@@ -13,6 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 export default {
     NODE_ENV: process.env.NODE_ENV,
+    DEBUG: process.env.DEBUG === 'true',
     PORT: process.env.PORT,
     FRONTEND_URL: process.env.FRONTEND_URL,
     BACKEND_URL: process.env.BACKEND_URL,

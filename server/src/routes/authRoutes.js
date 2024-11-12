@@ -17,6 +17,10 @@ import config from '../config/env.js';
 
 const router = express.Router();
 
+const log = (message) => (req, res, next) => {
+  console.log(message);
+  next();
+}
 
 router.post('/signup', csrfProtection, validateSignup, authController.signup);
 router.post('/login', csrfProtection, sanitizeAuth, validateLogin, loginLimiter, authController.login);

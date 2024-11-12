@@ -26,7 +26,7 @@ export const errorHandler = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
-  if (config.NODE_ENV === 'development') {
+  if (config.NODE_ENV === 'development' || config.DEBUG) {
     console.log('💥 ERROR 💥');
     console.log('Status:', err.statusCode);
     console.log('Name:', err.name);

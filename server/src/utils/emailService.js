@@ -25,8 +25,8 @@ export class EmailService {
             user: config.EMAIL_SMTP_USER,
             pass: config.EMAIL_SMTP_PASS,
           },
-          debug: true,
-          logger: true
+          debug: false,
+          logger: false
         });
 
         this.verifyConnection();
@@ -100,7 +100,8 @@ export class EmailService {
           console.error('Failed to send verification email:', error);
           throw new AppError('Failed to send verification email', 500);
         }
-      } else {
+      }
+      if (config.DEBUG) {
         console.log('\n=== Verification Email ===');
         console.log('To:', email);
         console.log('Verification URL:', verificationUrl);
