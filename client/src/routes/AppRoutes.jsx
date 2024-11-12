@@ -40,7 +40,6 @@ function AppRoutes() {
             element={isAuthenticated ? <Navigate to="/home" replace /> : <SignupForm />} 
           />
 
-          {/* Auth routes */}
           <Route path="/verify-email" element={<VerifyEmail />}/>
           <Route path="/forgot-password" element={<ForgotPassword />}/>
           <Route path="/reset-password" element={<ResetPassword />}/>  
