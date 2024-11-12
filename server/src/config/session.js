@@ -20,16 +20,17 @@ export const sessionConfig = {
     store,
     secret: config.SESSION_SECRET,
     name: 'sessionId',
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: {
         httpOnly: true,
-        secure: config.NODE_ENV === 'production',
-        sameSite: config.NODE_ENV === 'production' ? 'strict' : 'lax',
+        secure: true,
+        sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000,
+        path: config.APP_ROUTE
     },
-    proxy: config.NODE_ENV === 'production'
+    proxy: true
 };
 
 // Export session middleware
