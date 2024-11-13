@@ -9,6 +9,7 @@ source "$REMOTE_ROOT/deploy/setup/backup/directory-setup.sh"
 source "$REMOTE_ROOT/deploy/setup/backup/cron-setup.sh"
 source "$REMOTE_ROOT/deploy/setup/backup/debug-cron.sh"
 setup_database_backup_system() {
+    START_TIME=$(date +%s)
     # Validate environment first
     ! validate_environment && { echo "Environment validation failed. Aborting setup."; return 1; }
 
@@ -23,7 +24,8 @@ setup_database_backup_system() {
     # Setup cron jobs
     ! setup_cron_jobs "$script_path" && { echo "Cron setup failed"; return 1; }
     
-    echo "✓ Backup system setup completed successfully!"
+    END_TIME=$(date +%s)
+    echo "✓ Backup system setup completed successfully in $((END_TIME - START_TIME)) seconds"
     return 0
 }
 

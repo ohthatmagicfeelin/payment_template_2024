@@ -1,4 +1,5 @@
 deploy_project_files() {
+    START_TIME=$(date +%s)
     [ -z "$1" ] && { echo "Error: LOCAL_ROOT is not set"; return 1; }
     [ -z "$VPS_ALIAS" ] && { echo "Error: VPS_ALIAS is not set"; exit 1; }
     [ -z "$REMOTE_ROOT" ] && { echo "Error: REMOTE_ROOT is not set"; exit 1; }
@@ -17,10 +18,14 @@ deploy_project_files() {
            --exclude 'deploy/**' \
            "$LOCAL_ROOT/" \
            "$VPS_ALIAS:$REMOTE_ROOT/"
-    echo "✓ Project files deployed successfully"
+
+    END_TIME=$(date +%s)
+    echo "✓ Project files deployed successfully in $((END_TIME - START_TIME)) seconds"
+
 }
 
 deploy_deploy_files() {
+    START_TIME=$(date +%s)
     [ -z "$1" ] && { echo "Error: LOCAL_ROOT is not set"; return 1; }
     [ -z "$VPS_ALIAS" ] && { echo "Error: VPS_ALIAS is not set"; exit 1; }
     [ -z "$REMOTE_ROOT" ] && { echo "Error: REMOTE_ROOT is not set"; exit 1; }
@@ -36,10 +41,12 @@ deploy_deploy_files() {
            --exclude '**/package-lock.json' \
            "$source_deploy/" \
            "$target_deploy/"
-    echo "✓ Deploy files deployed successfully"
+    END_TIME=$(date +%s)
+    echo "✓ Deploy files deployed successfully in $((END_TIME - START_TIME)) seconds"
 }
 
 deploy_backup_scripts() {
+    START_TIME=$(date +%s)
     [ -z "$1" ] && { echo "Error: LOCAL_ROOT is not set"; return 1; }
 
     local LOCAL_ROOT="$1"
@@ -50,5 +57,6 @@ deploy_backup_scripts() {
     echo "=== Deploying Database Backup Scripts ==="
     rsync -avz --delete "$source_scripts" "$target_dir" || { echo "Failed to deploy backup scripts"; return 1; }
     rsync -avz --delete "$source_config" "$target_dir" || { echo "Failed to deploy backup credentials"; return 1; }
-    echo "✓ Backup scripts deployed successfully"
+    END_TIME=$(date +%s)
+    echo "✓ Backup scripts deployed successfully in $((END_TIME - START_TIME)) seconds"
 }

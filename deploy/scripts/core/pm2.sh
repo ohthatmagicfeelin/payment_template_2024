@@ -31,6 +31,7 @@ manage_pm2_process() {
 
 
 set_pm2_env_vars() {
+    START_TIME=$(date +%s)
     # Check if parameters are provided
     [ -z "$PM2_SERVICE_NAME" ] || [ -z "$SERVER_ENV_PATH" ] && { echo "Error: PM2_SERVICE_NAME and SERVER_ENV_PATH path are required"; return 1; }
     [ ! -f "$SERVER_ENV_PATH" ] && { echo "Error: .env file not found at $SERVER_ENV_PATH"; return 1; }
@@ -54,5 +55,6 @@ set_pm2_env_vars() {
         pm2 set "$PM2_SERVICE_NAME:$key" "${env_vars[$key]}" >/dev/null 2>&1
     done
 
-    echo "✓ Environment variables updated"
+    END_TIME=$(date +%s)
+    echo "✓ Environment variables updated in $((END_TIME - START_TIME)) seconds"
 }

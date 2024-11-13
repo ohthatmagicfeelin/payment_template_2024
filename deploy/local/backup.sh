@@ -1,6 +1,7 @@
 #!/bin/bash
 
 create_backup() {
+    START_TIME=$(date +%s)
     local local_root="$1"
 
     # First ensure the remote backup script directory exists
@@ -18,7 +19,8 @@ create_backup() {
         return 1
     fi
     
-    echo "Backup completed successfully"
+    END_TIME=$(date +%s)
+    echo "Backup completed in $((END_TIME - START_TIME)) seconds"
     return 0
 }
 

@@ -2,7 +2,7 @@
 
 
 perform_db_migration() {
-
+    START_TIME=$(date +%s)
     # Validate environment variables
     [ -z "$REMOTE_ROOT" ] && { echo "Error: REMOTE_ROOT is not set"; return 1; }
     [ -z "$SERVER_ENV_PATH" ] && { echo "Error: SERVER_ENV_PATH is not set"; return 1; }
@@ -36,6 +36,8 @@ perform_db_migration() {
     
     if [ $? -eq 0 ]; then
         echo "Migration completed successfully"
+        END_TIME=$(date +%s)
+        echo "✓ Database migration completed successfully in $((END_TIME - START_TIME)) seconds"
         return 0
     else
         echo "Migration failed"
