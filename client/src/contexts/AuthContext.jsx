@@ -16,6 +16,7 @@ function authReducer(state, action) {
   switch (action.type) {
     case 'AUTH_INIT_START':
       return { ...state, loading: true };
+
     case 'AUTH_INIT_SUCCESS':
       return {
         ...state,
@@ -24,6 +25,7 @@ function authReducer(state, action) {
         loading: false,
         initialized: true
       };
+
     case 'AUTH_INIT_ERROR':
       return {
         ...state,
@@ -32,24 +34,28 @@ function authReducer(state, action) {
         loading: false,
         initialized: true
       };
+
     case 'AUTH_INIT_COMPLETE':
       return {
         ...state,
         loading: false,
         initialized: true
       };
+
     case 'LOGIN_SUCCESS':
       return {
         ...state,
         user: action.payload,
         isAuthenticated: true,
         error: null
+
       };
     case 'LOGIN_ERROR':
       return {
         ...state,
         error: action.payload
       };
+
     case 'LOGOUT':
       return {
         ...state,
@@ -62,53 +68,55 @@ function authReducer(state, action) {
 }
 
 export function AuthProvider({ children }) {
+
   const [state, dispatch] = useReducer(authReducer, initialState);
   const mounted = useRef(false);
 
+
   useEffect(() => {
     mounted.current = true;
+    let timeoutId;
     
     async function initAuth() {
-      const hasInitialized = localStorage.getItem('auth_initialized');
+      if (!mounted.current) return;
       
-      if (hasInitialized === 'true') {
-        dispatch({ type: 'AUTH_INIT_COMPLETE' });
-        return;
-      }
-
       dispatch({ type: 'AUTH_INIT_START' });
       
       try {
-        const data = await authService.validateSession();
+        console.log("validating session")
+        const response = await authService.validateSession();
         
-        if (!mounted.current) return;
+        if (!mounted.current) return; // If component is unmounted, stop execution
         
-        localStorage.setItem('auth_initialized', 'true');
-        
-        if (data?.user) {
-          dispatch({ type: 'AUTH_INIT_SUCCESS', payload: data.user });
+        if (response.data?.user) {
+          // If user is authenticated, set the user and dispatch success
+          dispatch({ 
+            type: 'AUTH_INIT_SUCCESS', 
+            payload: response.data.user 
+          });
         } else {
+          // If user is not authenticated, dispatch completion
           dispatch({ type: 'AUTH_INIT_COMPLETE' });
         }
       } catch (error) {
         if (!mounted.current) return;
-        
-        localStorage.setItem('auth_initialized', 'true');
-        
-        if (error.response?.status === 401) {
-          dispatch({ type: 'AUTH_INIT_COMPLETE' });
-        } else {
-          dispatch({ type: 'AUTH_INIT_ERROR' });
-        }
+        console.error('Auth initialization error:', error);
+        dispatch({ type: 'AUTH_INIT_ERROR', payload: error.message });
       }
     }
 
-    initAuth();
+    // Prevent multiple simultaneous validation attempts
+    if (!state.initialized && state.loading) {
+      console.log("initAuth")
+      initAuth();
+    }
 
     return () => {
       mounted.current = false;
+      if (timeoutId) clearTimeout(timeoutId);
     };
-  }, []);
+  }, [state.initialized, state.loading]);
+
 
   const value = useMemo(() => ({
     ...state,

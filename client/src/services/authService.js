@@ -28,6 +28,7 @@ class AuthService {
     };
   }
 
+
   async signup({ email, password, rememberMe = false }) {
     const { isValid, errors } = this.validatePassword(password);
     if (!isValid) {
@@ -42,6 +43,7 @@ class AuthService {
     return response.data;
   }
 
+
   async login({ email, password, rememberMe = false }) {
     const response = await this.api.post('/api/login', {
       email,
@@ -51,16 +53,28 @@ class AuthService {
     return response.data;
   }
 
+
   async logout() {
     await this.api.post('/api/logout');
   }
 
+
   async validateSession() {
     try {
+        
       const response = await this.api.get('/api/validate');
-      return response.data;
-    } catch {
-      return null;
+      return response;
+    } catch (error) {
+      // Handle 401 silently on signup page
+      if (error.response?.status === 401 && window.location.pathname === '/signup') {
+        return { data: { user: null } };
+      }
+      
+      // For other 401s or other errors, throw the error
+      if (error.response?.status === 401) {
+        throw new Error('Unauthorized: Session expired');
+      }
+      throw error;
     }
   }
 

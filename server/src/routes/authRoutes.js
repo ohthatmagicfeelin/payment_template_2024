@@ -13,6 +13,7 @@ import {
 import { sanitizeAuth } from '../middleware/sanitizeInput.js';
 import { csrfProtection } from '../middleware/csrf.js';
 import config from '../config/env.js';
+import * as csrfController from '../controllers/csrfController.js';
 
 
 const router = express.Router();
@@ -32,10 +33,7 @@ router.post('/resend-verification', csrfProtection, sanitizeAuth, validatePasswo
 router.post('/verify-reset-token', authController.verifyResetToken);
 router.get('/validate', requireAuth, authController.validateSession);
 
-// Get CSRF token
-router.get('/csrf-token', csrfProtection, (req, res) => {
-    const token = req.csrfToken();
-    res.json({ csrfToken: token });
-});
+router.get('/csrf-token', csrfProtection, csrfController.getCsrfToken);
 
 export default router;
+

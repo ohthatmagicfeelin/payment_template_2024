@@ -19,20 +19,21 @@ await store.connect?.();
 const cookieSettings = {
     httpOnly: true,
     secure: config.NODE_ENV === 'production',
-    sameSite: config.NODE_ENV === 'production' ? 'lax' : 'none',
+    sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000,
-    path: config.APP_ROUTE
+    path: config.NODE_ENV === 'production' ? config.APP_ROUTE : '/'
 };
 
 export const sessionConfig = {
     store,
     secret: config.SESSION_SECRET,
-    name: 'sessionId',
+    name: config.APP_ROUTE.slice(1) + '.sessionId',
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: cookieSettings,
-    proxy: true
+    proxy: config.NODE_ENV === 'production',
+    unset: 'keep'
 };
 
 // Export session middleware

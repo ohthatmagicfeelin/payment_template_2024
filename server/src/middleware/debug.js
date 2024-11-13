@@ -3,7 +3,6 @@ export const debugMiddleware = (req, res, next) => {
     console.log('\n=== Request Debug Info ===');
     console.log('URL:', req.url);
     console.log('Method:', req.method);
-    console.log('Cookies:', req.cookies);
     console.log('Session ID:', req.session?.id);
     console.log('Session Data:', req.session);
     

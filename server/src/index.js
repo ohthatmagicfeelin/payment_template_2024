@@ -15,10 +15,11 @@ const app = express();
 
 
 // middleware
-app.set('trust proxy', 1); // Trust proxy - important for secure cookies behind a proxy
+if (config.NODE_ENV === 'production') {
+    app.set('trust proxy', 1); // Trust proxy - important for secure cookies behind a proxy
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(config.SESSION_SECRET)); // Add this before session
 
 
 // Security Middleware
