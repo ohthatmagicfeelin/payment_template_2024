@@ -1,7 +1,6 @@
 // server/src/index.js
 import express from "express";
 import cors from "cors";
-import cookieParser from 'cookie-parser';
 import config from './config/env.js';
 import routes from './routes/routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -11,8 +10,8 @@ import { startJobs } from './jobs/index.js';
 import { handleCsrfError } from './middleware/csrf.js';
 import { debugMiddleware } from './middleware/debug.js';
 import corsOptions from './config/cors.js';
-const app = express();
 
+const app = express();
 
 // middleware
 if (config.NODE_ENV === 'production') {
