@@ -15,4 +15,4 @@ DEPLOY_DIR="$REMOTE_ROOT/deploy"
 # Health check configuration
 HEALTH_CHECK_URL="http://localhost:$PORT/api/health"
 MAX_RETRIES=5
-RETRY_INTERVAL=10
+RETRY_INTERVAL=5
