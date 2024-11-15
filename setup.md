@@ -1,78 +1,82 @@
+# How to Setup a New Project
 
 Copy template directory into new project directory
-remove .git if necessary
+```
+rsync -avz  --exclude '**/node_modules' --exclude '**/node_modules/**' --exclude '.DS_Store' --exclude '**/package-lock.json' --exclude '.git' "./templates/payment_template_2024/" "./listen/"
+```
+<br>
 
-- in vscode: CMD + SHIFT + F
-- search payment_template 
-- replace with new project name
+## Update Configs
+open project in VS Code, then:
+- CMD + SHIFT + F
+- search for the following and replace with new app name:
+  - payment_template 
+  - App Name Here
+  - your logo
+  - payment_db
+  - PORT
+  - PG_DATABASE
 
-- replace payment_template in the server/.env files and client/.env files
-- replace backend PORT number to new value in all .env files
-- update PG_DATABASE in all .env files
+places to look:
+- server/.env
+- client/.env
+- index.html
+- deploy/config/deploy-config.sh
+- deploy/local/manual-db-backup.sh
 
 
 
+<br>
 
 # Development 
+<br>
+
+### Database setup
 ---
-
-## Database setup
+enter psql:
+```
 psql -U postgres 
+```
 
+create db:
+```
 CREATE DATABASE payment_db;
 ALTER DATABASE payment_db OWNER TO oh;
 GRANT ALL PRIVILEGES ON DATABASE payment_db TO oh;
+```
+<br>
 
-\c payment_db
+### Dev Env Setup
+---
+install dependencies in project root:
+```
+npm run install-all
+```
 
-CREATE TABLE items (
-  id SERIAL PRIMARY KEY,
-  text TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
+in server, run prisma migrations:
+```
+cd server
+npx prisma migrate dev
+```
+<br>
 
--- Create new users table
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email_verified BOOLEAN DEFAULT FALSE,
-    stripe_customer_id VARCHAR(255) UNIQUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create new subscriptions table
-CREATE TABLE subscriptions (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    stripe_subscription_id VARCHAR(255) UNIQUE NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    current_period_end TIMESTAMP WITH TIME ZONE NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create indexes for better query performance
-CREATE INDEX idx_subscriptions_user_id ON subscriptions(user_id);
-CREATE INDEX idx_subscriptions_status ON subscriptions(status);
-
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO oh;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO oh;
+### Check that all is working
+---
+```
+npm run dev
+```
 
 
-
-
-
-
+<br>
 
 
 # Prod
----
-- Change VPS_PATH and PM2_SERVICE_NAME in ./deplay/deploy-config.sh
-- In server/.env.prod change: FRONTEND_URL, BACKEND_URL, APP_ROUTE, PG_DATABASE, PG_PASSWORD, PORT (pick new port number)
-- client/.env.prod change VITE_BACKEND_URL, VITE_APP_ROUTE
+<br>
 
-## VPS setup
-execut in local teminal:
+
+### Reverse Proxy Setup
+---
+open `nginx-config` directory:
 ```
 cd /Users/oh/Library/CloudStorage/OneDrive-Personal/code/webdev/nginx-config
 code .
@@ -93,6 +97,8 @@ location /payment_template {
     location ~ ^/payment_template/(api|other_routes) {
         proxy_pass http://localhost:${PAYMENT_PORT}; # Pick new port number
         include /etc/nginx/sites-available/includes/common/proxy_settings.conf;
+        include /etc/nginx/sites-available/includes/common/cookie_settings.conf;
+        include /etc/nginx/sites-available/includes/common/security_settings.conf;
     }
 
     location /payment_template/api/health {
@@ -115,9 +121,11 @@ run the sync script:
 ./sync.sh
 ```
 
+<br>
 
-## On the VPS
-enter psql:
+### Create Database
+---
+On the VPS, enter psql:
 ```
 sudo su - postgres
 psql
@@ -129,49 +137,9 @@ CREATE DATABASE payment_db;
 GRANT ALL PRIVILEGES ON DATABASE payment_db TO oh;
 ```
 
-connect to db:
+### Deploy to VPS
+Locally, run:
 ```
-\c payment_db
-```
-Create a table:
-```
-CREATE TABLE items (
-  id SERIAL PRIMARY KEY,
-  text TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create new users table
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email_verified BOOLEAN DEFAULT FALSE,
-    stripe_customer_id VARCHAR(255) UNIQUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create new subscriptions table
-CREATE TABLE subscriptions (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    stripe_subscription_id VARCHAR(255) UNIQUE NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    current_period_end TIMESTAMP WITH TIME ZONE NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create indexes for better query performance
-CREATE INDEX idx_subscriptions_user_id ON subscriptions(user_id);
-CREATE INDEX idx_subscriptions_status ON subscriptions(status);
+./deploy.sh -bime
 ```
 
-Grant all privileges to user oh:
-```
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO oh;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO oh;
-ALTER USER oh WITH CREATEDB;
-```
-
-
-- on local machine run `./deploy.sh`
