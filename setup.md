@@ -16,13 +16,16 @@ open project in VS Code, then:
   - payment_db
   - PORT
   - PG_DATABASE
+  - 5010
 
 places to look:
 - server/.env
 - client/.env
 - index.html
+- client/public/manifest.json
 - deploy/config/deploy-config.sh
 - deploy/local/manual-db-backup.sh
+- deploy/config/backup-credentials.conf
 
 
 
@@ -108,7 +111,7 @@ location /payment_template {
 }
 ```
 
-add the following to ./nginx-config/generated-config.sh:
+add the following to `./nginx-config/generated-config.sh`:
 ```
 # payment_template
 envsubst '${PAYMENT_ROOT} ${PAYMENT_PORT}' \
@@ -133,8 +136,8 @@ psql
 
 Create a db:
 ```
-CREATE DATABASE payment_db;
-GRANT ALL PRIVILEGES ON DATABASE payment_db TO oh;
+CREATE DATABASE bank_db;
+GRANT ALL PRIVILEGES ON DATABASE bank_db TO oh;
 ```
 
 ### Deploy to VPS
