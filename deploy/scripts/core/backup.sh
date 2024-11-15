@@ -28,17 +28,18 @@ create_backup() {
         return 1
     fi
     
+    # create backup directory
+    if ! mkdir -p "$backup_root"; then
+        echo "Error: Failed to create backup directory"
+        return 1
+    fi
+    
     # Verify source directory exists
     if [ ! -d "$app_name" ]; then
         echo "Error: Source directory does not exist: $app_name"
         return 1
     fi
 
-    # create backup directory
-    if ! mkdir -p "$backup_root"; then
-        echo "Error: Failed to create backup directory"
-        return 1
-    fi
     
     # Create backup in temporary location first
     if ! cp -r "$app_name" "$temp_backup"; then
