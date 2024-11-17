@@ -3,24 +3,24 @@
   "name": "App Name Here",
   "icons": [
     {
-      "src": "/app_route_here/icons8-dots-ios-17-outlined-16.png",
+      "src": "/payment_template/icons8-dots-ios-17-outlined-16.png",
       "sizes": "16x16",
       "type": "image/png"
     },
     {
-      "src": "/app_route_here/icons8-dots-ios-17-outlined-32.png",
+      "src": "/payment_template/icons8-dots-ios-17-outlined-32.png",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "/app_route_here/icons8-dots-ios-17-outlined-96.png",
+      "src": "/payment_template/icons8-dots-ios-17-outlined-96.png",
       "sizes": "96x96",
       "type": "image/png"
     }
   ],
-  "start_url": "/app_route_here/",
+  "start_url": "/payment_template/",
   "display": "standalone",
   "theme_color": "#4CAF50",
   "background_color": "#ffffff",
-  "scope": "/app_route_here/"
+  "scope": "/payment_template/"
 }
