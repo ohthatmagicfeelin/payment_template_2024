@@ -2,7 +2,7 @@
 
 Copy template directory into new project directory
 ```
-rsync -avz  --exclude '**/node_modules' --exclude '**/node_modules/**' --exclude '.DS_Store' --exclude '**/package-lock.json' --exclude '.git' "./templates/payment_template_2024/" "./listen/"
+rsync -avz  --exclude '**/node_modules' --exclude '**/node_modules/**' --exclude '.DS_Store' --exclude '**/package-lock.json' --exclude '.git' "./templates/payment_template_2024/" "./something/"
 ```
 <br>
 
@@ -14,7 +14,7 @@ open project in VS Code, then:
   - App Name Here
   - your logo
   - payment_db
-  - PORT
+  - PORT (sudo lsof -i -P -n | grep LISTEN | grep node)
   - PG_DATABASE
   - 5010
 
@@ -87,8 +87,8 @@ code .
 
 add the following to `./nginx-config/.env`:
 ```
-PAYMENT_ROOT=/var/www/payment_template/client/build
-PAYMENT_PORT=5010
+PAYMENT_ROOT=/var/www/travel/client/build
+PAYMENT_PORT=5008
 ```
 
 add the following to `./nginx-config/sites-available/includes/apps/payment_template.conf.template`:
@@ -146,3 +146,13 @@ Locally, run:
 ./deploy.sh -bime
 ```
 
+
+### Setup git repo
+```
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/oh-travel/payment_template.git
+git push -u origin main
+```
