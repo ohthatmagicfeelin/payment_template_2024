@@ -1,7 +1,6 @@
 import express from 'express';
 import config from '../../config/env.js';
-import deployRoutes from './deployRoutes.js';
-import apiRoutes from '../../routes/apiRoutes.js';
+import deployRoutes from './deployRoutes.js'
 import paymentRoutes from '../../features/payments/routes/paymentRoutes.js';
 import authRoutes from '../../features/auth/routes/authRoutes.js';
 import feedbackRoutes from '../../features/feedback/routes/feedbackRoutes.js';
@@ -17,7 +16,6 @@ const basePath = isProduction ? config.APP_ROUTE : '';
 
 
 router.use(`${basePath}/api`, apiLimiter);
-router.use(`${basePath}/api`, apiRoutes);
 router.use(`${basePath}/api`, paymentRoutes)
 router.use(`${basePath}/api`, authRoutes)
 router.use(`/api/health`, deployRoutes);
