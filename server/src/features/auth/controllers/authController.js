@@ -1,7 +1,7 @@
 import { catchAsync } from '../../../utils/catchAsync.js';
 import { AppError } from '../../../utils/AppError.js';
 import * as authService from '../services/index.js';
-import * as userService from '../../../services/userServices.js';
+import * as userService from '../../user/services/userServices.js';
 import { sessionService } from '../../../common/services/sessionService.js';
 
 

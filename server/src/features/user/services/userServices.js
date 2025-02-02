@@ -1,7 +1,7 @@
 import { userRepository } from '../db/repositories/userRepository.js';
-import { AppError } from '../utils/AppError.js';
-import { auditService } from '../common/services/auditService.js';
-import { emailService } from '../utils/emailService.js';
+import { AppError } from '../../../utils/AppError.js';
+import { auditService } from '../../../common/services/auditService.js';
+import { emailService } from '../../../utils/emailService.js';
 
 export const getUserById = async (userId) => {
     const user = await userRepository.getUserById(userId);
