@@ -1,5 +1,5 @@
 import { paymentService } from '../services/paymentService.js'
-import { catchAsync } from '../utils/catchAsync.js'
+import { catchAsync } from '../../../utils/catchAsync.js'
 
 export const createUser = catchAsync(async (req, res) => {
     const result = await paymentService.createUser(req.body)

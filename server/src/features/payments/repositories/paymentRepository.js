@@ -1,4 +1,4 @@
-import prisma from '../client.js'
+import prisma from '../../../db/client.js'
 
 export const paymentRepository = {
   createUser: async (email, hashedPassword) => {

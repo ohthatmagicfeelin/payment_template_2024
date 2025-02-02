@@ -1,9 +1,9 @@
 // server/src/services/paymentService.js
-import { paymentRepository } from '../db/repositories/paymentRepository.js'
+import { paymentRepository } from '../repositories/paymentRepository.js'
 import Stripe from 'stripe'
 import bcrypt from 'bcrypt'
-import config from '../config/env.js'
-import { AppError } from '../utils/AppError.js'
+import config from '../../../config/env.js'
+import { AppError } from '../../../utils/AppError.js'
 
 const stripe = new Stripe(config.STRIPE_SECRET_KEY)
 const SALT_ROUNDS = 10
