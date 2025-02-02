@@ -1,6 +1,6 @@
 import validator from 'validator';
 import xss from 'xss';
-import { AppError } from '../utils/AppError.js';
+import { AppError } from '../../utils/AppError.js';
 
 const sanitizeString = (str) => {
   if (!str) return str;

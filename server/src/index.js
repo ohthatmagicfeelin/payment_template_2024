@@ -3,12 +3,12 @@ import express from "express";
 import cors from "cors";
 import config from './config/env.js';
 import routes from './common/routes/routes.js';
-import { errorHandler } from './middleware/errorHandler.js';
-import { sanitizeInputs } from './middleware/sanitizeInput.js';
+import { errorHandler } from './middleware/error-handling/errorHandler.js';
+import { sanitizeInputs } from './middleware/validation/sanitizeInput.js';
 import { sessionMiddleware } from './config/session.js';
 import { startJobs } from './jobs/index.js';
-import { handleCsrfError } from './middleware/csrf.js';
-import { debugMiddleware } from './middleware/debug.js';
+import { handleCsrfError } from './middleware/security/csrf.js';
+import { debugMiddleware } from './middleware/error-handling/debug.js';
 import corsOptions from './config/cors.js';
 
 const app = express();

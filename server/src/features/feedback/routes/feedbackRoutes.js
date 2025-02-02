@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { FeedbackController } from '../controllers/feedbackController.js';
-import { validateFeedback } from '../../../middleware/validateInput.js';
-import { sanitizeFeedback } from '../../../middleware/sanitizeInput.js';
-import { feedbackLimiter } from '../../../middleware/rateLimiter.js';
+import { validateFeedback } from '../../../middleware/validation/validateInput.js';
+import { sanitizeFeedback } from '../../../middleware/validation/sanitizeInput.js';
+import { feedbackLimiter } from '../../../middleware/security/rateLimiter.js';
 
 const router = Router();
 

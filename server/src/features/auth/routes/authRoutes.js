@@ -1,17 +1,17 @@
 // server/src/routes/auth.js
 import express from 'express';
-import { requireAuth } from '../../../middleware/auth.js';
+import { requireAuth } from '../../../middleware/auth/auth.js';
 import * as authController from '../controllers/authController.js';
-import { loginLimiter } from '../../../middleware/rateLimiter.js';
+import { loginLimiter } from '../../../middleware/security/rateLimiter.js';
 import {
   validateSignup,
   validateLogin,
   validatePasswordReset,
   validatePasswordResetRequest,
   validateEmailVerification
-} from '../../../middleware/validateInput.js';
-import { sanitizeAuth } from '../../../middleware/sanitizeInput.js';
-import { csrfProtection } from '../../../middleware/csrf.js';
+} from '../../../middleware/validation/validateInput.js';
+import { sanitizeAuth } from '../../../middleware/validation/sanitizeInput.js';
+import { csrfProtection } from '../../../middleware/security/csrf.js';
 import config from '../../../config/env.js';
 import * as csrfController from '../controllers/csrfController.js';
 

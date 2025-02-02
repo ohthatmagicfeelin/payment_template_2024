@@ -1,6 +1,6 @@
 // server/src/middleware/errorHandler.js
-import config from '../config/env.js';
-import { AppError } from '../utils/AppError.js';
+import config from '../../config/env.js';
+import { AppError } from '../../utils/AppError.js';
 
 const handleStripeError = (err) => {
   return new AppError(`Payment error: ${err.message}`, 400);
