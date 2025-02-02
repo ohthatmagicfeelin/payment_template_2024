@@ -1,7 +1,7 @@
 // src/routes/AppRoutes.jsx
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Loading from '@/components/loading/Loading';
+import Loading from '@/common/components/ui/Loading';
 import PaymentForm from '@/features/payments/components/PaymentForm';
 import { LoginForm, SignupForm, EmailVerificationPending, ForgotPassword, ResetPassword, VerifyEmail } from '@/features/auth/components/index.js';
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
@@ -10,7 +10,7 @@ import { MainLayout } from '@/layouts/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Home = lazy(() => import('@/components/Home'));
-const NotFound = lazy(() => import('@/components/error/NotFound'));
+const NotFound = lazy(() => import('@/common/components/error/NotFound'));
 
 function AppRoutes() {
   const { isAuthenticated, loading } = useAuth();

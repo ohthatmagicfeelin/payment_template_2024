@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { LoadingSpinner } from '@/common/components/ui/LoadingSpinner';
 
 export function SignupFormDisplay({
   email,

@@ -1,5 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '@/common/hooks/useTheme';
 import { useNavigate, Link } from 'react-router-dom';
 
 export function Header() {

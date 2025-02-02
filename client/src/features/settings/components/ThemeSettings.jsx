@@ -1,7 +1,7 @@
 import { useSettings } from '@/contexts/SettingsContext';
 import { useDarkMode } from '@/contexts/DarkModeContext';
 import { useState } from 'react';
-import { Toast } from '@/components/common/Toast';
+import { Toast } from '@/common/components/ui/Toast';
 
 export function ThemeSettings() {
   const { settings, updateSettings } = useSettings();
