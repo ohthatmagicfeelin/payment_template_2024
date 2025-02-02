@@ -1,5 +1,5 @@
-import { catchAsync } from '../utils/catchAsync.js';
-import { AppError } from '../utils/AppError.js';
+import { catchAsync } from '../../../utils/catchAsync.js';
+import { AppError } from '../../../utils/AppError.js';
 import { FeedbackService } from '../services/feedbackService.js';
 
 export const FeedbackController = {

@@ -4,7 +4,7 @@ import deployRoutes from './deployRoutes.js';
 import apiRoutes from './apiRoutes.js';
 import paymentRoutes from './paymentRoutes.js';
 import authRoutes from '../features/auth/routes/authRoutes.js';
-import feedbackRoutes from './feedbackRoutes.js';
+import feedbackRoutes from '../features/feedback/routes/feedbackRoutes.js';
 import { apiLimiter } from '../middleware/rateLimiter.js';
 import settingsRoutes from './settingsRoutes.js';
 import sessionRoutes from './sessionRoutes.js';

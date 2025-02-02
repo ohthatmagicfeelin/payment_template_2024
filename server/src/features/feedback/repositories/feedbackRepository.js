@@ -1,5 +1,5 @@
-import prisma from '../client.js'
-import { AppError } from '../../utils/AppError.js';
+import prisma from '../../../db/client.js'
+import { AppError } from '../../../utils/AppError.js';
 
 export const FeedbackRepository = {
   create: async (feedbackData) => {

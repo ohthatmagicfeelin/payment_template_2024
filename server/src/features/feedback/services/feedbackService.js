@@ -1,6 +1,6 @@
-import { AppError } from '../utils/AppError.js';
-import { FeedbackRepository } from '../db/repositories/feedbackRepository.js';
-import { TelegramApi } from '../api/telegramApi.js';
+import { AppError } from '../../../utils/AppError.js';
+import { FeedbackRepository } from '../repositories/feedbackRepository.js';
+import { TelegramApi } from '../../../api/telegramApi.js';
 
 export const FeedbackService = {
   createFeedback: async (feedbackData, user = null) => {
