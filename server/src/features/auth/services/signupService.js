@@ -1,7 +1,7 @@
-import { userRepository } from '../../db/repositories/userRepository.js';
-import { emailService } from '../../utils/emailService.js';
-import { auditService } from '../auditService.js';
-import { AppError } from '../../utils/AppError.js';
+import { userRepository } from '../../../db/repositories/userRepository.js';
+import { emailService } from '../../../utils/emailService.js';
+import { auditService } from '../../../services/auditService.js';
+import { AppError } from '../../../utils/AppError.js';
 
 export const signup = async (email, password) => {
     const existingUser = await userRepository.getUserByEmail(email);

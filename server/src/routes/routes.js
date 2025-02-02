@@ -3,7 +3,7 @@ import config from '../config/env.js';
 import deployRoutes from './deployRoutes.js';
 import apiRoutes from './apiRoutes.js';
 import paymentRoutes from './paymentRoutes.js';
-import authRoutes from './authRoutes.js';
+import authRoutes from '../features/auth/routes/authRoutes.js';
 import feedbackRoutes from './feedbackRoutes.js';
 import { apiLimiter } from '../middleware/rateLimiter.js';
 import settingsRoutes from './settingsRoutes.js';

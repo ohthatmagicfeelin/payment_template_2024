@@ -1,4 +1,4 @@
-import prisma from '../client.js'
+import prisma from '../../../db/client.js'
 
 export const passwordResetRepository = {
   createToken: async ({ token, userId, expiresAt }) => {

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import { AppError } from '../../utils/AppError.js';
-import { userRepository } from '../../db/repositories/userRepository.js';
-import { auditService } from '../auditService.js';
+import { AppError } from '../../../utils/AppError.js';
+import { userRepository } from '../../../db/repositories/userRepository.js';
+import { auditService } from '../../../services/auditService.js';
 
 export const login = async (email, password) => {
     const user = await userRepository.getUserByEmail(email);

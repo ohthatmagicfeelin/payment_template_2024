@@ -1,8 +1,8 @@
-import { catchAsync } from '../utils/catchAsync.js';
-import { AppError } from '../utils/AppError.js';
-import * as authService from '../services/auth/index.js';
-import * as userService from '../services/userServices.js';
-import { sessionService } from '../services/sessionService.js';
+import { catchAsync } from '../../../utils/catchAsync.js';
+import { AppError } from '../../../utils/AppError.js';
+import * as authService from '../services/index.js';
+import * as userService from '../../../services/userServices.js';
+import { sessionService } from '../../../services/sessionService.js';
 
 
 export const signup = catchAsync(async (req, res) => {
