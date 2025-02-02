@@ -1,9 +1,9 @@
 import { useSettings } from '@/contexts/SettingsContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { NotificationSettings } from '@/components/settings/NotificationSettings';
-import { ThemeSettings } from '@/components/settings/ThemeSettings';
-import { CustomSettingsManager } from '@/components/settings/CustomSettingsManager';
-import { PasswordChangeSettings } from '@/components/settings/PasswordChangeSettings';
+import { NotificationSettings } from '@/features/settings/components/NotificationSettings';
+import { ThemeSettings } from '@/features/settings/components/ThemeSettings';
+import { CustomSettingsManager } from '@/features/settings/components/CustomSettingsManager';
+import { PasswordChangeSettings } from '@/features/settings/components/PasswordChangeSettings';
 
 import { Navigate } from 'react-router-dom';
 

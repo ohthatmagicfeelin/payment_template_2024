@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { settingsService } from '@/services/settingsService';
+import { settingsService } from '@/features/settings/services/settingsService';
 import { useAuth } from './AuthContext';
 
 const SettingsContext = createContext(null);
