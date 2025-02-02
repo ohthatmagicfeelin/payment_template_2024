@@ -1,4 +1,4 @@
-import { catchAsync } from '../utils/catchAsync.js';
+import { catchAsync } from '../../../utils/catchAsync.js';
 import { settingsService } from '../services/settingsService.js';
 
 export const settingsController = {

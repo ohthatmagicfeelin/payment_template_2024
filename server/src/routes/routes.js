@@ -6,7 +6,7 @@ import paymentRoutes from '../features/payments/routes/paymentRoutes.js';
 import authRoutes from '../features/auth/routes/authRoutes.js';
 import feedbackRoutes from '../features/feedback/routes/feedbackRoutes.js';
 import { apiLimiter } from '../middleware/rateLimiter.js';
-import settingsRoutes from './settingsRoutes.js';
+import settingsRoutes from '../features/settings/routes/settingsRoutes.js';
 import sessionRoutes from './sessionRoutes.js';
 
 const router = express.Router();

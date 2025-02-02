@@ -1,5 +1,5 @@
-import { settingsRepository } from '../db/repositories/settingsRepository.js';
-import { AppError } from '../utils/AppError.js';
+import { settingsRepository } from '../repositories/settingsRepository.js';
+import { AppError } from '../../../utils/AppError.js';
 
 const VALID_THEMES = ['system', 'light', 'dark'];
 
