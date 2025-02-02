@@ -1,5 +1,5 @@
-import { sessionRepository } from '../db/repositories/sessionRepository.js';
-import { AppError } from '../utils/AppError.js';
+import { sessionRepository } from '../repositories/sessionRepository.js';
+import { AppError } from '../../utils/AppError.js';
 import { auditService } from './auditService.js';
 
 export const sessionService = {

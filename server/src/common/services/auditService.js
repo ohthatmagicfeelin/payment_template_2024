@@ -1,4 +1,4 @@
-import { auditRepository } from '../db/repositories/auditRepository.js'
+import { auditRepository } from '../repositories/auditRepository.js'
 
 export const auditService = {
   log: async ({ userId, action, entity, entityId, details }) => {

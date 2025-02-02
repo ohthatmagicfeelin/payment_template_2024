@@ -1,7 +1,7 @@
 // server/src/middleware/auth.js
 import { userRepository } from '../db/repositories/userRepository.js';
 import { AppError } from '../utils/AppError.js';
-import { auditService } from '../services/auditService.js';
+import { auditService } from '../common/services/auditService.js';
 
 export const requireAuth = async (req, res, next) => {
   const sessionId = req.session.id;

@@ -3,7 +3,7 @@ import config from '../../../config/env.js';
 import { AppError } from '../../../utils/AppError.js';
 import { userRepository } from '../../../db/repositories/userRepository.js';
 import { emailService } from '../../../utils/emailService.js';
-import { auditService } from '../../../services/auditService.js';
+import { auditService } from '../../../common/services/auditService.js';
 import { emailVerificationRepository } from '../repositories/emailVerificationRepository.js';
 
 export const verifyEmail = async (token) => {

@@ -1,6 +1,6 @@
-import { catchAsync } from '../utils/catchAsync.js';
+import { catchAsync } from '../../utils/catchAsync.js';
 import { sessionService } from '../services/sessionService.js';
-import { AppError } from '../utils/AppError.js';
+import { AppError } from '../../utils/AppError.js';
 import { auditService } from '../services/auditService.js';
 
 export const sessionController = {

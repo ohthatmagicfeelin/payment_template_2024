@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import config from './config/env.js';
-import routes from './routes/routes.js';
+import routes from './common/routes/routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { sanitizeInputs } from './middleware/sanitizeInput.js';
 import { sessionMiddleware } from './config/session.js';
