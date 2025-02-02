@@ -1,6 +1,6 @@
 import { FeedbackButtonDisplay } from './FeedbackButtonDisplay';
 import { FeedbackModalDisplay } from './FeedbackModalDisplay';
-import { useFeedback } from '@/hooks/useFeedback';
+import { useFeedback } from '@/features/feedback/hooks/useFeedback';
 
 export function FeedbackContainer() {
   const {
