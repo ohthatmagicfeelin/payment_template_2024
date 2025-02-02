@@ -9,7 +9,7 @@ import { Settings } from '@/pages/Settings';
 import { MainLayout } from '@/layouts/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
 
-const Home = lazy(() => import('@/components/Home'));
+const Home = lazy(() => import('@/common/components/Home'));
 const NotFound = lazy(() => import('@/common/components/error/NotFound'));
 
 function AppRoutes() {
