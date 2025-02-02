@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { AppError } from '../../../utils/AppError.js';
-import { userRepository } from '../../../db/repositories/userRepository.js';
+import { userRepository } from '../../../features/user/repositories/userRepository.js';
 import { auditService } from '../../../common/services/auditService.js';
 
 export const login = async (email, password) => {

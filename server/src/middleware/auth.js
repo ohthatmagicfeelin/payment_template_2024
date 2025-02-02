@@ -1,5 +1,5 @@
 // server/src/middleware/auth.js
-import { userRepository } from '../db/repositories/userRepository.js';
+import { userRepository } from '../features/user/repositories/userRepository.js';
 import { AppError } from '../utils/AppError.js';
 import { auditService } from '../common/services/auditService.js';
 

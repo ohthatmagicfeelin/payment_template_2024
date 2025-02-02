@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import config from '../../../config/env.js';
 import { AppError } from '../../../utils/AppError.js';
-import { userRepository } from '../../../db/repositories/userRepository.js';
+import { userRepository } from '../../../features/user/repositories/userRepository.js';
 import { emailService } from '../../../utils/emailService.js';
 import { auditService } from '../../../common/services/auditService.js';
 import { passwordResetRepository } from '../repositories/passwordResetRepository.js';
