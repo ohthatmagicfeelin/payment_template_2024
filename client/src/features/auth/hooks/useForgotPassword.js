@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authService } from '@/services/authService';
+import { authService } from '@/features/auth/services/authService';
 
 export function useForgotPassword() {
   const [email, setEmail] = useState('');

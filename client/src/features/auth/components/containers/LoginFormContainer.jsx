@@ -1,4 +1,4 @@
-import { useLogin } from '@/hooks/useLogin';
+import { useLogin } from '@/features/auth/hooks/useLogin';
 import { LoginFormDisplay } from '../forms';
 
 export function LoginFormContainer() {

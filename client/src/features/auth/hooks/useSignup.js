@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '@/services/authService';
+import { authService } from '@/features/auth/services/authService';
 
 export function useSignup() {
   const [email, setEmail] = useState('');

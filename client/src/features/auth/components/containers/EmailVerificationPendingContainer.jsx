@@ -1,4 +1,4 @@
-import { useEmailVerification } from '@/hooks/useEmailVerification';
+import { useEmailVerification } from '@/features/auth/hooks/useEmailVerification';
 import { EmailVerificationPendingDisplay } from '../verification/EmailVerificationPendingDisplay';
 
 export function EmailVerificationPendingContainer() {

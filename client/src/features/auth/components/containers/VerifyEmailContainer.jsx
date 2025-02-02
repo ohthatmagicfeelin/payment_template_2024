@@ -1,4 +1,4 @@
-import { useVerifyEmail } from '@/hooks/useVerifyEmail';
+import { useVerifyEmail } from '@/features/auth/hooks/useVerifyEmail';
 import { VerifyEmailDisplay } from '../verification/VerifyEmailDisplay';
 
 export function VerifyEmailContainer() {
