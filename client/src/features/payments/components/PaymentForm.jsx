@@ -1,7 +1,7 @@
 // src/components/payments/PaymentForm.jsx
 import { Elements } from '@stripe/react-stripe-js';
-import { stripePromise } from '@/services/stripe';
-import { usePaymentIntent } from '@/hooks/usePaymentIntent';
+import { stripePromise } from '@/features/payments/services/stripe';
+import { usePaymentIntent } from '@/features/payments/hooks/usePaymentIntent';
 import CheckoutForm from './CheckoutForm';
 
 const PaymentForm = () => {

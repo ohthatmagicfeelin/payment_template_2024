@@ -2,7 +2,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Loading from '@/components/loading/Loading';
-import PaymentForm from '@/components/payments/PaymentForm';
+import PaymentForm from '@/features/payments/components/PaymentForm';
 import { LoginForm, SignupForm, EmailVerificationPending, ForgotPassword, ResetPassword, VerifyEmail } from '@/features/auth/components/index.js';
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { Settings } from '@/pages/Settings';

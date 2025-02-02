@@ -1,6 +1,6 @@
 // src/hooks/usePaymentIntent.js
 import { useState, useEffect } from 'react';
-import { createPaymentIntent } from '@/api/payments';
+import { createPaymentIntent } from '@/features/payments/api/payments';
 
 export const usePaymentIntent = (amount) => {
   const [clientSecret, setClientSecret] = useState('');
