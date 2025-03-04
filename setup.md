@@ -14,7 +14,7 @@ open project in VS Code, then:
   - App Name Here
   - your logo
   - payment_db
-  - PORT (sudo lsof -i -P -n | grep LISTEN | grep node)
+  - PORT (sudo lsof -i -P -n | grep LISTEN | grep node | sort -t: -k2,2n)
   - PG_DATABASE
   - 5010
 
