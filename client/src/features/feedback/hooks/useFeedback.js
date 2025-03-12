@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { feedbackApi } from '@/features/feedback/api/feedback.js';
+import { feedbackApi } from '@/features/feedback/api/feedbackApi.js';
 
 export function useFeedback() {
   const { user } = useAuth();
