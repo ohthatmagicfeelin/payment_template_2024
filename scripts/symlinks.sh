@@ -26,7 +26,7 @@ create_symlink() {
     if [ ! -f "$src" ]; then
         echo "Error: Source file does not exist: $src"
         return 1
-    }
+    fi
     
     # Remove existing file/symlink if it exists
     if [ -e "$dst" ] || [ -L "$dst" ]; then
