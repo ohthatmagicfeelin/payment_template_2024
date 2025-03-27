@@ -6,7 +6,7 @@ deploy_project_files() {
 
     local LOCAL_ROOT="$1"
 
-    rsync -avz --delete \
+    rsync -avzL --delete \
            --exclude '**/node_modules' \
            --exclude '**/node_modules/**' \
            --exclude '**/package-lock.json' \
@@ -16,6 +16,7 @@ deploy_project_files() {
            --exclude '**/build' \
            --exclude 'deploy' \
            --exclude 'deploy/**' \
+           --exclude '.vscode' \
            "$LOCAL_ROOT/" \
            "$VPS_ALIAS:$REMOTE_ROOT/"
 
@@ -35,7 +36,7 @@ deploy_deploy_files() {
     local target_deploy="$VPS_ALIAS:$REMOTE_ROOT/deploy"
 
     echo "=== Deploying Deploy Directory ==="
-    rsync -az --delete \
+    rsync -azL --delete \
            --exclude '**/node_modules' \
            --exclude '**/node_modules/**' \
            --exclude '**/package-lock.json' \
@@ -55,8 +56,8 @@ deploy_backup_scripts() {
     local target_dir="$VPS_ALIAS:/opt/system-scripts/backup/$APP_NAME"
 
     echo "=== Deploying Database Backup Scripts ==="
-    rsync -avz --delete "$source_scripts" "$target_dir" || { echo "Failed to deploy backup scripts"; return 1; }
-    rsync -avz --delete "$source_config" "$target_dir" || { echo "Failed to deploy backup credentials"; return 1; }
+    rsync -avzL --delete "$source_scripts" "$target_dir" || { echo "Failed to deploy backup scripts"; return 1; }
+    rsync -avzL --delete "$source_config" "$target_dir" || { echo "Failed to deploy backup credentials"; return 1; }
     END_TIME=$(date +%s)
     echo "✓ Backup scripts deployed successfully in $((END_TIME - START_TIME)) seconds"
 }
