@@ -1,5 +1,5 @@
-import { useHeader } from './hooks/useHeader';
-import { HeaderDisplay } from './HeaderDisplay';
+import { useHeader } from '@/layouts/header/hooks/useHeader';
+import { HeaderDisplay } from '@/layouts/header/components/HeaderDisplay';
 
 export function HeaderContainer() {
   const {

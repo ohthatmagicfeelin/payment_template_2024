@@ -1,6 +1,6 @@
-import { HeaderContainer } from '@/layouts/MainLayout/components/header/HeaderContainer';
+import { HeaderContainer } from '@/layouts/header/components/HeaderContainer';
 // import { FeedbackContainer } from '@/features/feedback/components/FeedbackContainer.js';
-import { ThemeWrapper } from '@/layouts/MainLayout/components/ThemeWrapper';
+import { ThemeWrapper } from '@/layouts/MainLayout/ThemeWrapper';
 
 export function MainLayout({ children }) {
   return (

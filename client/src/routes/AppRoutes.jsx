@@ -6,7 +6,7 @@ import PaymentForm from '@/features/payments/components/PaymentForm';
 import { LoginForm, SignupForm, EmailVerificationPending, ForgotPassword, ResetPassword, VerifyEmail } from '@/features/auth/components/index.js';
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { Settings } from '@/pages/Settings';
-import { MainLayout } from '@/layouts/MainLayout';
+import { MainLayout } from '@/layouts/MainLayout/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Home = lazy(() => import('@/common/components/Home'));
