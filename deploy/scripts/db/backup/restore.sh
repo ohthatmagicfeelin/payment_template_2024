@@ -111,7 +111,7 @@ restore_backup() {
 main() {
     if [ -z "$1" ]; then
         echo "Usage: $0 <backup_filename>"
-        echo "Example: $0 payment_db_manual_20241105_042226.sql.gz"
+        echo "Example: $0 template_db_manual_20241105_042226.sql.gz"
         exit 1
     fi
     restore_backup "$1"

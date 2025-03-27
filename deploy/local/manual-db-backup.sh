@@ -5,7 +5,7 @@ source "$LOCAL_ROOT/../config/deploy-config.sh"
 source "$LOCAL_ROOT/../config/backup-credentials.conf"
 
 # Configuration
-REMOTE_SCRIPT_PATH="/opt/system-scripts/backup/payment_template/backup.sh"
+REMOTE_SCRIPT_PATH="/opt/system-scripts/backup/template/backup.sh"
 
 create_backup() {
     echo "Creating manual backup..."
@@ -83,7 +83,7 @@ case "$1" in
     "restore")
         if [ -z "$2" ]; then
             echo "Usage: $0 restore <backup_filename>"
-            echo "Example: $0 restore payment_db_manual_20241105_042226.sql.gz"
+            echo "Example: $0 restore template_db_manual_20241105_042226.sql.gz"
             exit 1
         fi
         restore_backup "$2"

@@ -10,10 +10,10 @@ rsync -avz  --exclude '**/node_modules' --exclude '**/node_modules/**' --exclude
 open project in VS Code, then:
 - CMD + SHIFT + F
 - search for the following and replace with new app name:
-  - payment_template 
+  - template 
   - App Name Here
   - your logo
-  - payment_db
+  - template_db
   - PORT (sudo lsof -i -P -n | grep LISTEN | grep node | sort -t: -k2,2n)
   - PG_DATABASE
   - 5010
@@ -43,9 +43,9 @@ psql -U postgres
 
 create db:
 ```
-CREATE DATABASE payment_db;
-ALTER DATABASE payment_db OWNER TO oh;
-GRANT ALL PRIVILEGES ON DATABASE payment_db TO oh;
+CREATE DATABASE template_db;
+ALTER DATABASE template_db OWNER TO oh;
+GRANT ALL PRIVILEGES ON DATABASE template_db TO oh;
 ```
 <br>
 
@@ -91,20 +91,20 @@ PAYMENT_ROOT=/var/www/travel/client/build
 PAYMENT_PORT=5008
 ```
 
-add the following to `./nginx-config/sites-available/includes/apps/payment_template.conf.template`:
+add the following to `./nginx-config/sites-available/includes/apps/template.conf.template`:
 ```
-location /payment_template {
+location /template {
     alias ${PAYMENT_ROOT};
-    try_files $uri $uri/ /payment_template/index.html;
+    try_files $uri $uri/ /template/index.html;
 
-    location ~ ^/payment_template/(api|other_routes) {
+    location ~ ^/template/(api|other_routes) {
         proxy_pass http://localhost:${PAYMENT_PORT}; # Pick new port number
         include /etc/nginx/sites-available/includes/common/proxy_settings.conf;
         include /etc/nginx/sites-available/includes/common/cookie_settings.conf;
         include /etc/nginx/sites-available/includes/common/security_settings.conf;
     }
 
-    location /payment_template/api/health {
+    location /template/api/health {
         proxy_pass http://localhost:${PAYMENT_PORT}/health;
         include /etc/nginx/sites-available/includes/common/health_check.conf;
     }
@@ -113,10 +113,10 @@ location /payment_template {
 
 add the following to `./nginx-config/generated-config.sh`:
 ```
-# payment_template
+# template
 envsubst '${PAYMENT_ROOT} ${PAYMENT_PORT}' \
-    < sites-available/includes/apps/payment_template.conf.template \
-    > sites-available/includes/apps/payment_template.conf
+    < sites-available/includes/apps/template.conf.template \
+    > sites-available/includes/apps/template.conf
 ```
 
 run the sync script:
@@ -136,8 +136,8 @@ psql
 
 Create a db:
 ```
-CREATE DATABASE bank_db;
-GRANT ALL PRIVILEGES ON DATABASE bank_db TO oh;
+CREATE DATABASE template_db;
+GRANT ALL PRIVILEGES ON DATABASE template_db TO oh;
 ```
 
 ### Deploy to VPS

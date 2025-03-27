@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-APP_NAME="payment_template"
+APP_NAME="template"
 PORT=5010
 VPS_ALIAS="vps"
 
