@@ -1,6 +1,6 @@
 import { catchAsync } from '../../../../utils/catchAsync.js';
 import { AppError } from '../../../../utils/AppError.js';
-import { sessionService } from '../../../../common/services/sessionService.js';
+import { sessionService } from '../../session/services/sessionService.js';
 
 
 export const logoutController = {

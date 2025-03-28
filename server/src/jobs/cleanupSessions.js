@@ -1,4 +1,4 @@
-import { sessionService } from '../common/services/sessionService.js';
+import { sessionService } from '../features/auth/session/services/sessionService.js';
 
 export const startSessionCleanup = () => {
     const CLEANUP_INTERVAL = 30 * 60 * 1000; // 30 minutes

@@ -2,7 +2,7 @@ import api from '@/api/api';
 
 export const validateSessionApi = async () => {
   try {
-    const response = await api.get('/api/validate');
+    const response = await api.get('/api/session/validate');
     return response;
   } catch (error) {
     // Handle 401 silently on signup page

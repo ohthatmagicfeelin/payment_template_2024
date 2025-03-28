@@ -1,6 +1,6 @@
 import { sessionRepository } from '../repositories/sessionRepository.js';
-import { AppError } from '../../utils/AppError.js';
-import { auditService } from './auditService.js';
+import { AppError } from '../../../../utils/AppError.js';
+import { auditService } from '../../../../common/services/auditService.js';
 
 export const sessionService = {
     async getSessionById(sessionId) {

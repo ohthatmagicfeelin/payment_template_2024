@@ -7,8 +7,9 @@ import logoutRoutes from '../logout/routes/logoutRoutes.js';
 import signupRoutes from '../signup/routes/signupRoutes.js';
 import emailVerificationRoutes from '../verify/routes/emailVerificationRoutes.js';
 import passwordRoutes from '../password/routes/passwordRoutes.js';
+import sessionRoutes from '../session/routes/sessionRoutes.js';
 
-import * as authController from '../controllers/authController.js';
+
 
 import { csrfProtection } from '../../../middleware/security/csrf.js';
 
@@ -26,11 +27,12 @@ const log = (message) => (req, res, next) => {
 router.use('/login', loginRoutes);
 router.use('/logout', logoutRoutes);
 router.use('/signup', signupRoutes);
+router.use('/session', sessionRoutes);
 router.use('/', emailVerificationRoutes);
 router.use('/', passwordRoutes);
 
 
-router.get('/validate', requireAuth, authController.validateSession);
+
 
 router.get('/csrf-token', csrfProtection, csrfController.getCsrfToken);
 
