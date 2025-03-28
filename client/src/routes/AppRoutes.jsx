@@ -14,8 +14,8 @@ import { ProtectedRoute } from '@/features/auth/common/components/ProtectedRoute
 import { Settings } from '@/pages/Settings';
 import { MainLayout } from '@/layouts/MainLayout/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
+import { LandingContainer } from '@/features/landing/components/LandingContainer';
 
-const Home = lazy(() => import('@/common/components/Home'));
 const NotFound = lazy(() => import('@/common/components/error/NotFound'));
 
 function AppRoutes() {
@@ -30,20 +30,17 @@ function AppRoutes() {
     <Suspense fallback={<Loading />}>
       <MainLayout>
         <Routes>
-          {/* Root redirect */}
-          <Route 
-            path="/" 
-            element={<Navigate to={isAuthenticated ? "/home" : "/login"} replace />} 
-          />
+          {/* Root route - Landing page for everyone */}
+          <Route path="/" element={<LandingContainer />} />
 
           {/* Public routes - redirect if authenticated */}
           <Route 
             path="/login" 
-            element={isAuthenticated ? <Navigate to="/home" replace /> : <LoginContainer />} 
+            element={isAuthenticated ? <Navigate to="/" replace /> : <LoginContainer />} 
           />
           <Route 
             path="/signup" 
-            element={isAuthenticated ? <Navigate to="/home" replace /> : <SignupContainer />} 
+            element={isAuthenticated ? <Navigate to="/" replace /> : <SignupContainer />} 
           />
 
           <Route path="/verify-email" element={<EmailVerificationSuccessContainer />}/>
@@ -53,14 +50,6 @@ function AppRoutes() {
           <Route path="/logout" element={<LogoutContainer />} />
 
           {/* Protected routes */}
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/payment"
             element={
