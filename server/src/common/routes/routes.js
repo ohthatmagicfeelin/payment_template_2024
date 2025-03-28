@@ -1,10 +1,10 @@
 import express from 'express';
 import config from '../../config/env.js';
+import { apiLimiter } from '../../middleware/security/rateLimiter.js';
 import deployRoutes from './deployRoutes.js'
 import paymentRoutes from '../../features/payments/routes/paymentRoutes.js';
-import authRoutes from '../../features/auth/routes/authRoutes.js';
+import authRoutes from '../../features/auth/core/routes/authRoutes.js';
 import feedbackRoutes from '../../features/feedback/routes/feedbackRoutes.js';
-import { apiLimiter } from '../../middleware/security/rateLimiter.js';
 import settingsRoutes from '../../features/settings/routes/settingsRoutes.js';
 // import sessionRoutes from './sessionRoutes.js';
 
