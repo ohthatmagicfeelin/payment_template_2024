@@ -2,7 +2,7 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import config from '../config/env.js';
-import { passwordResetRepository } from '../features/auth/repositories/passwordResetRepository.js';
+import { passwordRepository } from '../features/auth/password/repositories/passwordRepository.js';
 import { AppError } from './AppError.js';
 import { emailVerificationRepository } from '../features/auth/verify/repositories/emailVerificationRepository.js';
 
@@ -129,7 +129,7 @@ export class EmailService {
 
       try {
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-        await passwordResetRepository.createToken({
+        await passwordRepository.createToken({
           token,
           userId,
           expiresAt

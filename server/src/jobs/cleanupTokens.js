@@ -1,10 +1,10 @@
-import { passwordResetRepository } from '../features/auth/repositories/passwordResetRepository.js'
+import { passwordRepository } from '../features/auth/password/repositories/passwordRepository.js'
 import { emailVerificationRepository } from '../features/auth/verify/repositories/emailVerificationRepository.js'
 
 export const cleanupExpiredTokens = async () => {
   try {
     await Promise.all([
-      passwordResetRepository.deleteExpiredTokens(),
+      passwordRepository.deleteExpiredTokens(),
       emailVerificationRepository.deleteExpiredTokens()
     ]);
   } catch (error) {

@@ -1,6 +1,5 @@
 import { catchAsync } from '../../../utils/catchAsync.js';
 import { AppError } from '../../../utils/AppError.js';
-import * as authService from '../services/index.js';
 import * as userService from '../../user/services/userServices.js';
 import { sessionService } from '../../../common/services/sessionService.js';
 
@@ -75,22 +74,3 @@ export const validateSession = catchAsync(async (req, res) => {
     });
 });
 
-export const requestPasswordReset = catchAsync(async (req, res) => {
-    const { email } = req.body;
-    await authService.requestPasswordReset(email);
-    res.json({ message: 'If an account exists, you will receive a reset email.' });
-});
-
-export const resetPassword = catchAsync(async (req, res) => {
-    const { token, newPassword } = req.body;
-    await authService.resetPassword(token, newPassword);
-    res.json({ message: 'Password updated successfully' });
-});
-
-
-
-export const verifyResetToken = catchAsync(async (req, res) => {
-    const { token } = req.body;
-    await authService.verifyResetToken(token);
-    res.json({ valid: true });
-}); 

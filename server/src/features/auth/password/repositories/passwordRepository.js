@@ -1,6 +1,6 @@
-import prisma from '../../../db/client.js'
+import prisma from '../../../../db/client.js';
 
-export const passwordResetRepository = {
+export const passwordRepository = {
   createToken: async ({ token, userId, expiresAt }) => {
     return prisma.passwordResetToken.create({
       data: {
@@ -8,7 +8,7 @@ export const passwordResetRepository = {
         userId,
         expiresAt
       }
-    })
+    });
   },
 
   getValidToken: async (token) => {
@@ -20,17 +20,16 @@ export const passwordResetRepository = {
           gt: new Date()
         }
       }
-    })
+    });
   },
 
   markTokenAsUsed: async (token) => {
     return prisma.passwordResetToken.update({
       where: { token },
       data: { used: true }
-    })
+    });
   },
 
-  // Optional: Cleanup expired tokens
   deleteExpiredTokens: async () => {
     return prisma.passwordResetToken.deleteMany({
       where: {
@@ -39,6 +38,6 @@ export const passwordResetRepository = {
           { used: true }
         ]
       }
-    })
+    });
   }
-} 
+};
