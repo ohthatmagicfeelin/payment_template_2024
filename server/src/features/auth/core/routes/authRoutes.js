@@ -6,6 +6,7 @@ import signupRoutes from '../../signup/routes/signupRoutes.js';
 import emailVerificationRoutes from '../../verify/routes/emailVerificationRoutes.js';
 import passwordRoutes from '../../password/routes/passwordRoutes.js';
 import sessionRoutes from '../../session/routes/sessionRoutes.js';
+import csrfRoutes from '../../csrf/routes/csrfRoutes.js';
 
 const router = express.Router();
 
@@ -19,8 +20,10 @@ router.use('/login', loginRoutes);
 router.use('/logout', logoutRoutes);
 router.use('/signup', signupRoutes);
 router.use('/session', sessionRoutes);
+router.use('/', csrfRoutes);
 router.use('/', emailVerificationRoutes);
 router.use('/', passwordRoutes);
+
 
 export default router;
 
