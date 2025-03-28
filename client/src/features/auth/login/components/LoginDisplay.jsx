@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export function LoginFormDisplay({
+export function LoginDisplay({
   email,
   onEmailChange,
   password,
@@ -96,4 +96,4 @@ export function LoginFormDisplay({
       </div>
     </form>
   );
-} 
+}

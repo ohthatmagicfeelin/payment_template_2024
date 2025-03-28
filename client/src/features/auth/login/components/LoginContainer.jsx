@@ -1,7 +1,7 @@
-import { useLogin } from '@/features/auth/hooks/useLogin';
-import { LoginFormDisplay } from '../forms';
+import { useLogin } from '../hooks/useLogin';
+import { LoginDisplay } from './LoginDisplay';
 
-export function LoginFormContainer() {
+export function LoginContainer() {
   const {
     email,
     setEmail,
@@ -16,7 +16,7 @@ export function LoginFormContainer() {
   } = useLogin();
 
   return (
-    <LoginFormDisplay
+    <LoginDisplay
       email={email}
       onEmailChange={setEmail}
       password={password}
@@ -29,4 +29,4 @@ export function LoginFormContainer() {
       onSubmit={handleSubmit}
     />
   );
-} 
+}

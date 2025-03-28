@@ -3,7 +3,8 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Loading from '@/common/components/ui/Loading';
 import PaymentForm from '@/features/payments/components/PaymentForm';
-import { LoginForm, SignupForm, EmailVerificationPending, ForgotPassword, ResetPassword, VerifyEmail } from '@/features/auth/components/index.js';
+import { SignupForm, EmailVerificationPending, ForgotPassword, ResetPassword, VerifyEmail } from '@/features/auth/components/index.js';
+import { LoginContainer } from '@/features/auth/login/components/LoginContainer';
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { Settings } from '@/pages/Settings';
 import { MainLayout } from '@/layouts/MainLayout/MainLayout';
@@ -33,7 +34,7 @@ function AppRoutes() {
           {/* Public routes - redirect if authenticated */}
           <Route 
             path="/login" 
-            element={isAuthenticated ? <Navigate to="/home" replace /> : <LoginForm />} 
+            element={isAuthenticated ? <Navigate to="/home" replace /> : <LoginContainer />} 
           />
           <Route 
             path="/signup" 
@@ -42,7 +43,7 @@ function AppRoutes() {
 
           <Route path="/verify-email" element={<VerifyEmail />}/>
           <Route path="/forgot-password" element={<ForgotPassword />}/>
-          <Route path="/reset-password" element={<ResetPassword />}/>  
+          <Route path="/reset-password" element={<ResetPassword />} />  
           <Route path="/verification-pending" element={<EmailVerificationPending />}/>
 
           {/* Protected routes */}

@@ -1,4 +1,4 @@
-export { LoginFormContainer } from './LoginFormContainer';
+
 export { SignupFormContainer } from './SignupFormContainer';
 export { EmailVerificationPendingContainer } from './EmailVerificationPendingContainer';
 export { ForgotPasswordContainer } from './ForgotPasswordContainer';
