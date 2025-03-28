@@ -1,5 +1,5 @@
 // client/src/contexts/AuthContext.jsx
-import { createContext, useContext, useReducer, useEffect, useRef, useMemo } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { validateSessionApi } from '@/features/auth/session/api/sessionApi';
 import { logoutApi } from '@/features/auth/logout/api/logoutApi';
 import { loginApi } from '@/features/auth/login/api/loginApi';
@@ -7,141 +7,75 @@ import { resetCsrfToken } from '@/common/services/csrfService';
 
 const AuthContext = createContext(null);
 
-const initialState = {
-  user: null,
-  isAuthenticated: false,
-  loading: true,
-  error: null,
-  initialized: false
-};
-
-function authReducer(state, action) {
-  switch (action.type) {
-    case 'AUTH_INIT_START':
-      return { ...state, loading: true };
-
-    case 'AUTH_INIT_SUCCESS':
-      return {
-        ...state,
-        user: action.payload,
-        isAuthenticated: true,
-        loading: false,
-        initialized: true
-      };
-
-    case 'AUTH_INIT_ERROR':
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
-        loading: false,
-        initialized: true
-      };
-
-    case 'AUTH_INIT_COMPLETE':
-      return {
-        ...state,
-        loading: false,
-        initialized: true
-      };
-
-    case 'LOGIN_SUCCESS':
-      return {
-        ...state,
-        user: action.payload,
-        isAuthenticated: true,
-        error: null
-      };
-    case 'LOGIN_ERROR':
-      return {
-        ...state,
-        error: action.payload
-      };
-
-    case 'LOGOUT':
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false
-      };
-    default:
-      return state;
-  }
-}
-
 export function AuthProvider({ children }) {
-  const [state, dispatch] = useReducer(authReducer, initialState);
-  const mounted = useRef(false);
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Initialize auth state
   useEffect(() => {
-    mounted.current = true;
-    let timeoutId;
-    
-    async function initAuth() {
-      if (!mounted.current) return;
-      
-      dispatch({ type: 'AUTH_INIT_START' });
-      
+    let isMounted = true;
+
+    async function checkAuth() {
       try {
-        console.log("validating session")
         const response = await validateSessionApi();
-        
-        if (!mounted.current) return; // If component is unmounted, stop execution
-        
-        if (response.data?.user) {
-          // If user is authenticated, set the user and dispatch success
-          dispatch({ 
-            type: 'AUTH_INIT_SUCCESS', 
-            payload: response.data.user 
-          });
-        } else {
-          // If user is not authenticated, dispatch completion
-          dispatch({ type: 'AUTH_INIT_COMPLETE' });
+        if (isMounted) {
+          setUser(response.data?.user || null);
         }
-      } catch (error) {
-        if (!mounted.current) return;
-        console.error('Auth initialization error:', error);
-        dispatch({ type: 'AUTH_INIT_ERROR', payload: error.message });
+      } catch (err) {
+        if (isMounted) {
+          setUser(null);
+          // Only set error if it's not a 401 on signup page
+          if (!(err.response?.status === 401 && window.location.pathname === '/signup')) {
+            setError(err.message);
+          }
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     }
 
-    // Prevent multiple simultaneous validation attempts
-    if (!state.initialized && state.loading) {
-      console.log("initAuth")
-      initAuth();
-    }
+    checkAuth();
 
     return () => {
-      mounted.current = false;
-      if (timeoutId) clearTimeout(timeoutId);
+      isMounted = false;
     };
-  }, [state.initialized, state.loading]);
+  }, []);
 
-  const value = useMemo(() => ({
-    ...state,
-    login: async (credentials) => {
-      try {
-        const { user } = await loginApi(credentials);
-        dispatch({ type: 'LOGIN_SUCCESS', payload: user });
-        return user;
-      } catch (error) {
-        dispatch({ type: 'LOGIN_ERROR', payload: error.message });
-        throw error;
-      }
-    },
-    logout: async () => {
-      try {
-        await logoutApi();
-        // Reset the CSRF token cache
-        resetCsrfToken();
-        localStorage.removeItem('auth_initialized');
-        dispatch({ type: 'LOGOUT' });
-      } catch (error) {
-        dispatch({ type: 'LOGOUT' });
-        throw error;
-      }
+  const login = async (credentials) => {
+    try {
+      setError(null);
+      const { user } = await loginApi(credentials);
+      setUser(user);
+      return user;
+    } catch (err) {
+      setError(err.message);
+      throw err;
     }
-  }), [state]);
+  };
+
+  const logout = async () => {
+    try {
+      await logoutApi();
+      resetCsrfToken();
+      localStorage.removeItem('auth_initialized');
+      setUser(null);
+    } catch (err) {
+      setUser(null);
+      throw err;
+    }
+  };
+
+  const value = {
+    user,
+    isAuthenticated: !!user,
+    isLoading,
+    error,
+    login,
+    logout
+  };
 
   return (
     <AuthContext.Provider value={value}>
