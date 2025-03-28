@@ -1,6 +1,7 @@
 // server/src/routes/auth.js
 import express from 'express';
 import { requireAuth } from '../../../middleware/auth/auth.js';
+import loginRoutes from '../login/routes/loginRoutes.js';
 import * as authController from '../controllers/authController.js';
 import { loginLimiter } from '../../../middleware/security/rateLimiter.js';
 import {
@@ -23,8 +24,10 @@ const log = (message) => (req, res, next) => {
   next();
 }
 
+// Mount login routes
+router.use('/login', loginRoutes);
+
 router.post('/signup', csrfProtection, validateSignup, authController.signup);
-router.post('/login', csrfProtection, sanitizeAuth, validateLogin, loginLimiter, authController.login);
 router.post('/logout', csrfProtection, authController.logout);
 router.post('/password-reset-request', csrfProtection, sanitizeAuth, validatePasswordResetRequest, authController.requestPasswordReset);
 router.post('/password-reset', csrfProtection, sanitizeAuth, validatePasswordReset, authController.resetPassword);
