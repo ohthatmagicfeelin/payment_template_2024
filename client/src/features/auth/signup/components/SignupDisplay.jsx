@@ -1,6 +1,6 @@
 import { LoadingSpinner } from '@/common/components/ui/LoadingSpinner';
 
-export function SignupFormDisplay({
+export function SignupDisplay({
   email,
   onEmailChange,
   password,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signup } from '@/features/auth/services/authService';
+import { signupApi } from '../api/signupApi';
 
 export function useSignup() {
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ export function useSignup() {
     setError('');
 
     try {
-      await signup({ email, password, name });
+      await signupApi({ email, password, name });
       navigate('/verification-pending', { 
         state: { email },
         replace: true 

@@ -3,8 +3,9 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Loading from '@/common/components/ui/Loading';
 import PaymentForm from '@/features/payments/components/PaymentForm';
-import { SignupForm, EmailVerificationPending, ForgotPassword, ResetPassword, VerifyEmail } from '@/features/auth/components/index.js';
+import { EmailVerificationPending, ForgotPassword, ResetPassword, VerifyEmail } from '@/features/auth/components/index.js';
 import { LoginContainer } from '@/features/auth/login/components/LoginContainer';
+import { SignupContainer } from '@/features/auth/signup/components/SignupContainer';
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { Settings } from '@/pages/Settings';
 import { MainLayout } from '@/layouts/MainLayout/MainLayout';
@@ -38,7 +39,7 @@ function AppRoutes() {
           />
           <Route 
             path="/signup" 
-            element={isAuthenticated ? <Navigate to="/home" replace /> : <SignupForm />} 
+            element={isAuthenticated ? <Navigate to="/home" replace /> : <SignupContainer />} 
           />
 
           <Route path="/verify-email" element={<VerifyEmail />}/>
