@@ -1,4 +1,4 @@
-import prisma from '../../../db/client.js'
+import prisma from '../../../../db/client.js'
 
 export const emailVerificationRepository = {
   createToken: async ({ token, userId, expiresAt }) => {

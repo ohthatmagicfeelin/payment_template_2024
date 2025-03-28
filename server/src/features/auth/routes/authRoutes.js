@@ -1,8 +1,11 @@
 // server/src/routes/auth.js
 import express from 'express';
 import { requireAuth } from '../../../middleware/auth/auth.js';
+
 import loginRoutes from '../login/routes/loginRoutes.js';
 import signupRoutes from '../signup/routes/signupRoutes.js';
+import emailVerificationRoutes from '../verify/routes/emailVerificationRoutes.js';
+
 import * as authController from '../controllers/authController.js';
 import { loginLimiter } from '../../../middleware/security/rateLimiter.js';
 import {
@@ -28,12 +31,11 @@ const log = (message) => (req, res, next) => {
 // Mount feature routes
 router.use('/login', loginRoutes);
 router.use('/signup', signupRoutes);
+router.use('/verify', emailVerificationRoutes);
 
 router.post('/logout', csrfProtection, authController.logout);
 router.post('/password-reset-request', csrfProtection, sanitizeAuth, validatePasswordResetRequest, authController.requestPasswordReset);
 router.post('/password-reset', csrfProtection, sanitizeAuth, validatePasswordReset, authController.resetPassword);
-router.post('/verify-email', csrfProtection, sanitizeAuth, validateEmailVerification, authController.verifyEmail);
-router.post('/resend-verification', csrfProtection, sanitizeAuth, validatePasswordResetRequest, authController.resendVerification);
 router.post('/verify-reset-token', authController.verifyResetToken);
 router.get('/validate', requireAuth, authController.validateSession);
 

@@ -5,45 +5,8 @@ import * as userService from '../../user/services/userServices.js';
 import { sessionService } from '../../../common/services/sessionService.js';
 
 
-export const signup = catchAsync(async (req, res) => {
-    const { email, password } = req.body;
-    const { user, message } = await authService.signup(email, password);
-    
-    res.status(201).json({ 
-        user: { id: user.id, email: user.email },
-        message
-    });
-});
 
-export const login = catchAsync(async (req, res) => {
-    const { email, password, rememberMe } = req.body;
-    const user = await authService.login(email, password);
-    
-    // Set session data
-    req.session.userId = user.id;
-    req.session.email = user.email;
-    
-    if (rememberMe) {
-        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
-    }
 
-    await new Promise((resolve, reject) => {
-        req.session.save((err) => {
-            if (err) {
-                console.error('Session save error:', err);
-                reject(new AppError('Failed to create session', 500));
-            }
-            resolve();
-        });
-    });
-
-    res.json({ 
-        user: { 
-            id: user.id, 
-            email: user.email 
-        }
-    });
-});
 
 export const logout = catchAsync(async (req, res) => {
     const sessionId = req.session.id;
@@ -124,21 +87,7 @@ export const resetPassword = catchAsync(async (req, res) => {
     res.json({ message: 'Password updated successfully' });
 });
 
-export const verifyEmail = catchAsync(async (req, res) => {
-    const { token } = req.body;
-    const user = await authService.verifyEmail(token);
-    
-    // Set session after successful verification
-    req.session.userId = user.id;
-    
-    res.json({ message: 'Email verified successfully' });
-});
 
-export const resendVerification = catchAsync(async (req, res) => {
-    const { email } = req.body;
-    await authService.resendVerification(email);
-    res.json({ message: 'If an account exists, a verification email will be sent.' });
-});
 
 export const verifyResetToken = catchAsync(async (req, res) => {
     const { token } = req.body;

@@ -1,5 +1,5 @@
 import { passwordResetRepository } from '../features/auth/repositories/passwordResetRepository.js'
-import { emailVerificationRepository } from '../features/auth/repositories/emailVerificationRepository.js'
+import { emailVerificationRepository } from '../features/auth/verify/repositories/emailVerificationRepository.js'
 
 export const cleanupExpiredTokens = async () => {
   try {

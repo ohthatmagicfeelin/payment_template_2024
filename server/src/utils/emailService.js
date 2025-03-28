@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import config from '../config/env.js';
 import { passwordResetRepository } from '../features/auth/repositories/passwordResetRepository.js';
 import { AppError } from './AppError.js';
-import { emailVerificationRepository } from '../features/auth/repositories/emailVerificationRepository.js';
+import { emailVerificationRepository } from '../features/auth/verify/repositories/emailVerificationRepository.js';
 
 export class EmailService {
   constructor() {
