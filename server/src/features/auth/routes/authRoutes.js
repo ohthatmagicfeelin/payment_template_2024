@@ -3,6 +3,7 @@ import express from 'express';
 import { requireAuth } from '../../../middleware/auth/auth.js';
 
 import loginRoutes from '../login/routes/loginRoutes.js';
+import logoutRoutes from '../logout/routes/logoutRoutes.js';
 import signupRoutes from '../signup/routes/signupRoutes.js';
 import emailVerificationRoutes from '../verify/routes/emailVerificationRoutes.js';
 import passwordRoutes from '../password/routes/passwordRoutes.js';
@@ -23,11 +24,12 @@ const log = (message) => (req, res, next) => {
 
 // Mount feature routes
 router.use('/login', loginRoutes);
+router.use('/logout', logoutRoutes);
 router.use('/signup', signupRoutes);
 router.use('/', emailVerificationRoutes);
 router.use('/', passwordRoutes);
 
-router.post('/logout', csrfProtection, authController.logout);
+
 router.get('/validate', requireAuth, authController.validateSession);
 
 router.get('/csrf-token', csrfProtection, csrfController.getCsrfToken);
