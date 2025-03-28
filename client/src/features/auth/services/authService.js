@@ -2,6 +2,7 @@
 import axios from 'axios';
 import config from '@/config/env';
 import api from '@/api/api';
+import { resetCsrfToken } from '@/common/services/csrfService.js';
 
 class AuthService {
   constructor() {
@@ -55,7 +56,16 @@ class AuthService {
 
 
   async logout() {
-    await this.api.post('/api/logout');
+    try {
+      await this.api.post('/api/logout');
+      // Reset the CSRF token cache
+      resetCsrfToken();
+      // Get a fresh CSRF token
+      await this.api.get('/api/csrf-token');
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    }
   }
 
 
