@@ -3,16 +3,17 @@ import { AppError } from '../../../utils/AppError.js';
 import { auditService } from '../../../common/services/auditService.js';
 import { emailService } from '../../../utils/emailService.js';
 
-export const getUserById = async (userId) => {
-    const user = await userRepository.getUserById(userId);
-    if (!user) {
-        throw new AppError('User not found', 404);
+export const userService = {
+    getUserById: async (userId) => {
+        const user = await userRepository.getUserById(userId);
+        if (!user) {
+            throw new AppError('User not found', 404);
     }
     return user;
-};
+    },
 
-export const signup = async (email, password) => {
-    const existingUser = await userRepository.getUserByEmail(email);
+    signup: async (email, password) => {
+        const existingUser = await userRepository.getUserByEmail(email);
     if (existingUser) {
         await auditService.log({
             action: 'SIGNUP_FAILED',
@@ -35,7 +36,8 @@ export const signup = async (email, password) => {
     });
 
     return {
-        user,
-        message: 'Please check your email to verify your account'
-    };
+            user,
+            message: 'Please check your email to verify your account'
+        };
+    },
 };

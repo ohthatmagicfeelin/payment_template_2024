@@ -2,6 +2,8 @@ import { catchAsync } from '../../../../utils/catchAsync.js';
 import { AppError } from '../../../../utils/AppError.js';
 import { sessionService } from '../services/sessionService.js';
 import { auditService } from '../../../../common/services/auditService.js';
+import { userService } from '../../../user/services/userServices.js';
+
 
 export const sessionController = {
     validateSession: catchAsync(async (req, res) => {

@@ -2,9 +2,22 @@
 
 Copy template directory into new project directory
 ```
-rsync -avz  --exclude '**/node_modules' --exclude '**/node_modules/**' --exclude '.DS_Store' --exclude '**/package-lock.json' --exclude '.git' "./payment_template_2024/" "./something/"
+rsync -avz \
+  --exclude '**/node_modules' \
+  --exclude '**/node_modules/**' \
+  --exclude '.DS_Store' \
+  --exclude '**/package-lock.json' \
+  --exclude '.git' \
+  --exclude '.env*' \
+  --exclude 'backup-credentials.conf' \
+  --exclude '.vscode' \
+  "./template/" "./something/"
 ```
 <br>
+
+## Link env vars
+- update env var path in scripts/symlinks.sh
+- npm run simlinks
 
 ## Update Configs
 open project in VS Code, then:
