@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signupApi } from '../api/signupApi';
-import { validatePassword } from '../../utils/passwordValidation';
+import { validatePassword } from '../../common/utils/passwordValidation';
 
 export function useSignup() {
   const [email, setEmail] = useState('');

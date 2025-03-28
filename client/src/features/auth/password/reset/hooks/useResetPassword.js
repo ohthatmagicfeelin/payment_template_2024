@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { verifyResetTokenApi, resetPasswordApi } from '../api/resetPasswordApi';
-import { validatePassword } from '../../../utils/passwordValidation';
+import { validatePassword } from '../../../common/utils/passwordValidation';
 
 export function useResetPassword() {
   const [password, setPassword] = useState('');

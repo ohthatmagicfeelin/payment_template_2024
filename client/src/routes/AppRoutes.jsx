@@ -10,7 +10,7 @@ import { ResetPasswordContainer } from '@/features/auth/password/reset/component
 import { EmailVerificationPendingContainer } from '@/features/auth/verify/pending/components/EmailVerificationPendingContainer';
 import { EmailVerificationSuccessContainer } from '@/features/auth/verify/success/components/EmailVerificationSuccessContainer';
 import { LogoutContainer } from '@/features/auth/logout/components/LogoutContainer';
-import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
+import { ProtectedRoute } from '@/features/auth/common/components/ProtectedRoute';
 import { Settings } from '@/pages/Settings';
 import { MainLayout } from '@/layouts/MainLayout/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
