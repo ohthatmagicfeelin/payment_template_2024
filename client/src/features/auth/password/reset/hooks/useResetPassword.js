@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { resetPassword } from '@/features/auth/services/authService';
+import { verifyResetTokenApi, resetPasswordApi } from '../api/resetPasswordApi';
 
 export function useResetPassword() {
   const [password, setPassword] = useState('');
@@ -15,7 +15,7 @@ export function useResetPassword() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        await resetPassword.verifyResetToken(token);
+        await verifyResetTokenApi(token);
         setIsValidToken(true);
       } catch (err) {
         setError('This password reset link has expired or is invalid. Please request a new one.');
@@ -40,7 +40,7 @@ export function useResetPassword() {
     }
 
     try {
-      await resetPassword.resetPassword(token, password);
+      await resetPasswordApi(token, password);
       navigate('/login', { 
         replace: true,
         state: { 
