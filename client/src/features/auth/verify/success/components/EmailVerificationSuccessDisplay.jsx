@@ -1,4 +1,4 @@
-export function VerifyEmailDisplay({ status, onBackToLogin }) {
+export function EmailVerificationSuccessDisplay({ status, onBackToLogin }) {
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
       <div className="text-center">

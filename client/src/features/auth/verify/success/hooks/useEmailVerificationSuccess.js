@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { verifyEmail } from '@/features/auth/services/authService';
+import { verifyEmailSuccessApi } from '../api/emailVerificationSuccessApi';
 
-export function useVerifyEmail() {
+export function useEmailVerificationSuccess() {
   const [status, setStatus] = useState('verifying');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ export function useVerifyEmail() {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        await verifyEmail(token);
+        await verifyEmailSuccessApi(token);
         setStatus('success');
         setTimeout(() => {
           navigate('/login', {

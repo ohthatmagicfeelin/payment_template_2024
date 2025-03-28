@@ -1,2 +1,0 @@
-
-export { VerifyEmailContainer } from './VerifyEmailContainer'; 
