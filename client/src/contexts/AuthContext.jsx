@@ -1,6 +1,9 @@
 // client/src/contexts/AuthContext.jsx
 import { createContext, useContext, useReducer, useEffect, useRef, useMemo } from 'react';
-import { login, logout, validateSession } from '@/features/auth/services/authService';
+import { validateSessionApi } from '@/features/auth/session/api/sessionApi';
+import { logoutApi } from '@/features/auth/logout/api/logoutApi';
+import { loginApi } from '@/features/auth/login/api/loginApi';
+import { resetCsrfToken } from '@/common/services/csrfService';
 
 const AuthContext = createContext(null);
 
@@ -48,7 +51,6 @@ function authReducer(state, action) {
         user: action.payload,
         isAuthenticated: true,
         error: null
-
       };
     case 'LOGIN_ERROR':
       return {
@@ -68,10 +70,8 @@ function authReducer(state, action) {
 }
 
 export function AuthProvider({ children }) {
-
   const [state, dispatch] = useReducer(authReducer, initialState);
   const mounted = useRef(false);
-
 
   useEffect(() => {
     mounted.current = true;
@@ -84,7 +84,7 @@ export function AuthProvider({ children }) {
       
       try {
         console.log("validating session")
-        const response = await validateSession();
+        const response = await validateSessionApi();
         
         if (!mounted.current) return; // If component is unmounted, stop execution
         
@@ -117,12 +117,11 @@ export function AuthProvider({ children }) {
     };
   }, [state.initialized, state.loading]);
 
-
   const value = useMemo(() => ({
     ...state,
     login: async (credentials) => {
       try {
-        const { user } = await login(credentials);
+        const { user } = await loginApi(credentials);
         dispatch({ type: 'LOGIN_SUCCESS', payload: user });
         return user;
       } catch (error) {
@@ -132,7 +131,9 @@ export function AuthProvider({ children }) {
     },
     logout: async () => {
       try {
-        await logout();
+        await logoutApi();
+        // Reset the CSRF token cache
+        resetCsrfToken();
         localStorage.removeItem('auth_initialized');
         dispatch({ type: 'LOGOUT' });
       } catch (error) {

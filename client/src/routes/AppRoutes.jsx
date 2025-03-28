@@ -9,6 +9,7 @@ import { ForgotPasswordContainer } from '@/features/auth/password/forgot/compone
 import { ResetPasswordContainer } from '@/features/auth/password/reset/components/ResetPasswordContainer';
 import { EmailVerificationPendingContainer } from '@/features/auth/verify/pending/components/EmailVerificationPendingContainer';
 import { EmailVerificationSuccessContainer } from '@/features/auth/verify/success/components/EmailVerificationSuccessContainer';
+import { LogoutContainer } from '@/features/auth/logout/components/LogoutContainer';
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { Settings } from '@/pages/Settings';
 import { MainLayout } from '@/layouts/MainLayout/MainLayout';
@@ -49,6 +50,7 @@ function AppRoutes() {
           <Route path="/forgot-password" element={<ForgotPasswordContainer />}/>
           <Route path="/reset-password" element={<ResetPasswordContainer />} />  
           <Route path="/verification-pending" element={<EmailVerificationPendingContainer />}/>
+          <Route path="/logout" element={<LogoutContainer />} />
 
           {/* Protected routes */}
           <Route
