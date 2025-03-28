@@ -1,5 +1,5 @@
-import { useForgotPassword } from '@/features/auth/hooks/useForgotPassword';
-import { ForgotPasswordDisplay } from '../password/ForgotPasswordDisplay';
+import { useForgotPassword } from '../hooks/useForgotPassword';
+import { ForgotPasswordDisplay } from './ForgotPasswordDisplay';
 
 export function ForgotPasswordContainer() {
   const {

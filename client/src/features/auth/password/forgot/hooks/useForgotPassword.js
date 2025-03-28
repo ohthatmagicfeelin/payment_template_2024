@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { requestPasswordReset } from '@/features/auth/services/authService';
+import { forgotPasswordApi } from '../api/forgotPasswordApi';
 
 export function useForgotPassword() {
   const [email, setEmail] = useState('');
@@ -9,7 +9,7 @@ export function useForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await requestPasswordReset(email);
+      await forgotPasswordApi(email);
       setSubmitted(true);
     } catch (err) {
       setError(err.message);
