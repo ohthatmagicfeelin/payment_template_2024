@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { verifyResetTokenApi, resetPasswordApi } from '../api/resetPasswordApi';
+import { validatePassword } from '../../../utils/passwordValidation';
 
 export function useResetPassword() {
   const [password, setPassword] = useState('');
@@ -39,6 +40,12 @@ export function useResetPassword() {
       return;
     }
 
+    const { isValid, errors } = validatePassword(password);
+    if (!isValid) {
+      setError(errors.join(', '));
+      return;
+    }
+
     try {
       await resetPasswordApi(token, password);
       navigate('/login', { 
@@ -49,11 +56,7 @@ export function useResetPassword() {
         }
       });
     } catch (err) {
-      if (err.message.includes('Must be at least')) {
-        setError('Your password must be at least 8 characters long');
-      } else if (err.message.includes('Must contain')) {
-        setError('Your password must include uppercase and lowercase letters, numbers, and special characters');
-      } else if (err.message.includes('expired')) {
+      if (err.message.includes('expired')) {
         setError('This password reset link has expired. Please request a new one.');
       } else if (err.message.includes('invalid')) {
         setError('This password reset link is no longer valid. Please request a new one.');

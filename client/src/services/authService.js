@@ -1,9 +1,8 @@
-// client/src/services/authService.js
 import { resetCsrfToken } from '@/common/services/csrfService.js';
 import {
   logoutApi,
   validateSessionApi
-} from '../api/authApi.js';
+} from '@/features/auth/api/authApi.js';
 
 export const logout = async () => {
   try {
@@ -18,4 +17,4 @@ export const logout = async () => {
 
 export const validateSession = async () => {
   return validateSessionApi();
-};
+}; 

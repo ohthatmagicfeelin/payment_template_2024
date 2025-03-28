@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signupApi } from '../api/signupApi';
+import { validatePassword } from '../../utils/passwordValidation';
 
 export function useSignup() {
   const [email, setEmail] = useState('');
@@ -17,10 +18,13 @@ export function useSignup() {
       setError('Passwords do not match');
       return false;
     }
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long');
+
+    const { isValid, errors } = validatePassword(password);
+    if (!isValid) {
+      setError(errors.join(', '));
       return false;
     }
+
     return true;
   };
 
