@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { authService } from '@/features/auth/services/authService';
+import { verifyEmail } from '@/features/auth/services/authService';
 
 export function useVerifyEmail() {
   const [status, setStatus] = useState('verifying');
@@ -11,7 +11,7 @@ export function useVerifyEmail() {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        await authService.verifyEmail(token);
+        await verifyEmail(token);
         setStatus('success');
         setTimeout(() => {
           navigate('/login', {

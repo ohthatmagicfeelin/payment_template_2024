@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { authService } from '@/features/auth/services/authService';
+import { resendVerificationEmail } from '@/features/auth/services/authService';
 
 export function useEmailVerification() {
   const location = useLocation();
@@ -10,7 +10,7 @@ export function useEmailVerification() {
 
   const handleResendVerification = async () => {
     try {
-      await authService.resendVerificationEmail(email);
+      await resendVerificationEmail(email);
       setResendStatus('Verification email sent successfully!');
     } catch (err) {
       setResendStatus('Failed to resend verification email. Please try again.');

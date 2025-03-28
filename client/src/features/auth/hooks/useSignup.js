@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '@/features/auth/services/authService';
+import { signup } from '@/features/auth/services/authService';
 
 export function useSignup() {
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ export function useSignup() {
     setError('');
 
     try {
-      await authService.signup({ email, password, name });
+      await signup({ email, password, name });
       navigate('/verification-pending', { 
         state: { email },
         replace: true 

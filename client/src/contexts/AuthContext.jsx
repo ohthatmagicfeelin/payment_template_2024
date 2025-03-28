@@ -1,6 +1,6 @@
 // client/src/contexts/AuthContext.jsx
 import { createContext, useContext, useReducer, useEffect, useRef, useMemo } from 'react';
-import { authService } from '@/features/auth/services/authService';
+import { login, logout, validateSession } from '@/features/auth/services/authService';
 
 const AuthContext = createContext(null);
 
@@ -84,7 +84,7 @@ export function AuthProvider({ children }) {
       
       try {
         console.log("validating session")
-        const response = await authService.validateSession();
+        const response = await validateSession();
         
         if (!mounted.current) return; // If component is unmounted, stop execution
         
@@ -122,7 +122,7 @@ export function AuthProvider({ children }) {
     ...state,
     login: async (credentials) => {
       try {
-        const { user } = await authService.login(credentials);
+        const { user } = await login(credentials);
         dispatch({ type: 'LOGIN_SUCCESS', payload: user });
         return user;
       } catch (error) {
@@ -132,7 +132,7 @@ export function AuthProvider({ children }) {
     },
     logout: async () => {
       try {
-        await authService.logout();
+        await logout();
         localStorage.removeItem('auth_initialized');
         dispatch({ type: 'LOGOUT' });
       } catch (error) {

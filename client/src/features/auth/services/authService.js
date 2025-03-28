@@ -1,121 +1,106 @@
 // client/src/services/authService.js
-import axios from 'axios';
-import config from '@/config/env';
 import api from '@/api/api';
 import { resetCsrfToken } from '@/common/services/csrfService.js';
 
-class AuthService {
-  constructor() {
-    this.api = api;
+const validatePassword = (password) => {
+  const minLength = 8;
+  const hasUpper = /[A-Z]/.test(password);
+  const hasLower = /[a-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecial = /[!@#$%^&*]/.test(password);
+
+  const errors = [];
+  if (password.length < minLength) errors.push(`Must be at least ${minLength} characters`);
+  if (!hasUpper) errors.push('Must contain uppercase letter');
+  if (!hasLower) errors.push('Must contain lowercase letter');
+  if (!hasNumber) errors.push('Must contain number');
+  if (!hasSpecial) errors.push('Must contain special character');
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+export const signup = async ({ email, password, rememberMe = false }) => {
+  const { isValid, errors } = validatePassword(password);
+  if (!isValid) {
+    throw new Error(errors.join(', '));
   }
 
-  validatePassword(password) {
-    const minLength = 8;
-    const hasUpper = /[A-Z]/.test(password);
-    const hasLower = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecial = /[!@#$%^&*]/.test(password);
+  const response = await api.post('/api/signup', {
+    email,
+    password,
+    rememberMe
+  });
+  return response.data;
+};
 
-    const errors = [];
-    if (password.length < minLength) errors.push(`Must be at least ${minLength} characters`);
-    if (!hasUpper) errors.push('Must contain uppercase letter');
-    if (!hasLower) errors.push('Must contain lowercase letter');
-    if (!hasNumber) errors.push('Must contain number');
-    if (!hasSpecial) errors.push('Must contain special character');
+export const login = async ({ email, password, rememberMe = false }) => {
+  const response = await api.post('/api/login', {
+    email,
+    password,
+    rememberMe
+  });
+  return response.data;
+};
 
-    return {
-      isValid: errors.length === 0,
-      errors
-    };
+export const logout = async () => {
+  try {
+    await api.post('/api/logout');
+    // Reset the CSRF token cache
+    resetCsrfToken();
+    // Get a fresh CSRF token
+    await api.get('/api/csrf-token');
+  } catch (error) {
+    console.error('Logout error:', error);
+    throw error;
   }
+};
 
-
-  async signup({ email, password, rememberMe = false }) {
-    const { isValid, errors } = this.validatePassword(password);
-    if (!isValid) {
-      throw new Error(errors.join(', '));
+export const validateSession = async () => {
+  try {
+    const response = await api.get('/api/validate');
+    return response;
+  } catch (error) {
+    // Handle 401 silently on signup page
+    if (error.response?.status === 401 && window.location.pathname === '/signup') {
+      return { data: { user: null } };
     }
-
-    const response = await this.api.post('/api/signup', {
-      email,
-      password,
-      rememberMe
-    });
-    return response.data;
-  }
-
-
-  async login({ email, password, rememberMe = false }) {
-    const response = await this.api.post('/api/login', {
-      email,
-      password,
-      rememberMe
-    });
-    return response.data;
-  }
-
-
-  async logout() {
-    try {
-      await this.api.post('/api/logout');
-      // Reset the CSRF token cache
-      resetCsrfToken();
-      // Get a fresh CSRF token
-      await this.api.get('/api/csrf-token');
-    } catch (error) {
-      console.error('Logout error:', error);
-      throw error;
+    
+    // For other 401s or other errors, throw the error
+    if (error.response?.status === 401) {
+      throw new Error('Unauthorized: Session expired');
     }
+    throw error;
+  }
+};
+
+export const requestPasswordReset = async (email) => {
+  await api.post('/api/password-reset-request', { email });
+};
+
+export const resetPassword = async (token, newPassword) => {
+  const { isValid, errors } = validatePassword(newPassword);
+  if (!isValid) {
+    throw new Error(errors.join(', '));
   }
 
+  await api.post('/api/password-reset', {
+    token,
+    newPassword
+  });
+};
 
-  async validateSession() {
-    try {
-        
-      const response = await this.api.get('/api/validate');
-      return response;
-    } catch (error) {
-      // Handle 401 silently on signup page
-      if (error.response?.status === 401 && window.location.pathname === '/signup') {
-        return { data: { user: null } };
-      }
-      
-      // For other 401s or other errors, throw the error
-      if (error.response?.status === 401) {
-        throw new Error('Unauthorized: Session expired');
-      }
-      throw error;
-    }
-  }
+export const verifyEmail = async (token) => {
+  await api.post('/api/verify-email', { token });
+};
 
-  async requestPasswordReset(email) {
-    await this.api.post('/api/password-reset-request', { email });
-  }
+export const resendVerificationEmail = async (email) => {
+  await api.post('/api/resend-verification', { email });
+};
 
-  async resetPassword(token, newPassword) {
-    const { isValid, errors } = this.validatePassword(newPassword);
-    if (!isValid) {
-      throw new Error(errors.join(', '));
-    }
-
-    await this.api.post('/api/password-reset', {
-      token,
-      newPassword
-    });
-  }
-
-  async verifyEmail(token) {
-    await this.api.post('/api/verify-email', { token });
-  }
-
-  async resendVerificationEmail(email) {
-    await this.api.post('/api/resend-verification', { email });
-  }
-
-  async verifyResetToken(token) {
-    if (!token) throw new Error('No token provided');
-    await this.api.post('/api/verify-reset-token', { token });
-  }
-}
-
-export const authService = new AuthService();
+export const verifyResetToken = async (token) => {
+  if (!token) throw new Error('No token provided');
+  await api.post('/api/verify-reset-token', { token });
+};
