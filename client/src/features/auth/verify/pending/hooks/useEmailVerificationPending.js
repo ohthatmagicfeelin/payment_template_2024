@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { resendVerificationEmail } from '@/features/auth/services/authService';
+import { resendVerificationEmailApi } from '../api/emailVerificationApi';
 
-export function useEmailVerification() {
+export function useEmailVerificationPending() {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email;
@@ -10,7 +10,7 @@ export function useEmailVerification() {
 
   const handleResendVerification = async () => {
     try {
-      await resendVerificationEmail(email);
+      await resendVerificationEmailApi(email);
       setResendStatus('Verification email sent successfully!');
     } catch (err) {
       setResendStatus('Failed to resend verification email. Please try again.');
@@ -27,4 +27,4 @@ export function useEmailVerification() {
     resendStatus,
     handleResendVerification
   };
-}
+} 
